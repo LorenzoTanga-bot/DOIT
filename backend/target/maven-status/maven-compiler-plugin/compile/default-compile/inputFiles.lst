@@ -1,0 +1,14 @@
+/Users/lorenzotanganelli/Desktop/DOIT/backend/src/main/java/it/unicam/qwert123/doit/backend/services/TagService.java
+/Users/lorenzotanganelli/Desktop/DOIT/backend/src/main/java/it/unicam/qwert123/doit/backend/repositories/ProjectRepository.java
+/Users/lorenzotanganelli/Desktop/DOIT/backend/src/main/java/it/unicam/qwert123/doit/backend/restcontrollers/UserController.java
+/Users/lorenzotanganelli/Desktop/DOIT/backend/src/main/java/it/unicam/qwert123/doit/backend/repositories/UserRepository.java
+/Users/lorenzotanganelli/Desktop/DOIT/backend/src/main/java/it/unicam/qwert123/doit/backend/restcontrollers/ProjectController.java
+/Users/lorenzotanganelli/Desktop/DOIT/backend/src/main/java/it/unicam/qwert123/doit/backend/repositories/TagRepository.java
+/Users/lorenzotanganelli/Desktop/DOIT/backend/src/main/java/it/unicam/qwert123/doit/backend/models/User.java
+/Users/lorenzotanganelli/Desktop/DOIT/backend/src/main/java/it/unicam/qwert123/doit/backend/restcontrollers/TagController.java
+/Users/lorenzotanganelli/Desktop/DOIT/backend/src/main/java/it/unicam/qwert123/doit/backend/models/Project.java
+/Users/lorenzotanganelli/Desktop/DOIT/backend/src/main/java/it/unicam/qwert123/doit/backend/services/UserService.java
+/Users/lorenzotanganelli/Desktop/DOIT/backend/src/main/java/it/unicam/qwert123/doit/backend/security/SecurityConfig.java
+/Users/lorenzotanganelli/Desktop/DOIT/backend/src/main/java/it/unicam/qwert123/doit/backend/DoitApplication.java
+/Users/lorenzotanganelli/Desktop/DOIT/backend/src/main/java/it/unicam/qwert123/doit/backend/models/Tag.java
+/Users/lorenzotanganelli/Desktop/DOIT/backend/src/main/java/it/unicam/qwert123/doit/backend/services/ProjectService.java
