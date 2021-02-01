@@ -29,11 +29,8 @@ public class Project {
     private Date dateOfEnd;
     private String name;
     private String shortDescription;
-    private boolean descriptionIsAFile;
-    private String description; // if descriptionIsAFile is true, in this variable there will be saved the path of the file else the description
+    private String description; 
     private boolean evaluationMode; // if it's true, the project is in evaluation mode.
-    private Date startEvaluation;
-    private Date endEvaluation;
     private boolean candidacyMode; // if it's true, the project is in candidacy mode.
     private Date startCandidacy;
     private Date endCandidacy;

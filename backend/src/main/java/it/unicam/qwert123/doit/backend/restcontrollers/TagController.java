@@ -1,6 +1,7 @@
 package it.unicam.qwert123.doit.backend.restcontrollers;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,12 +20,20 @@ public class TagController {
     private TagService service;
 
     @GetMapping("/get")
-    public List<Tag> getAllTag() {
-        return service.getAllTag();
+    public List<Tag> getAllTags() {
+        return service.findAll();
     }
 
+    // @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('PROJECT_PROPOSER') or
+    // hasAuthority('EXPERT') or hasAuthority('DESIGNER') or
+    // hasAuthority('NOT_COMPLETED')")
     @PostMapping("/new")
     public Tag addTag(@RequestBody Tag newTag) {
         return service.addTag(newTag);
+    }
+
+    @GetMapping("/getById/{id}")
+    public Tag findById(String id) {
+        return service.findById(UUID.fromString(id));
     }
 }

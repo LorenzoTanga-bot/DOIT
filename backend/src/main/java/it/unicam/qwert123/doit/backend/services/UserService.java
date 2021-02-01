@@ -1,13 +1,11 @@
 package it.unicam.qwert123.doit.backend.services;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.stereotype.Service;
 
 import it.unicam.qwert123.doit.backend.models.User;
@@ -15,39 +13,29 @@ import it.unicam.qwert123.doit.backend.repositories.UserRepository;
 import lombok.NonNull;
 
 @Service
-public class UserService implements UserDetailsService {
+public class UserService{
 
     @Autowired
     private UserRepository repository;
 
-    public User getUserById(@NonNull UUID id) {
-        try {
-
-            return repository.findById(id).get();
-        } catch (NoSuchElementException e) {
-            return null;
-        }
+    private boolean existById(UUID id) throws ResponseStatusException {
+        if(repository.existsById(id)) return true;
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"); 
+    }
+    public User findById(@NonNull UUID id) throws ResponseStatusException {
+       return repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
     }
 
-    public User getUserByMail(@NonNull String mail) {
-        try {
-            return repository.findByMail(mail);
-        } catch (IndexOutOfBoundsException e) {
-            return null;
-        }
+    public User findByMail(@NonNull String mail) throws ResponseStatusException {
+        return repository.findByMail(mail).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
     }
 
-    public User getUserByUsername(@NonNull String username) {
-        try {
-            return repository.findByUsername(username);
-        } catch (IndexOutOfBoundsException e) {
-            return null;
-        }
+    public User findByUsername(@NonNull String username) throws ResponseStatusException {
+        return repository.findByUsername(username).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
     }
 
-    public User getUserBySkills(@NonNull List<UUID> skills) {
-        //TODO da fare
-        return null;
+    public List<User> findByTag(@NonNull List<UUID> tags) {
+        return repository.findByTags(tags);
     }
 
 
@@ -57,34 +45,24 @@ public class UserService implements UserDetailsService {
 
     }
 
-    public User updateUser(@NonNull User newUser) {
-        if (repository.existsById(newUser.getId())) {
-            return repository.save(newUser);
-        } else {
-            return null;
-        }
+    public User updateUser(@NonNull User newUser) throws ResponseStatusException{
+        return existById(newUser.getId()) ? repository.save(newUser): null;
 
     }
 
-    public boolean deleteUser(@NonNull UUID id) {
-        if (repository.existsById(id)) {
+    public boolean deleteUser(@NonNull UUID id) throws ResponseStatusException {
+        if (existById(id)) {
             repository.deleteById(id);
             return true;
-        } else {
-            return false;
-        }
+        } 
+        return false;
     }
 
     public boolean userExistsById(@NonNull String id) {
-		return (getUserById(UUID.fromString(id)) == null ) ? false : true;
+		return (findById(UUID.fromString(id)) == null ) ? false : true;
 	}
 
     public boolean userExistsByMail(@NonNull String mail) {
-		return (getUserByMail(mail) == null ) ? false : true;
-    }
-
-    @Override
-    public UserDetails loadUserByUsername(String mail) throws UsernameNotFoundException {
-        return getUserByMail(mail);
+		return (findByMail(mail) == null ) ? false : true;
     }
 }
