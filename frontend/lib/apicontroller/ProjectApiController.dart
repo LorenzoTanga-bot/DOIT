@@ -25,11 +25,8 @@ class ProjectApiController {
               "dateOfStart": newProject.getDateOfStart(),
               "dateOfEnd": newProject.getDateOfEnd(),
               "shortDescription": newProject.getShortDescription(),
-              "descriptionIsAFile": newProject.getDescriptionIsAFile(),
               "description": newProject.getDescription(),
               "evaluationMode": newProject.getEvaluationMode(),
-              "startEvaluation": newProject.getStartEvaluation(),
-              "endEvaluation": newProject.getEndEvaluation(),
               "candidacyMode": newProject.getCandidacyMode(),
               "startCandidacy": newProject.getStartCandidacy(),
               "endCandidacy": newProject.getEndCandidacy()
@@ -47,11 +44,8 @@ class ProjectApiController {
               "dateOfCreation": newProject.getDateOfCreation(),
               "dateOfEnd": newProject.getDateOfEnd(),
               "shortDescription": newProject.getShortDescription(),
-              "descriptionIsAFile": newProject.getDescriptionIsAFile(),
               "description": newProject.getDescription(),
               "evaluationMode": newProject.getEvaluationMode(),
-              "startEvaluation": newProject.getStartEvaluation(),
-              "endEvaluation": newProject.getEndEvaluation(),
               "candidacyMode": newProject.getCandidacyMode(),
               "startCandidacy": newProject.getStartCandidacy(),
               "endCandidacy": newProject.getEndCandidacy()

@@ -25,12 +25,8 @@ class BackEndProjectService implements ProjectService {
         project["dateOfStart"],
         project["dateOfEnd"],
         project["shortDescription"],
-        project["descriptionIsAFile"],
         project["description"],
         project["evaluationMode"],
-        project["startEvaluation"],
-        project["endEvaluation"],
-        project["candidacyMode"],
         project["startCandidacy"],
         project["endCandidacy"]);
   }

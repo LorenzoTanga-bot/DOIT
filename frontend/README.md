@@ -1,4 +1,4 @@
-# doit
+# frontend
 
 A new Flutter project.
 

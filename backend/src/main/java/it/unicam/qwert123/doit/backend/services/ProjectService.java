@@ -30,9 +30,7 @@ public class ProjectService {
         return checkDate(newProject);
     }
 
-    // TODO da controllare bene
     private boolean checkDate(Project project) {
-        if (project.isCandidacyMode()) {
             if (!project.getDateOfCreation().after(project.getStartCandidacy())) {
                 if (project.getDateOfStart().before(project.getDateOfEnd())) {
                     if (project.getStartCandidacy().before(project.getEndCandidacy())) {
@@ -50,18 +48,8 @@ public class ProjectService {
             } else
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                         "Error Date: the start date of the candidacies is befor to the project creation date");
-        } else {
-            if (!project.getDateOfCreation().after(project.getDateOfStart())) {
-                if (project.getDateOfStart().before(project.getDateOfEnd())) {
-                    return true;
-                } else
-                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                            "Error Date:  the end date of project is before or equal to the start date of the project");
-            } else
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                        "Error Date: the start date of the project is befor to the project creation date");
-        }
-    }
+        } 
+    
 
     public Project addProject(@NonNull Project newProject) throws ResponseStatusException {
         if (checkProject(newProject)) {
