@@ -40,6 +40,7 @@ public class UserService implements UserDetailsService {
     }
 
     public User addUser(@NonNull User newUser) throws ResponseStatusException {
+        newUser.setUsernameToShow(newUser.getUsername());
         newUser.setUsername(newUser.getUsername().toUpperCase().trim());
         if (repository.existsByUsername(newUser.getUsername())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Username already used");
