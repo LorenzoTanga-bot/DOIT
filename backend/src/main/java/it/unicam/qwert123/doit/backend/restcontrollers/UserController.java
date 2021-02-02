@@ -104,9 +104,7 @@ public class UserController {
         }
         switch (role) {
             case "DESIGNER":
-                return service.findByTags(idTag, Role.PROJECT_PROPOSER);
-            case "EXPERT":
-                return service.findByTags(idTag, Role.PROJECT_PROPOSER);
+                return service.findByTags(idTag, Role.DESIGNER);
             case "PROJECT_PROPOSER":
                 return service.findByTags(idTag, Role.PROJECT_PROPOSER);
             case "null":
