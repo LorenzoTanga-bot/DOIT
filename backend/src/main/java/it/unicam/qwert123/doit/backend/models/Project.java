@@ -43,7 +43,7 @@ public class Project {
 
     public boolean getCandidacyMode() {
         Date now = new Date();
-        if (!(now.before(endCandidacy) && now.after(startCandidacy)))
+        if ((now.before(endCandidacy) && now.after(startCandidacy)))
             return true;
         else
             return false;
