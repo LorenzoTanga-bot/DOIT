@@ -14,19 +14,32 @@ import java.util.Set;
 
 @Repository
 public interface UserRepository extends MongoRepository<User, UUID> {
+
+    Optional<User> findById(UUID id);
+
+    default List<User> findByIds(List<UUID> ids) {
+        List<User> users = new ArrayList<User>();
+        for (UUID id : ids) {
+            users.add(findById(id).get());
+        }
+        return users;
+    }
+
     Optional<User> findByMail(String mail);
 
-    Optional<User> findByUsername(String username);
+    List<User> findByUsernameContaining(String username);
 
-    List<User> findByTagsContaining(UUID tag);
+    List<User> findByTag(UUID tag);
 
-    default List<User> findByTags(List<UUID> idTags){
-        Set<User> projectsSet = new HashSet<User>();
-        for (UUID idTag : idTags) 
-            projectsSet.addAll(findByTagsContaining(idTag));
-        List<User> projectList = new ArrayList<User>();
-        for(User project : projectsSet)
-            projectList.add(project);
-        return projectList;
+    default List<User> findByTags(List<UUID> idTags) {
+        Set<User> usersSet = new HashSet<User>();
+        for (UUID idTag : idTags)
+            usersSet.addAll(findByTag(idTag));
+        List<User> usersList = new ArrayList<User>();
+        for (User user : usersSet)
+            usersList.add(user);
+        return usersList;
     }
+
+    boolean existsByUsername(String name);
 }

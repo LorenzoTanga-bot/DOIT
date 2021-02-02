@@ -17,16 +17,26 @@ public interface ProjectRepository extends MongoRepository<Project, UUID> {
 
     Optional<Project> findById(UUID id);
 
-    List<Project> findByName(String name);
+    default List<Project> findByIds(List<UUID> ids) {
+        List<Project> projects = new ArrayList<Project>();
+        for (UUID id : ids) {
+            projects.add(findById(id).get());
+        }
+        return projects;
+    }
 
-    List<Project> findByTagsContaining(UUID tag);
+    List<Project> findByNameContaining(String name);
+
+    List<Project> findByTag(UUID tag);
+
+    List<Project> findByTagContaining(List<UUID> tag);
 
     default List<Project> findByTags(List<UUID> idTags) {
         Set<Project> projectsSet = new HashSet<Project>();
-        for (UUID idTag : idTags) 
-            projectsSet.addAll(findByTagsContaining(idTag));
+        for (UUID idTag : idTags)
+            projectsSet.addAll(findByTag(idTag));
         List<Project> projectList = new ArrayList<Project>();
-        for(Project project : projectsSet){
+        for (Project project : projectsSet) {
             projectList.add(project);
         }
         return projectList;

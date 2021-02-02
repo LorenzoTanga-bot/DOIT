@@ -29,7 +29,7 @@ public class Project {
     private Date dateOfEnd;
     private String name;
     private String shortDescription;
-    private String description; 
+    private String description;
     private boolean evaluationMode; // if it's true, the project is in evaluation mode.
     private boolean candidacyMode; // if it's true, the project is in candidacy mode.
     private Date startCandidacy;

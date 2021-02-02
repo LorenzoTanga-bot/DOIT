@@ -23,12 +23,53 @@ public class ProjectService {
         return true;
     }
 
-    public Project addProject(@NonNull Project newProject) throws ResponseStatusException { 
-        if (checkDate(newProject)){
-        newProject.setId(UUID.randomUUID());
-        return repository.insert(newProject);
+    private boolean checkProject(Project newProject) throws ResponseStatusException {
+        if (newProject.getTag().isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid project: it must have at least one tag");
         }
-        else return null;
+        return checkDate(newProject);
+    }
+
+    // TODO da controllare bene
+    private boolean checkDate(Project project) {
+        if (project.isCandidacyMode()) {
+            if (!project.getDateOfCreation().after(project.getStartCandidacy())) {
+                if (project.getDateOfStart().before(project.getDateOfEnd())) {
+                    if (project.getStartCandidacy().before(project.getEndCandidacy())) {
+                        if (project.getDateOfStart().after(project.getEndCandidacy())) {
+                            return true;
+                        } else
+                            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                                    "Error Date: the start date of the project is before or equal to the end date of the candidacies");
+                    } else
+                        throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                                "Error Date: the end date of the candidacies is before or equal to the start date of the candidacies");
+                } else
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                            "Error Date:  the end date of project is before or equal to the start date of the project");
+            } else
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                        "Error Date: the start date of the candidacies is befor to the project creation date");
+        } else {
+            if (!project.getDateOfCreation().after(project.getDateOfStart())) {
+                if (project.getDateOfStart().before(project.getDateOfEnd())) {
+                    return true;
+                } else
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                            "Error Date:  the end date of project is before or equal to the start date of the project");
+            } else
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                        "Error Date: the start date of the project is befor to the project creation date");
+        }
+    }
+
+    public Project addProject(@NonNull Project newProject) throws ResponseStatusException {
+        if (checkProject(newProject)) {
+            newProject.setId(UUID.randomUUID());
+            // user.addProject(newProject.getId());
+            return repository.insert(newProject);
+        } else
+            return null;
     }
 
     public boolean deleteProject(@NonNull UUID id) throws ResponseStatusException {
@@ -40,7 +81,15 @@ public class ProjectService {
     }
 
     public Project updateProject(@NonNull Project modifiedProject) throws ResponseStatusException {
-        return existsById(modifiedProject.getId()) ? repository.save(modifiedProject) : null;
+        if (existsById(modifiedProject.getId())) {
+            if (modifiedProject.getProjectProposer() == findById(modifiedProject.getId()).getProjectProposer()) {
+                if (checkProject(modifiedProject)) {
+                    return repository.save(modifiedProject);
+                }
+            }
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The projectProposer must be immutable");
+        }
+        return null;
     }
 
     public List<Project> findAll() {
@@ -53,35 +102,15 @@ public class ProjectService {
     }
 
     public List<Project> findByName(@NonNull String name) {
-        return repository.findByName(name);
+        return repository.findByNameContaining(name);
     }
 
     public List<Project> findByTags(@NonNull List<UUID> tags) {
-        return repository.findByTags(tags);
+        return repository.findByTagContaining(tags);
     }
 
-    public List<Project> findByProjectProposer(@NonNull UUID id) {
-        return repository.findByProjectProposer(id);
+    public List<Project> findByIds(@NonNull List<UUID> ids) {
+        return repository.findByIds(ids);
     }
 
-    private boolean checkDate(Project project) {
-        if (!project.getDateOfCreation().after(project.getStartCandidacy())) {
-            if (project.getDateOfStart().before(project.getDateOfEnd())) {
-                if (project.getStartCandidacy().before(project.getEndCandidacy())) {
-                    if (project.getDateOfStart().after(project.getEndCandidacy())) {
-                            return true;
-                    } else
-                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, 
-                    "Error Date: the start date of the project is before or equal to the end date of the candidacies");
-                }else
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, 
-                "Error Date: the end date of the candidacies is before or equal to the start date of the candidacies");
-            }else
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-             "Error Date:  the end date of project is before or equal to the start date of the project");
-        }else 
-        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, 
-        "Error Date: the start date of the candidacies is befor to the project creation date");
-    
-}
 }

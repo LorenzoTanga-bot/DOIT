@@ -1,10 +1,15 @@
 package it.unicam.qwert123.doit.backend.models;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import lombok.EqualsAndHashCode;
@@ -17,7 +22,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Document(collection = "user")
-public class User{
+@SuppressWarnings("serial")
+public class User implements UserDetails {
 
     public enum Role {
         PROJECT_PROPOSER, EXPERT, DESIGNER, ADMIN, NOT_COMPLETED
@@ -33,5 +39,42 @@ public class User{
     private Role role;
     private List<UUID> tag;
     private List<UUID> projects;
+
     private String password = new BCryptPasswordEncoder().encode("Doit");
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        List<GrantedAuthority> auth = new ArrayList<GrantedAuthority>();
+        auth.add(new SimpleGrantedAuthority(role.name()));
+        return auth;
+    }
+
+    @Override
+    public String getUsername() {
+        return username;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
+    public boolean addProject(UUID idProject) {
+        return projects.add(idProject);
+    }
 }
