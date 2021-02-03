@@ -24,6 +24,21 @@ public class UserService {
         if (user.getRoles().isEmpty()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid user: it must have a role");
         }
+        if (user.isAPerson()) {
+            for (Role role : user.getRoles()) {
+                if (role == Role.PROJECT_PROPOSER) {
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                            "Invalid user: a person cannot be a project proposer");
+                }
+            }
+        } else {
+            for (Role role : user.getRoles()) {
+                if (role == Role.EXPERT) {
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                            "Invalid user: a company cannot be an expert");
+                }
+            }
+        }
         if (user.getTag().isEmpty()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid user: it must have at least one tag");
         }
@@ -38,7 +53,7 @@ public class UserService {
 
     public User addUser(@NonNull User newUser) throws ResponseStatusException {
         newUser.setUsername(newUser.getUsername().toUpperCase().trim());
-        if (repository.existsByUsername(newUser.getUsername())) 
+        if (repository.existsByUsername(newUser.getUsername()))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Username already used");
         if (checkUser(newUser)) {
             newUser.setId(UUID.randomUUID());
@@ -101,7 +116,7 @@ public class UserService {
     }
 
     public List<User> findByTags(@NonNull List<UUID> tags) {
-        return repository.findByTags(tags);
+        return repository.findByTagContaining(tags);
     }
 
     public List<User> findByTags(@NonNull List<UUID> tags, Role role) {

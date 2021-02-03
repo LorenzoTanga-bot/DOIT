@@ -36,7 +36,7 @@ public class TagController {
     @GetMapping("/getById/{id}")
     public Tag getTagById(@PathVariable("id") String id) {
         try {
-            return service.findById(UUID.fromString(id));    
+            return service.findById(UUID.fromString(id));
         } catch (IllegalArgumentException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
@@ -47,7 +47,7 @@ public class TagController {
         List<UUID> uuidTag = new ArrayList<UUID>();
         for (String id : ids) {
             try {
-                uuidTag.add(UUID.fromString(id));  
+                uuidTag.add(UUID.fromString(id));
             } catch (IllegalArgumentException e) {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
             }

@@ -18,29 +18,29 @@ import lombok.NonNull;
 
 @Service
 public class AuthCredentialService implements UserDetailsService {
-    @Autowired
-    private AuthCredentialRepository repository;
+	@Autowired
+	private AuthCredentialRepository repository;
 
-    public boolean loginWithCredentials(@NonNull AuthCredential authCredentials) throws ResponseStatusException  {
-        AuthCredential serverAuthCredentials = getAuthCredentialsInstance(authCredentials.getMail());
-        if (serverAuthCredentials != null && new BCryptPasswordEncoder().matches(authCredentials.getPassword(),
-                serverAuthCredentials.getPassword())) {
-            return true;
-        }
-        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid login");
-    }
+	public boolean loginWithCredentials(@NonNull AuthCredential authCredentials) throws ResponseStatusException {
+		AuthCredential serverAuthCredentials = getAuthCredentialsInstance(authCredentials.getMail());
+		if (serverAuthCredentials != null && new BCryptPasswordEncoder().matches(authCredentials.getPassword(),
+				serverAuthCredentials.getPassword())) {
+			return true;
+		}
+		throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid login");
+	}
 
-    public boolean addCredentials(@NonNull AuthCredential authCredentials) throws ResponseStatusException {
+	public boolean addCredentials(@NonNull AuthCredential authCredentials) throws ResponseStatusException {
 		authCredentials.setPassword(new BCryptPasswordEncoder().encode(authCredentials.getPassword()));
 		if (repository.existsById(authCredentials.getMail())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid signin");
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid signin");
 
 		}
 		repository.insert(authCredentials);
 		return true;
-    }
-    
-    public boolean updateCredentials(@NonNull AuthCredential authCredentials) {
+	}
+
+	public boolean updateCredentials(@NonNull AuthCredential authCredentials) {
 		AuthCredential oldAuthCredentials = getAuthCredentialsInstance(authCredentials.getMail());
 		if (oldAuthCredentials == null) {
 			return false;
@@ -48,23 +48,24 @@ public class AuthCredentialService implements UserDetailsService {
 		authCredentials.setPassword(new BCryptPasswordEncoder().encode(authCredentials.getPassword()));
 		repository.save(authCredentials);
 		return true;
-    }
-    
-    public boolean removeCredentials(@NonNull String mail) {
+	}
+
+	public boolean removeCredentials(@NonNull String mail) {
 		AuthCredential oldAuthCredentials = getAuthCredentialsInstance(mail);
 		if (oldAuthCredentials == null) {
 			return false;
 		}
 		repository.delete(getAuthCredentialsInstance(mail));
 		return true;
-    }
-    
-    public Set<AuthCredential> getAuthCredentials() {
+	}
+
+	public Set<AuthCredential> getAuthCredentials() {
 		return new HashSet<AuthCredential>(repository.findAll());
 	}
 
 	public AuthCredential getAuthCredentialsInstance(@NonNull String mail) {
-		return repository.findById(mail).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Credential not found"));
+		return repository.findById(mail)
+				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Credential not found"));
 
 	}
 

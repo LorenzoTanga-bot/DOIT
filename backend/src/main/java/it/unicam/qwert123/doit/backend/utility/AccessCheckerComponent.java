@@ -5,8 +5,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class AccessCheckerComponent {
-    
-    public boolean sameUser(UserDetails principal, String userMail) {
+
+	public boolean sameUser(UserDetails principal, String userMail) {
 		return principal.getUsername().equals(userMail);
 	}
 }

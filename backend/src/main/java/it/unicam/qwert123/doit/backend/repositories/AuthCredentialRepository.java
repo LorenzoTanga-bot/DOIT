@@ -9,4 +9,3 @@ import org.springframework.stereotype.Repository;
 public interface AuthCredentialRepository extends MongoRepository<AuthCredential, String> {
 
 }
-

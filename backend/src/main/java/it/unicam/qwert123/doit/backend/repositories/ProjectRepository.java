@@ -1,8 +1,6 @@
 package it.unicam.qwert123.doit.backend.repositories;
 
-import java.util.Set;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -29,18 +27,6 @@ public interface ProjectRepository extends MongoRepository<Project, UUID> {
 
     List<Project> findByTag(UUID tag);
 
-    List<Project> findByTagContaining(List<UUID> tag);
+    List<Project> findByTagContaining(List<UUID> idtag);
 
-    default List<Project> findByTags(List<UUID> idTags) {
-        Set<Project> projectsSet = new HashSet<Project>();
-        for (UUID idTag : idTags)
-            projectsSet.addAll(findByTag(idTag));
-        List<Project> projectList = new ArrayList<Project>();
-        for (Project project : projectsSet) {
-            projectList.add(project);
-        }
-        return projectList;
-    }
-
-    List<Project> findByProjectProposer(UUID id);
 }

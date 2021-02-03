@@ -32,7 +32,7 @@ public class AuthCredential implements UserDetails {
     private String password;
     private List<Role> roles;
     private UUID id;
-    
+
     public enum Role {
         PROJECT_PROPOSER, EXPERT, DESIGNER, ADMIN, NOT_COMPLETED
     }
@@ -40,11 +40,10 @@ public class AuthCredential implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> auth = new ArrayList<GrantedAuthority>();
-        for(Role role : roles)
+        for (Role role : roles)
             auth.add(new SimpleGrantedAuthority(role.name()));
         return auth;
     }
-
 
     @Override
     public String getPassword() {
@@ -75,5 +74,5 @@ public class AuthCredential implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
-    
+
 }

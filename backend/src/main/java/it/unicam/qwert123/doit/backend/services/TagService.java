@@ -19,15 +19,15 @@ public class TagService {
 
     public Tag addTag(@NonNull Tag newTag) {
         newTag.setValue(newTag.getValue().toUpperCase().trim());
-        if(newTag.getValue().matches("[a-zA-Z- ]+")){
-        if (repository.existsByValue(newTag.getValue()))
-            return repository.findByValue(newTag.getValue()).get();
-        newTag.setId(UUID.randomUUID());
-        newTag.setValue(newTag.getValue());
-        return repository.insert(newTag);
-    }throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Tag value must have only alphabetic symbols");
-}
-
+        if (newTag.getValue().matches("[a-zA-Z- ]+")) {
+            if (repository.existsByValue(newTag.getValue()))
+                return repository.findByValue(newTag.getValue()).get();
+            newTag.setId(UUID.randomUUID());
+            newTag.setValue(newTag.getValue());
+            return repository.insert(newTag);
+        }
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Tag value must have only alphabetic symbols");
+    }
 
     public Tag findById(@NonNull UUID id) throws ResponseStatusException {
         return repository.findById(id)
@@ -39,7 +39,7 @@ public class TagService {
     }
 
     public Tag findByValue(@NonNull String value) {
-        value=value.toUpperCase().trim();
+        value = value.toUpperCase().trim();
         return repository.findByValue(value)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Tag not found"));
     }

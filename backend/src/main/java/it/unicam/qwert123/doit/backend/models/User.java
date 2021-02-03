@@ -22,10 +22,11 @@ public class User{
     @EqualsAndHashCode.Include
     @Id
     private UUID id;
+    private boolean isAPerson;
     private String username;
     private String usernameToShow;
     private String name;
-    private String surname;
+    private String surname; //se è un azienda, qui viene memorizzata la partita iva
     private String mail;
     private List<Role> roles;
     private List<UUID> tag;
