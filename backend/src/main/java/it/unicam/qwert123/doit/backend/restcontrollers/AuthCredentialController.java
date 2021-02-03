@@ -61,8 +61,8 @@ public class AuthCredentialController {
 	}
 
 	@PutMapping("/updateUser")
-	public User updateUser(@RequestBody CompleteUser user) {
-		return userService.updateUser(user.getUser());
+	public User updateUser(@RequestBody User user) {
+		return userService.updateUser(user);
 	}
 
 	// TODO da testare l'authentication
