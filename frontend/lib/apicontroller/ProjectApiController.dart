@@ -15,7 +15,7 @@ class ProjectApiController {
 
   Future<String> addProject(Project newProject) async {
     return (await http.post(Uri.encodeFull("$_baseUrl/new"),
-            headers: await BasicAuthConfig()
+            headers: BasicAuthConfig()
                 .getSudoHeader(), //TODO togliere .getSudoHeader() mettere .getuserHeader()
             body: json.encode({
               "id": newProject.getId(),
@@ -40,7 +40,7 @@ class ProjectApiController {
 
   Future<String> updateProject(Project newProject) async {
     return (await http.put(Uri.encodeFull("$_baseUrl/update"),
-            headers: await BasicAuthConfig().getUserHeader(),
+            headers: BasicAuthConfig().getUserHeader(),
             body: json.encode({
               "name": newProject.getName(),
               "projectproposer": newProject.getProjectProposer(),
@@ -62,7 +62,7 @@ class ProjectApiController {
 
   Future<String> deleteProject(String id) async {
     return (await http.delete(Uri.encodeFull("$_baseUrl/delete/$id"),
-            headers: await BasicAuthConfig().getUserHeader()))
+            headers: BasicAuthConfig().getUserHeader()))
         .body;
   }
 

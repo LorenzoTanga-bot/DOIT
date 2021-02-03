@@ -1,4 +1,4 @@
-import 'package:doit/model/User.dart';
+import 'package:doit/model/AuthCredential.dart';
 import 'package:doit/providers/UserProvider.dart';
 import 'package:doit/providers/ViewProvider.dart';
 import 'package:doit/view/Signin.dart';

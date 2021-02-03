@@ -14,7 +14,7 @@ class UserApiController {
 
   Future<String> addUser(User newUser) async {
     return (await http.post(Uri.encodeFull("$_baseUrl/new"),
-            headers: await BasicAuthConfig().getSudoHeader(),
+            headers: BasicAuthConfig().getSudoHeader(),
             body: json.encode({
               "id": newUser.getId(),
               "username": newUser.getUsername(),
@@ -33,7 +33,7 @@ class UserApiController {
 
   Future<String> updateUser(User newUser) async {
     return (await http.put(Uri.encodeFull("$_baseUrl/update"),
-            headers: await BasicAuthConfig().getUserHeader(),
+            headers: BasicAuthConfig().getUserHeader(),
             body: json.encode({
               "id": newUser.getId(),
               "username": newUser.getUsername(),

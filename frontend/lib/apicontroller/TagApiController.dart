@@ -21,7 +21,7 @@ class TagApiController {
 
   Future<String> addTag(Tag newTag) async {
     return (await http.post("$_baseUrl/new",
-            headers: await BasicAuthConfig().getUserHeader(),
+            headers: BasicAuthConfig().getUserHeader(),
             body: json
                 .encode({"id": newTag.getId(), "value": newTag.getValue()})))
         .body;

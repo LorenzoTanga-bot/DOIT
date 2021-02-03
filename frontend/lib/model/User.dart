@@ -1,10 +1,12 @@
+import 'package:doit/model/AuthCredential.dart';
+
 class User {
   String _id;
   String _username;
   String _name;
   String _surname;
   String _mail;
-  UserRole _role;
+  List<UserRole> _roles = [];
   List<String> _skills = [];
   List<String> _projects = [];
 
@@ -13,17 +15,24 @@ class User {
   User.firstAccess(String id, String mail) {
     _id = id;
     _mail = mail;
-    _role = UserRole.NOT_COMPLETED;
+    _roles.add(UserRole.NOT_COMPLETED);
   }
 
-  User.projectProposer(String id, String username, String name, String surname,
-      String mail, List<String> skills, List<String> projects) {
+  User.complete(
+      String id,
+      String username,
+      String name,
+      String surname,
+      String mail,
+      List<String> skills,
+      List<UserRole> roles,
+      List<String> projects) {
     _id = id;
     _username = username;
     _name = name;
     _surname = surname;
     _mail = mail;
-    _role = UserRole.PROJECT_PROPOSER;
+    _roles = roles;
     _skills = skills;
     _projects = this._projects;
   }
@@ -68,13 +77,13 @@ class User {
     return _mail;
   }
 
-  bool setRole(UserRole role) {
-    _role = role;
+  bool setRole(List<UserRole> roles) {
+    _roles = roles;
     return true;
   }
 
-  UserRole getRole() {
-    return _role;
+  List<UserRole> getRole() {
+    return _roles;
   }
 
   bool setSkills(List<String> skills) {
@@ -99,6 +108,7 @@ class User {
   List<String> getProjects() {
     return _projects;
   }
-}
 
-enum UserRole { PROJECT_PROPOSER, EXPERT, DESIGNER, NOT_COMPLETED }
+  
+
+}

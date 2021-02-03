@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:doit/apicontroller/UserApiController.dart';
+import 'package:doit/model/AuthCredential.dart';
 import 'package:doit/model/User.dart';
 import 'package:doit/services/UserService.dart';
 
@@ -15,15 +16,19 @@ class BackendUserService implements UserService {
     return new User.firstAccess(user["id"], user["mail"]);
   }
 
-  User _newProjectProposer(var user) {
+  User _newUser(var user) {
+    var rolesJson = user["roles"];
     var skillsJson = user["skills"];
     var projectsJson = user["projects"];
+    List<UserRole> roles = [];
     List<String> skills = [];
     List<String> projects = [];
+    for (String role in rolesJson)
+      roles.add(UserRole.values.firstWhere((e) => e.toString() == 'UserRole.'+role)); //TODO da testare
     for (String skill in skillsJson) skills.add(skill);
     for (String project in projectsJson) projects.add(project);
-    return new User.projectProposer(user["id"], user["username"], user["name"],
-        user["surname"], user["mail"], skills, projects);
+    return new User.complete(user["id"], user["username"], user["name"],
+        user["surname"], user["mail"], skills, roles, projects);
   }
 
   User _createUser(String controllerJson) {
@@ -33,7 +38,7 @@ class BackendUserService implements UserService {
       case "NOT_COMPLETED":
         return _newNotCompleted(user);
       case "PROJECT_PROPOSER":
-        return _newProjectProposer(user);
+        return _newUser(user);
     }
     return null;
   }

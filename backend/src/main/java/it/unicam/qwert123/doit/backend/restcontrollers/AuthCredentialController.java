@@ -30,7 +30,7 @@ import it.unicam.qwert123.doit.backend.models.User;
 @AllArgsConstructor
 class Person {
     private User user;
-    private AuthCredential authCredentials;
+    private AuthCredential authCredential;
 }
 
 @Setter
@@ -39,7 +39,7 @@ class Person {
 @AllArgsConstructor
 class Company {
     //private Entity entity;
-    private AuthCredential authCredentials;
+    private AuthCredential authCredential;
 }
 
 
@@ -77,14 +77,14 @@ public class AuthCredentialController {
     
 	@PostMapping("/addPerson")
 	public boolean addPerson(@RequestBody Person user) {
-		userService.addUser(user.getUser());
-		return authService.addCredentials(user.getAuthCredentials());
+		user.getAuthCredential().setId(userService.addUser(user.getUser()).getId());
+		return authService.addCredentials(user.getAuthCredential());
     }
     
     @PostMapping("/addCompany")
 	public boolean addCompany(@RequestBody Company company) {
-		//TODO da fare per entity --> userService.addUser(company.getUser());
-		return authService.addCredentials(company.getAuthCredentials());
+		//TODO da fare per entity --> user.getAuthCredentials().setId(userService.addUser(user.getUser()).getId());
+		return authService.addCredentials(company.getAuthCredential());
 	}
 
 	@PreAuthorize("hasAuthority('ADMIN')")
@@ -92,6 +92,4 @@ public class AuthCredentialController {
 	public Set<AuthCredential> getAuthCredential() {
 		return authService.getAuthCredentials();
 	}
-    
-    
 }

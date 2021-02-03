@@ -1,3 +1,4 @@
+import 'package:doit/model/AuthCredential.dart';
 import 'package:doit/model/User.dart';
 import 'package:doit/providers/TagProvider.dart';
 import 'package:doit/providers/UserProvider.dart';
