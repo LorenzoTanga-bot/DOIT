@@ -68,7 +68,7 @@ class UserApiController {
         .body;
   }
 
-  Future<List<String>> findBySkills(List<String> skills) {
+  Future<List<String>> findByTags(List<String> skills) {
     //TODO da fare
   }
 
