@@ -1,3 +1,6 @@
+import 'package:doit/model/AuthCredential.dart';
+import 'package:doit/model/User.dart';
+import 'package:doit/providers/AuthCredentialProvider.dart';
 import 'package:doit/providers/UserProvider.dart';
 import 'package:doit/providers/ViewProvider.dart';
 import 'package:doit/view/LoadingLogin.dart';
@@ -29,8 +32,8 @@ class _Login extends State<Login> {
 
   Future<String> _authUser(LoginData login) async {
     try {
-      Provider.of<UserProvider>(context, listen: false)
-          .authMailPassword(login.name, login.password);
+      Provider.of<AuthCredentialProvider>(context, listen: false)
+          .loginWithCredentials(new AuthCredential(login.name, login.password));
     } catch (e) {
       switch (e.code) {
         case 'ERROR_USER_NOT_FOUND':
@@ -54,8 +57,9 @@ class _Login extends State<Login> {
 
   Future<String> _newUser(LoginData login) async {
     try {
-      Provider.of<UserProvider>(context, listen: false)
-          .newMailPassword(login.name, login.password);
+      Provider.of<AuthCredentialProvider>(context, listen: false)
+          .newMailPassword(new User.firstAccess("", login.name),
+              new AuthCredential(login.name, login.password));
     } catch (e) {
       switch (e.code) {
         case 'ERROR_INVALID_EMAIL':

@@ -1,5 +1,6 @@
 import 'package:doit/model/AuthCredential.dart';
 import 'package:doit/model/User.dart';
+import 'package:doit/providers/AuthCredentialProvider.dart';
 import 'package:doit/providers/TagProvider.dart';
 import 'package:doit/providers/UserProvider.dart';
 import 'package:doit/providers/ViewProvider.dart';
@@ -23,18 +24,18 @@ class _Signin extends State<Signin> {
 
   _completeRegistration() {
     User newUser =
-        Provider.of<UserProvider>(context, listen: false).getSpringUser();
+        Provider.of<AuthCredentialProvider>(context, listen: false).getUser();
     newUser.setName(_name.text);
     newUser.setSurname(_surname.text);
     newUser.setUsername(_username.text);
-    newUser.setRole(_role);
+    newUser.setRoles([_role]);//TODO da cambiare SmartSelect<UserRole>.single
     newUser.setSkills(context.read<TagProvider>().getSelectTag());
-    context.read<UserProvider>().updateUser(newUser);
+    context.read<AuthCredentialProvider>().updateUser(newUser);
     context.read<ViewProvider>().setProfileDefault(LoadingLogin());
   }
 
   Widget _selectUserRole() {
-    return SmartSelect<UserRole>.single(
+    return SmartSelect<UserRole>.single( //TODO da cambiare SmartSelect<UserRole>.multiple
       title: 'Role',
       value: _role,
       onChange: (state) => setState(() => _role = state.value),

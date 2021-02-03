@@ -41,7 +41,7 @@ class AuthCredentialController {
         .body;
   }
 
-  Future<String> addPerson(User newUser, AuthCredential authCredential) async {
+  Future<String> addUser(User newUser, AuthCredential authCredential) async {
     return (await http.post(Uri.encodeFull("$_baseUrl/addPerson"),
             headers: BasicAuthConfig().getBaseHeader(),
             body: json.encode({
@@ -62,6 +62,22 @@ class AuthCredentialController {
                 "role": authCredential.getRolesToString(),
               }
             })))
+        .body;
+  }
+
+  Future<String> updateUser(User newUser) async {
+    return (await http.post(Uri.encodeFull("$_baseUrl/addPerson"),
+            headers: BasicAuthConfig().getBaseHeader(),
+            body: json.encode({
+                "id": newUser.getId(),
+                "username": newUser.getUsername(),
+                "name": newUser.getName(),
+                "surname": newUser.getUsername(),
+                "mail": newUser.getMail(),
+                "role": BasicAuthConfig().getAuthCredential().getRolesToString(),
+                "skills": newUser.getSkills(),
+                "projects": newUser.getProjects(),
+              })))
         .body;
   }
   

@@ -77,12 +77,12 @@ class User {
     return _mail;
   }
 
-  bool setRole(List<UserRole> roles) {
+  bool setRoles(List<UserRole> roles) {
     _roles = roles;
     return true;
   }
 
-  List<UserRole> getRole() {
+  List<UserRole> getRoles() {
     return _roles;
   }
 
@@ -108,7 +108,4 @@ class User {
   List<String> getProjects() {
     return _projects;
   }
-
-  
-
 }

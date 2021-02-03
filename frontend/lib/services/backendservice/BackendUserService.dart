@@ -44,11 +44,6 @@ class BackendUserService implements UserService {
   }
 
   @override
-  Future<User> addUser(User newUser) async {
-    return _createUser(await _controller.addUser(newUser));
-  }
-
-  @override
   Future<User> findById(String id) async {
     return _createUser(await _controller.findById(id));
   }
@@ -67,15 +62,5 @@ class BackendUserService implements UserService {
   @override
   Future<User> findByUsername(String username) async {
     return _createUser(await _controller.findByUsername(username));
-  }
-
-  @override
-  Future<User> updateUser(User newUser) async {
-    return _createUser(await _controller.updateUser(newUser));
-  }
-
-  @override
-  Future<bool> existByMail(String mail) async {
-    return (await _controller.existByMail(mail)) == 'true';
   }
 }

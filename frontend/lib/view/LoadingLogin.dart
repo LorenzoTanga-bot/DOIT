@@ -1,4 +1,5 @@
 import 'package:doit/model/AuthCredential.dart';
+import 'package:doit/providers/AuthCredentialProvider.dart';
 import 'package:doit/providers/UserProvider.dart';
 import 'package:doit/providers/ViewProvider.dart';
 import 'package:doit/view/Signin.dart';
@@ -17,26 +18,10 @@ class _LoadingLogin extends State<LoadingLogin> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      if (context.read<UserProvider>().getSpringUser() == null)
-        Provider.of<UserProvider>(context, listen: false).isFirstAccess()
-            ? await Provider.of<UserProvider>(context, listen: false)
-                .newSpringUser()
-            : await Provider.of<UserProvider>(context, listen: false)
-                .authSpringUser();
-      switch (context.read<UserProvider>().getSpringUser().getRole()) {
-        case UserRole.PROJECT_PROPOSER:
-          context.read<ViewProvider>().setProfileDefault(ThreeViewPP());
-          break;
-        case UserRole.EXPERT:
-          // TODO: Handle this case.
-          break;
-        case UserRole.DESIGNER:
-          // TODO: Handle this case.
-          break;
-        case UserRole.NOT_COMPLETED:
-          context.read<ViewProvider>().setProfileDefault(Signin());
-          break;
-      }
+      context.read<AuthCredentialProvider>().getUser().getRoles().first ==
+              UserRole.NOT_COMPLETED
+          ? context.read<ViewProvider>().setProfileDefault(Signin())
+          : context.read<ViewProvider>().setProfileDefault(ThreeViewPP());
     });
   }
 

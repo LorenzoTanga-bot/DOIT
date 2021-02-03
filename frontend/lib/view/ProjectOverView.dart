@@ -2,6 +2,7 @@ import 'package:doit/model/AuthCredential.dart';
 import 'package:doit/model/Project.dart';
 import 'package:doit/model/Tag.dart';
 import 'package:doit/model/User.dart';
+import 'package:doit/providers/AuthCredentialProvider.dart';
 import 'package:doit/providers/ProjectProvider.dart';
 import 'package:doit/providers/TagProvider.dart';
 import 'package:doit/providers/UserProvider.dart';
@@ -115,7 +116,7 @@ List<RichText> getListDesigner() {
 
   String showLastButton() {
     return "E"; //da eleiminare
-    User user = context.read<UserProvider>().getSpringUser();
+    /*User user = context.read<UserProvider>().getSpringUser();
     if (_project.getEvaluationMode()) if (user.getRole() == UserRole.EXPERT)
       return "E";
 
@@ -123,7 +124,7 @@ List<RichText> getListDesigner() {
         _project.getProjectProposer()) return "P";
 
     if (user.getRole() == UserRole.DESIGNER) return "D";
-    return "";
+    return "";*/
   }
 
   Widget choseLastButton() {
@@ -168,8 +169,7 @@ List<RichText> getListDesigner() {
 
   bool showModify() {
     return true; // rimuovere
-    User user = Provider.of<UserProvider>(context).getSpringUser();
-    return _project.getProjectProposer() == user.getId();
+    // return _project.getProjectProposer() == Provider.of<AuthCredentialProvider>(context).getUser().getId();
   }
 
   @override

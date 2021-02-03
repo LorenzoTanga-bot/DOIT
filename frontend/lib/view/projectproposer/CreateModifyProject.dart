@@ -1,4 +1,6 @@
+import 'package:doit/model/AuthCredential.dart';
 import 'package:doit/model/Project.dart';
+import 'package:doit/providers/AuthCredentialProvider.dart';
 import 'package:doit/providers/ProjectProvider.dart';
 import 'package:doit/providers/TagProvider.dart';
 import 'package:doit/providers/UserProvider.dart';
@@ -53,7 +55,7 @@ class _CreateModifyProject extends State<CreateModifyProject> {
 
   _createProject() async {
     _project.setProjectProposer(
-        context.read<UserProvider>().getSpringUser().getId());
+        context.read<AuthCredentialProvider>().getUser().getId());
     _project.setName(_name.text);
     _project.setTag(context.read<TagProvider>().getSelectTag());
     _project.setDateOfCreation(DateTime.now().toIso8601String());

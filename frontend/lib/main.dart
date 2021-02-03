@@ -1,7 +1,9 @@
+import 'package:doit/providers/AuthCredentialProvider.dart';
 import 'package:doit/providers/ProjectProvider.dart';
 import 'package:doit/providers/TagProvider.dart';
 import 'package:doit/providers/UserProvider.dart';
 import 'package:doit/providers/ViewProvider.dart';
+import 'package:doit/services/backendservice/BackendAuthCredential.dart';
 import 'package:doit/services/backendservice/BackendProjectservice.dart';
 import 'package:doit/services/backendservice/BackendTagService.dart';
 import 'package:doit/services/backendservice/BackendUserService.dart';
@@ -18,6 +20,8 @@ void main() {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => ViewProvider()),
+        ChangeNotifierProvider(
+            create: (context) => AuthCredentialProvider(new BackendAuthCredential(_ip))),
         ChangeNotifierProvider(
             create: (context) => TagProvider(new BackendTagService(_ip))),
         ChangeNotifierProvider(

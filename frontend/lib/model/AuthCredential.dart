@@ -6,8 +6,9 @@ class AuthCredential {
   List<UserRole> _roles;
   String _id;
 
-  AuthCredential(String mail) {
+  AuthCredential(String mail, String password) {
     this._mail = mail;
+    this._password = password;
   }
   AuthCredential.complete(String mail, String password, List<UserRole> roles) {
     this._mail = mail;
