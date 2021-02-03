@@ -28,6 +28,30 @@ class User {
     _projects = this._projects;
   }
 
+  User.designer(String id, String username, String name, String surname,
+      String mail, List<String> skills, List<String> projects){
+    _id = id;
+    _username = username;
+    _name = name;
+    _surname = _surname;
+    _mail = mail;
+    _role = UserRole.DESIGNER;
+    _skills = skills;
+    _projects = this._projects;
+  }
+
+  User.expert(String id, String username, String name, String surname,
+      String mail, List<String> skills, List<String> projects){
+    _id = id;
+    _username = username;
+    _name = name;
+    _surname = _surname;
+    _mail = mail;
+    _role = UserRole.EXPERT;
+    _skills = skills;
+    _projects = this._projects;
+  }
+
   String getId() {
     return _id;
   }

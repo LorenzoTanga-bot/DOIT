@@ -50,21 +50,37 @@ class UserApiController {
         .body;
   }
 
-  Future<String> findByMail(String mail) async {
-    return (await http.get(Uri.encodeFull("$_baseUrl/mail/$mail"),
+Future<String> getById(String id)async {
+  return (await http.get(Uri.encodeFull("$_baseUrl/getById/$id"),
+            headers: await BasicAuthConfig().getHeader()))
+        .body;
+}
+
+ Future<String> getByIds(List<String> ids) async {
+    return (await http.put(Uri.encodeFull("$_baseUrl/getByIds"),
+            headers: await BasicAuthConfig().getHeader(),
+            body: json.encode({ids})))
+        .body;
+  }
+  Future<String> getByMail(String mail) async {
+    return (await http.get(Uri.encodeFull("$_baseUrl/getByMail/$mail"),
             headers: await BasicAuthConfig().getHeader()))
         .body;
   }
 
-  Future<String> findByUsername(String username) async {
-    return (await http.get("$_baseUrl/username/$username",
+  Future<String> getByUsername(String username,String role) async {
+    return (await http.get("$_baseUrl/getByUsername/$role/$username",
             headers: await BasicAuthConfig().getHeader()))
         .body;
   }
 
-  Future<List<String>> findBySkills(List<String> skills) {
-    //TODO da fare
+  Future<String> getByTags(List<String> tags,String role) async{
+     return (await http.put(Uri.encodeFull("$_baseUrl/getByTags/$role"),
+            headers: await BasicAuthConfig().getHeader(),
+            body: json.encode({tags})))
+        .body;
   }
+  
 
   Future<String> existByMail(String mail) async {
     return (await http.get("$_baseUrl/exists/$mail",

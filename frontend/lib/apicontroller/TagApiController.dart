@@ -24,4 +24,15 @@ class TagApiController {
                 .encode({"id": newTag.getId(), "value": newTag.getValue()})))
         .body;
   }
+
+  Future<String> getById(String id) async {
+    return (await http.get("$_baseUrl/getById/$id")).body;
+  }
+
+  Future<String> getByIds(List<String> ids) async {
+    return (await http.put(Uri.encodeFull("$_baseUrl/getByIds"),
+            headers: await BasicAuthConfig().getHeader(),
+            body: json.encode({ids})))
+        .body;
+  }
 }

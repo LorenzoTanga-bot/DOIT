@@ -22,12 +22,12 @@ public class Project {
 
     @Id
     private UUID id;
+    private String name;
     private UUID projectProposer;
     private List<UUID> tag;
     private Date dateOfCreation;
     private Date dateOfStart;
     private Date dateOfEnd;
-    private String name;
     private String shortDescription;
     private String description;
     private boolean evaluationMode; // if it's true, the project has evaluation mode.

@@ -40,7 +40,7 @@ public class UserController {
         return service.updateUser(newUser);
     }
 
-    @GetMapping("/id/{id}")
+    @GetMapping("/getById/{id}")
     public User getUserById(@PathVariable("id") String id) {
         try {
             return service.findById(UUID.fromString(id));
@@ -49,7 +49,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("/ids")
+    @GetMapping("/getByIds")
     public List<User> getUsersByIds(@RequestBody List<String> ids) {
         List<UUID> uuidIds = new ArrayList<UUID>();
         for (String id : ids) {
@@ -62,18 +62,16 @@ public class UserController {
         return service.findByIds(uuidIds);
     }
 
-    @GetMapping("/mail/{mail}")
+    @GetMapping("/getByMail/{mail}")
     public User getUserByMail(@PathVariable("mail") String mail) {
         return service.findByMail(mail);
     }
 
-    @GetMapping("/username/{role}/{username}")
+    @GetMapping("/getByUsername/{role}/{username}")
     public List<User> getUsersByUsername(@PathVariable("username") String username, @PathVariable("role") String role) {
         switch (role) {
             case "DESIGNER":
-                return service.findByUsername(username, Role.PROJECT_PROPOSER);
-            case "EXPERT":
-                return service.findByUsername(username, Role.PROJECT_PROPOSER);
+                return service.findByUsername(username, Role.DESIGNER);
             case "PROJECT_PROPOSER":
                 return service.findByUsername(username, Role.PROJECT_PROPOSER);
             case "null":
@@ -83,7 +81,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("/tag/{tag}")
+    @GetMapping("/getByTag/{tag}")
     public List<User> getUsersByTag(@PathVariable("tag") String tag) {
         try {
             return service.findByTag(UUID.fromString(tag));
@@ -92,7 +90,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("/tags/{role}")
+    @GetMapping("/getByTags/{role}")
     public List<User> getUsersByTags(@RequestBody List<String> tags, @PathVariable("role") String role) {
         List<UUID> idTag = new ArrayList<UUID>();
         for (String tag : tags) {

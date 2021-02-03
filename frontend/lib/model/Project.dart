@@ -7,11 +7,8 @@ class Project {
   String _dateOfStart;
   String _dateOfEnd;
   String _shortDescription;
-  bool _descriptionIsAFile;
-  String
-      _description; // if descriptionIsAFile is true, in this variable there will be saved the path of the file else the description
-  bool _evaluationMode; // if it's true, the project is in evaluation mode.
-
+  String _description; 
+  bool _evaluationMode; // if it's true, the project has evaluation mode.
   String _startCandidacy;
   String _endCandidacy;
 
