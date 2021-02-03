@@ -15,11 +15,12 @@ class ProjectApiController {
 
   Future<String> addProject(Project newProject) async {
     return (await http.post(Uri.encodeFull("$_baseUrl/new"),
-            headers: await BasicAuthConfig().getHeader(),
+            headers: await BasicAuthConfig()
+                .getSudoHeader(), //TODO togliere .getSudoHeader() mettere .getuserHeader()
             body: json.encode({
               "id": newProject.getId(),
               "name": newProject.getName(),
-              "projectproposer": newProject.getProjectProposer(),
+              "projectProposer": newProject.getProjectProposer(),
               "tag": newProject.getTag(),
               "dateOfCreation": newProject.getDateOfCreation(),
               "dateOfStart": newProject.getDateOfStart(),
@@ -39,7 +40,7 @@ class ProjectApiController {
 
   Future<String> updateProject(Project newProject) async {
     return (await http.put(Uri.encodeFull("$_baseUrl/update"),
-            headers: await BasicAuthConfig().getHeader(),
+            headers: await BasicAuthConfig().getUserHeader(),
             body: json.encode({
               "name": newProject.getName(),
               "projectproposer": newProject.getProjectProposer(),
@@ -61,23 +62,31 @@ class ProjectApiController {
 
   Future<String> deleteProject(String id) async {
     return (await http.delete(Uri.encodeFull("$_baseUrl/delete/$id"),
-            headers: await BasicAuthConfig().getHeader()))
+            headers: await BasicAuthConfig().getUserHeader()))
         .body;
   }
 
   Future<String> getAllProject() async {
-    return (await http.get(Uri.encodeFull("$_baseUrl/get"))).body;
+    return (await http.get(Uri.encodeFull("$_baseUrl/get"),
+            headers: BasicAuthConfig().getBaseHeader()))
+        .body;
   }
 
   Future<String> getProjectById(String id) async {
-    return (await http.get(Uri.encodeFull("$_baseUrl/getById/$id"))).body;
+    return (await http.get(Uri.encodeFull("$_baseUrl/getById/$id"),
+            headers: BasicAuthConfig().getBaseHeader()))
+        .body;
   }
 
   Future<String> getProjectByName(String name) async {
-    return (await http.get(Uri.encodeFull("$_baseUrl/getByName/$name"))).body;
+    return (await http.get(Uri.encodeFull("$_baseUrl/getByName/$name"),
+            headers: BasicAuthConfig().getBaseHeader()))
+        .body;
   }
 
   Future<String> getProjectByUser(String user) async {
-    return (await http.get(Uri.encodeFull("$_baseUrl/getByUser/$user"))).body;
+    return (await http.get(Uri.encodeFull("$_baseUrl/getByUser/$user"),
+            headers: BasicAuthConfig().getBaseHeader()))
+        .body;
   }
 }

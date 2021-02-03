@@ -47,7 +47,7 @@ class BackEndProjectService implements ProjectService {
     for (var project in listProject) {
       projects.add(_newProject(project));
     }
-    return listProject;
+    return projects;
   }
 
   @override
@@ -70,10 +70,7 @@ class BackEndProjectService implements ProjectService {
     return _createListProject(await _controller.getProjectByName(name));
   }
 
-  @override
-  Future<List<Project>> findByProjectProposer(String id) async {
-    return _createListProject(await _controller.getProjectByUser(id));
-  }
+  
 
   @override
   Future<List<Project>> findByTag(List<String> tags) async {
@@ -82,7 +79,7 @@ class BackEndProjectService implements ProjectService {
   }
 
   @override
-  Future<List<Project>> getAllProject() async {
+  Future<List<Project>> findAll() async {
     return _createListProject(await _controller.getAllProject());
   }
 

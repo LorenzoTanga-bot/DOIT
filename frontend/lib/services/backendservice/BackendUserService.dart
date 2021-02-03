@@ -18,8 +18,8 @@ class BackendUserService implements UserService {
   User _newProjectProposer(var user) {
     var skillsJson = user["skills"];
     var projectsJson = user["projects"];
-    List<String> skills = new List<String>();
-    List<String> projects = new List<String>();
+    List<String> skills = [];
+    List<String> projects = [];
     for (String skill in skillsJson) skills.add(skill);
     for (String project in projectsJson) projects.add(project);
     return new User.projectProposer(user["id"], user["username"], user["name"],
@@ -35,11 +35,17 @@ class BackendUserService implements UserService {
       case "PROJECT_PROPOSER":
         return _newProjectProposer(user);
     }
+    return null;
   }
 
   @override
   Future<User> addUser(User newUser) async {
     return _createUser(await _controller.addUser(newUser));
+  }
+
+  @override
+  Future<User> findById(String id) async {
+    return _createUser(await _controller.findById(id));
   }
 
   @override

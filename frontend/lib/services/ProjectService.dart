@@ -5,9 +5,9 @@ abstract class ProjectService {
   Future<Project> addProject(Project newProject);
   Future<bool> deleteProject(String id);
   Future<Project> updateProject(Project newProject);
-  Future<List<Project>> getAllProject();
+  Future<List<Project>> findAll();
   Future<Project> findById(String id);
   Future<List<Project>> findByName(String name);
   Future<List<Project>> findByTag(List<String> tags);
-  Future<List<Project>> findByProjectProposer(String id);
+  
 }

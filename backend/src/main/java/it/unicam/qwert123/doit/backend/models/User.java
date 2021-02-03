@@ -33,6 +33,7 @@ public class User implements UserDetails {
     @Id
     private UUID id;
     private String username;
+    private String usernameToShow;
     private String name;
     private String surname;
     private String mail;

@@ -5,8 +5,8 @@ class User {
   String _surname;
   String _mail;
   UserRole _role;
-  List<String> _skills;
-  List<String> _projects;
+  List<String> _skills = [];
+  List<String> _projects = [];
 
   User();
 
@@ -21,7 +21,7 @@ class User {
     _id = id;
     _username = username;
     _name = name;
-    _surname = _surname;
+    _surname = surname;
     _mail = mail;
     _role = UserRole.PROJECT_PROPOSER;
     _skills = skills;

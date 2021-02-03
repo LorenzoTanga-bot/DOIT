@@ -14,7 +14,7 @@ class UserApiController {
 
   Future<String> addUser(User newUser) async {
     return (await http.post(Uri.encodeFull("$_baseUrl/new"),
-            headers: await BasicAuthConfig().getHeader(),
+            headers: await BasicAuthConfig().getSudoHeader(),
             body: json.encode({
               "id": newUser.getId(),
               "username": newUser.getUsername(),
@@ -33,7 +33,7 @@ class UserApiController {
 
   Future<String> updateUser(User newUser) async {
     return (await http.put(Uri.encodeFull("$_baseUrl/update"),
-            headers: await BasicAuthConfig().getHeader(),
+            headers: await BasicAuthConfig().getUserHeader(),
             body: json.encode({
               "id": newUser.getId(),
               "username": newUser.getUsername(),
@@ -50,25 +50,31 @@ class UserApiController {
         .body;
   }
 
+  Future<String> findById(String id) async {
+    return (await http.get(Uri.encodeFull("$_baseUrl/id/$id"),
+            headers: BasicAuthConfig().getBaseHeader()))
+        .body;
+  }
+
   Future<String> findByMail(String mail) async {
     return (await http.get(Uri.encodeFull("$_baseUrl/mail/$mail"),
-            headers: await BasicAuthConfig().getHeader()))
+            headers: BasicAuthConfig().getBaseHeader()))
         .body;
   }
 
   Future<String> findByUsername(String username) async {
     return (await http.get("$_baseUrl/username/$username",
-            headers: await BasicAuthConfig().getHeader()))
+            headers: BasicAuthConfig().getBaseHeader()))
         .body;
   }
 
-  Future<List<String>> findBySkills(List<String> skills) {
+  Future<List<String>> findByTags(List<String> skills) {
     //TODO da fare
   }
 
   Future<String> existByMail(String mail) async {
     return (await http.get("$_baseUrl/exists/$mail",
-            headers: await BasicAuthConfig().getHeader()))
+            headers: BasicAuthConfig().getBaseHeader()))
         .body;
   }
 }
