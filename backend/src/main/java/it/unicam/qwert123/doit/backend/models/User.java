@@ -30,13 +30,22 @@ public class User{
     private String mail;
     private List<Role> roles;
     private List<UUID> tag;
-    private List<UUID> projects;
+    private List<UUID> projectsFirtsRole;
+    private List<UUID> projectsSecondRole;
 
-    public boolean addProject(UUID idProject) {
-        return projects.add(idProject);
+    public boolean addProjectToFistRole(UUID idProject) {
+        return projectsFirtsRole.add(idProject);
     }
 
-    public boolean removeProject(UUID idProject) {
-        return projects.remove(idProject);
+    public boolean removeProjectToFistRole(UUID idProject) {
+        return projectsFirtsRole.remove(idProject);
+    }
+
+    public boolean addProjectToSecondRole(UUID idProject) {
+        return projectsSecondRole.add(idProject);
+    }
+
+    public boolean removeProjectToSecondRole(UUID idProject) {
+        return projectsSecondRole.remove(idProject);
     }
 }

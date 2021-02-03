@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import it.unicam.qwert123.doit.backend.models.Project;
+import it.unicam.qwert123.doit.backend.models.AuthCredential.Role;
 import it.unicam.qwert123.doit.backend.repositories.ProjectRepository;
 import lombok.NonNull;
 
@@ -31,7 +32,6 @@ public class ProjectService {
     }
 
     private boolean checkDate(Project project) {
-
         if (!project.getDateOfCreation().after(project.getStartCandidacy())) {
             if (project.getDateOfStart().before(project.getDateOfEnd())) {
                 if (project.getStartCandidacy().before(project.getEndCandidacy())) {
@@ -49,13 +49,16 @@ public class ProjectService {
         } else
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                     "Error Date: the start date of the candidacies is befor to the project creation date");
-
     }
 
     public Project addProject(@NonNull Project newProject) throws ResponseStatusException {
         if (checkProject(newProject)) {
             newProject.setId(UUID.randomUUID());
-            // user.addProject(newProject.getId());
+            /*
+             * if (user.getRole().first() == Role.PROJECT_PROPOSER) {
+             * user.addProjectToFistRole(newProject.getId()); } else
+             * user.addProjectToSecondRole(newProject.getId());
+             */
             return repository.insert(newProject);
         } else
             return null;
