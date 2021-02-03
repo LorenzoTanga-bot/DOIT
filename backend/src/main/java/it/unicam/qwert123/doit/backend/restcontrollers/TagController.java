@@ -28,9 +28,6 @@ public class TagController {
         return service.findAll();
     }
 
-    // @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('PROJECT_PROPOSER') or
-    // hasAuthority('EXPERT') or hasAuthority('DESIGNER') or
-    // hasAuthority('NOT_COMPLETED')")
     @PostMapping("/new")
     public Tag addTag(@RequestBody Tag newTag) {
         return service.addTag(newTag);

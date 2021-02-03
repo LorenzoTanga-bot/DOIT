@@ -12,7 +12,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import it.unicam.qwert123.doit.backend.services.UserService;
+import it.unicam.qwert123.doit.backend.services.AuthCredentialService;
 
 @Configuration
 @EnableWebSecurity
@@ -20,7 +20,7 @@ import it.unicam.qwert123.doit.backend.services.UserService;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
-	UserService userService;
+	AuthCredentialService authService;
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
@@ -30,7 +30,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	public void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(userService);
+		auth.userDetailsService(authService);
 	}
 
 	@Bean

@@ -25,19 +25,16 @@ public class ProjectController {
     @Autowired
     private ProjectService service;
 
-    // @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('PROJECT_PROPOSER')")
     @PostMapping("/new")
     public Project addProject(@RequestBody Project newProject) {
         return service.addProject(newProject);
     }
 
-    // @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('PROJECT_PROPOSER')")
     @PutMapping("/update")
     public Project updateProject(@RequestBody Project modifiedProject) {
         return service.updateProject(modifiedProject);
     }
 
-    // @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('PROJECT_PROPOSER')")
     @DeleteMapping("/delete/{id}")
     public boolean deleteProject(@PathVariable("id") String id) {
         try {

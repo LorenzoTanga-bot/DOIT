@@ -6,25 +6,22 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.stereotype.Service;
 
 import it.unicam.qwert123.doit.backend.models.User;
-import it.unicam.qwert123.doit.backend.models.User.Role;
+import it.unicam.qwert123.doit.backend.models.AuthCredential.Role;
 import it.unicam.qwert123.doit.backend.repositories.UserRepository;
 import lombok.NonNull;
 
 @Service
-public class UserService implements UserDetailsService {
+public class UserService {
 
     @Autowired
     private UserRepository repository;
 
     private boolean checkUser(User user) {
-        if (user.getRole() == null) {
+        if (user.getRoles().isEmpty()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid user: it must have a role");
         }
         if (user.getTag().isEmpty()) {
@@ -40,11 +37,10 @@ public class UserService implements UserDetailsService {
     }
 
     public User addUser(@NonNull User newUser) throws ResponseStatusException {
-        newUser.setUsernameToShow(newUser.getUsername());
         newUser.setUsername(newUser.getUsername().toUpperCase().trim());
-        if (repository.existsByUsername(newUser.getUsername())) {
+        if (repository.existsByUsername(newUser.getUsername())) 
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Username already used");
-        } else if (checkUser(newUser)) {
+        if (checkUser(newUser)) {
             newUser.setId(UUID.randomUUID());
             return repository.insert(newUser);
         }
@@ -93,7 +89,7 @@ public class UserService implements UserDetailsService {
     public List<User> findByUsername(@NonNull String username, Role role) throws ResponseStatusException {
         List<User> users = new ArrayList<User>();
         for (User user : findByUsername(username)) {
-            if (user.getRole() == role) {
+            if (user.getRoles().contains(role)) {
                 users.add(user);
             }
         }
@@ -111,7 +107,7 @@ public class UserService implements UserDetailsService {
     public List<User> findByTags(@NonNull List<UUID> tags, Role role) {
         List<User> users = new ArrayList<User>();
         for (User user : findByTags(tags)) {
-            if (user.getRole() == role) {
+            if (user.getRoles().contains(role)) {
                 users.add(user);
             }
         }
@@ -120,10 +116,5 @@ public class UserService implements UserDetailsService {
 
     public boolean existsByMail(@NonNull String mail) {
         return (findByMail(mail) == null) ? false : true;
-    }
-
-    @Override
-    public UserDetails loadUserByUsername(String mail) throws UsernameNotFoundException {
-        return findByMail(mail);
     }
 }

@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import it.unicam.qwert123.doit.backend.models.User;
-import it.unicam.qwert123.doit.backend.models.User.Role;
+import it.unicam.qwert123.doit.backend.models.AuthCredential.Role;
 import it.unicam.qwert123.doit.backend.services.UserService;
 
 @RestController
@@ -27,20 +27,16 @@ public class UserController {
     private UserService service;
 
     @PostMapping("/new")
-    // @PreAuthorize("hasAuthority('ADMIN')")
     public User addUser(@RequestBody User newUser) {
         return service.addUser(newUser);
     }
 
     @PutMapping("/update")
-    // @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('PROJECT_PROPOSER') or
-    // hasAuthority('EXPERT') or hasAuthority('DESIGNER') or
-    // hasAuthority('NOT_COMPLETED')")
     public User updateUser(@RequestBody User newUser) {
         return service.updateUser(newUser);
     }
 
-    @GetMapping("/getById/{id}")
+    @GetMapping("/id/{id}")
     public User getUserById(@PathVariable("id") String id) {
         try {
             return service.findById(UUID.fromString(id));
@@ -49,7 +45,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("/getByIds")
+    @GetMapping("/ids")
     public List<User> getUsersByIds(@RequestBody List<String> ids) {
         List<UUID> uuidIds = new ArrayList<UUID>();
         for (String id : ids) {
@@ -62,16 +58,18 @@ public class UserController {
         return service.findByIds(uuidIds);
     }
 
-    @GetMapping("/getByMail/{mail}")
+    @GetMapping("/mail/{mail}")
     public User getUserByMail(@PathVariable("mail") String mail) {
         return service.findByMail(mail);
     }
 
-    @GetMapping("/getByUsername/{role}/{username}")
+    @GetMapping("/username/{role}/{username}")
     public List<User> getUsersByUsername(@PathVariable("username") String username, @PathVariable("role") String role) {
         switch (role) {
             case "DESIGNER":
-                return service.findByUsername(username, Role.DESIGNER);
+                return service.findByUsername(username, Role.PROJECT_PROPOSER);
+            case "EXPERT":
+                return service.findByUsername(username, Role.PROJECT_PROPOSER);
             case "PROJECT_PROPOSER":
                 return service.findByUsername(username, Role.PROJECT_PROPOSER);
             case "null":
@@ -81,7 +79,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("/getByTag/{tag}")
+    @GetMapping("/tag/{tag}")
     public List<User> getUsersByTag(@PathVariable("tag") String tag) {
         try {
             return service.findByTag(UUID.fromString(tag));
@@ -90,7 +88,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("/getByTags/{role}")
+    @GetMapping("/tags/{role}")
     public List<User> getUsersByTags(@RequestBody List<String> tags, @PathVariable("role") String role) {
         List<UUID> idTag = new ArrayList<UUID>();
         for (String tag : tags) {
@@ -102,7 +100,9 @@ public class UserController {
         }
         switch (role) {
             case "DESIGNER":
-                return service.findByTags(idTag, Role.DESIGNER);
+                return service.findByTags(idTag, Role.PROJECT_PROPOSER);
+            case "EXPERT":
+                return service.findByTags(idTag, Role.PROJECT_PROPOSER);
             case "PROJECT_PROPOSER":
                 return service.findByTags(idTag, Role.PROJECT_PROPOSER);
             case "null":

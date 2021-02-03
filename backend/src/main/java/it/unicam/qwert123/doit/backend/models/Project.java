@@ -22,30 +22,17 @@ public class Project {
 
     @Id
     private UUID id;
-    private String name;
     private UUID projectProposer;
     private List<UUID> tag;
     private Date dateOfCreation;
     private Date dateOfStart;
     private Date dateOfEnd;
+    private String name;
     private String shortDescription;
     private String description;
-    private boolean evaluationMode; // if it's true, the project has evaluation mode.
+    private boolean evaluationMode; // if it's true, the project is in evaluation mode.
+    private boolean candidacyMode; // if it's true, the project is in candidacy mode.
     private Date startCandidacy;
     private Date endCandidacy;
 
-    public boolean getEvaluationMode() {
-        if (evaluationMode == false)
-            return false;
-        else
-            return !getCandidacyMode();
-    }
-
-    public boolean getCandidacyMode() {
-        Date now = new Date();
-        if ((now.before(endCandidacy) && now.after(startCandidacy)))
-            return true;
-        else
-            return false;
-    }
 }
