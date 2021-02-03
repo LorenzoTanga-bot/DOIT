@@ -7,21 +7,18 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class ListOfProjects extends StatefulWidget {
-  final  List<Project> allProject;
-
-  const ListOfProjects({Key key, this.allProject}) : super(key: key);
   @override
   _ListOfProjects createState() => _ListOfProjects();
 }
 
 class _ListOfProjects extends State<ListOfProjects> {
- 
+  List<Project> _allProject;
   List<GestureDetector> _cardsWithTap = [];
 
   @override
   Widget build(BuildContext context) {
-   
-    for (Project item in widget.allProject) {
+    _allProject = context.watch<ProjectProvider>().getListAllProject();
+    for (Project item in _allProject) {
       _cardsWithTap.add(GestureDetector(
         child: CardList(
             name: item.getName(), sDescription: item.getShortDescription()),

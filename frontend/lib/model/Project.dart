@@ -7,8 +7,13 @@ class Project {
   String _dateOfStart;
   String _dateOfEnd;
   String _shortDescription;
-  String _description; 
-  bool _evaluationMode; // if it's true, the project has evaluation mode.
+  bool _descriptionIsAFile;
+  String
+      _description; // if descriptionIsAFile is true, in this variable there will be saved the path of the file else the description
+  bool _evaluationMode; // if it's true, the project is in evaluation mode.
+  String _startEvaluation;
+  String _endEvaluation;
+  bool _candidacyMode; // if it's true, the project is in candidacy mode.
   String _startCandidacy;
   String _endCandidacy;
 
@@ -23,8 +28,12 @@ class Project {
       String dateOfStart,
       String dateOfEnd,
       String shortDescription,
+      bool descriptionIsAFile,
       String description,
       bool evaluationMode,
+      String startEvaluation,
+      String endEvaluation,
+      bool candidacyMode,
       String startCandidacy,
       String endCandidacy) {
     this._id = id;
@@ -35,8 +44,12 @@ class Project {
     this._dateOfStart = dateOfStart;
     this._dateOfEnd = dateOfEnd;
     this._shortDescription = shortDescription;
+    this._descriptionIsAFile = descriptionIsAFile;
     this._description = description;
     this._evaluationMode = evaluationMode;
+    this._startEvaluation = startEvaluation;
+    this._endEvaluation = endEvaluation;
+    this._candidacyMode = candidacyMode;
     this._startCandidacy = startCandidacy;
     this._endCandidacy = endCandidacy;
   }
@@ -108,6 +121,15 @@ class Project {
     return true;
   }
 
+  bool getDescriptionIsAFile() {
+    return _descriptionIsAFile;
+  }
+
+  bool setDescriptionIsAFile(bool descriptionIsAFile) {
+    _descriptionIsAFile = descriptionIsAFile;
+    return true;
+  }
+
   String getDescription() {
     return _description;
   }
@@ -118,19 +140,39 @@ class Project {
   }
 
   bool getEvaluationMode() {
-    if (_evaluationMode == false)
-      return false;
-    else
-      return !getCandidacyMode();
+    return _evaluationMode;
+  }
+
+  bool setEvaluationMode(bool evaluationMode) {
+    _evaluationMode = evaluationMode;
+    return true;
+  }
+
+  String getStartEvaluation() {
+    return _startEvaluation;
+  }
+
+  bool setStartEvaluation(String startEvaluation) {
+    _startEvaluation = startEvaluation;
+    return true;
+  }
+
+  String getEndEvaluation() {
+    return _endEvaluation;
+  }
+
+  bool setEndEvaluation(String endEvaluation) {
+    _endEvaluation = endEvaluation;
+    return true;
   }
 
   bool getCandidacyMode() {
-    DateTime now = DateTime.now();
-    if (!(now.isBefore(DateTime.parse(_endCandidacy)) &&
-        now.isAfter(DateTime.parse(_startCandidacy))))
-      return true;
-    else
-      return false;
+    return _candidacyMode;
+  }
+
+  bool setCandidacyMode(bool candidacyMode) {
+    _candidacyMode = candidacyMode;
+    return true;
   }
 
   String getStartCandidacy() {

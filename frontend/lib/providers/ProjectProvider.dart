@@ -17,7 +17,9 @@ class ProjectProvider with ChangeNotifier {
 
   Future updateListUserProject(String _id) async {
     _listUserProject.clear();
-    _listUserProject = await _service.findByProjectProposer(_id);
+    for (Project project in _listAllProject) {
+      if (project.getProjectProposer() == _id) _listUserProject.add(project);
+    }
     notifyListeners();
   }
 
@@ -27,7 +29,14 @@ class ProjectProvider with ChangeNotifier {
 
   Future updateListAllProject() async {
     _listAllProject.clear();
-    _listAllProject = await _service.getAllProject();
+    _listAllProject.addAll(await _service.findAll());
+  }
+
+  Future updateListProject(List<String> id) async {
+    for (String element in id)
+      if (_listAllProject
+          .where((project) => project.getId() == element)
+          .isEmpty) _listAllProject.add(await _service.findById(element));
     notifyListeners();
   }
 

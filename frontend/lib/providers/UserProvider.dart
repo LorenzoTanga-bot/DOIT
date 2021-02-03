@@ -81,20 +81,10 @@ class UserProvider with ChangeNotifier {
   }
 
   Future updateListUsers(List<String> id) async {
-    for (String element in id) {
+    for (String element in id)
       if (_listUsers.where((tag) => tag.getId() == element).isEmpty)
         _listUsers.add(await _service.findById(element));
-    }
-    notifyListeners();
-  }
 
-  List<User> findUsersById(List<String> id) {
-    List<User> users = [];
-    for (String id in id) {
-      if (_listUsers.where((user) => user.getId() == id).toList().isNotEmpty)
-        users.add(_listUsers.where((user) => user.getId() == id).first);
-    
-    }
-    return users;
+    notifyListeners();
   }
 }

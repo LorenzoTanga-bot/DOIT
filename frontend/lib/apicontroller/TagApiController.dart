@@ -14,25 +14,22 @@ class TagApiController {
   }
 
   Future<String> getAllTag() async {
-    return (await http.get("$_baseUrl/get")).body;
+    return (await http.get("$_baseUrl/get",
+            headers: BasicAuthConfig().getBaseHeader()))
+        .body;
   }
 
   Future<String> addTag(Tag newTag) async {
     return (await http.post("$_baseUrl/new",
-            headers: await BasicAuthConfig().getHeader(),
+            headers: await BasicAuthConfig().getUserHeader(),
             body: json
                 .encode({"id": newTag.getId(), "value": newTag.getValue()})))
         .body;
   }
 
-  Future<String> getById(String id) async {
-    return (await http.get("$_baseUrl/getById/$id")).body;
-  }
-
-  Future<String> getByIds(List<String> ids) async {
-    return (await http.put(Uri.encodeFull("$_baseUrl/getByIds"),
-            headers: await BasicAuthConfig().getHeader(),
-            body: json.encode({ids})))
+  Future<String> getTagById(String id) async {
+    return (await http.post("$_baseUrl/getById/$id",
+            headers: BasicAuthConfig().getBaseHeader()))
         .body;
   }
 }

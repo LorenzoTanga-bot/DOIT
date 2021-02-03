@@ -7,7 +7,7 @@ class ViewProvider with ChangeNotifier {
   List<Widget> _listViewPosition;
 
   Widget _firstDefault = ListOfProjects();
-  Widget _secondDefault = Text("search");
+  Widget _secondDefault = Text("Search");
   Widget _threeDefault = Login();
 
   List<Widget> _listFirstPosition = [];

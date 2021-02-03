@@ -5,8 +5,8 @@ class User {
   String _surname;
   String _mail;
   UserRole _role;
-  List<String> _skills;
-  List<String> _projects;
+  List<String> _skills = [];
+  List<String> _projects = [];
 
   User();
 
@@ -21,33 +21,9 @@ class User {
     _id = id;
     _username = username;
     _name = name;
-    _surname = _surname;
+    _surname = surname;
     _mail = mail;
     _role = UserRole.PROJECT_PROPOSER;
-    _skills = skills;
-    _projects = this._projects;
-  }
-
-  User.designer(String id, String username, String name, String surname,
-      String mail, List<String> skills, List<String> projects){
-    _id = id;
-    _username = username;
-    _name = name;
-    _surname = _surname;
-    _mail = mail;
-    _role = UserRole.DESIGNER;
-    _skills = skills;
-    _projects = this._projects;
-  }
-
-  User.expert(String id, String username, String name, String surname,
-      String mail, List<String> skills, List<String> projects){
-    _id = id;
-    _username = username;
-    _name = name;
-    _surname = _surname;
-    _mail = mail;
-    _role = UserRole.EXPERT;
     _skills = skills;
     _projects = this._projects;
   }
