@@ -93,6 +93,7 @@ public class ProjectService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Project not found"));
     }
 
+
     public List<Project> findByName(@NonNull String name) {
         return repository.findByNameContaining(name);
     }

@@ -25,10 +25,8 @@ class BackEndProjectService implements ProjectService {
         project["dateOfStart"],
         project["dateOfEnd"],
         project["shortDescription"],
-       
         project["description"],
         project["evaluationMode"],
-      
         project["startCandidacy"],
         project["endCandidacy"]);
   }
@@ -68,12 +66,9 @@ class BackEndProjectService implements ProjectService {
     return _createListProject(await _controller.getProjectsByName(name));
   }
 
-  
-
   @override
   Future<List<Project>> findByTag(List<String> tags) async {
-    // TODO: implement findByTag  ProjectApiController implementare getProjectByTag
-    throw UnimplementedError();
+    return _createListProject(await _controller.getProjectsByTags(tags));
   }
 
   @override
@@ -84,5 +79,10 @@ class BackEndProjectService implements ProjectService {
   @override
   Future<Project> updateProject(Project newProject) async {
     return _createProject(await _controller.updateProject(newProject));
+  }
+
+  @override
+  Future<List<Project>> findByIds(List<String> ids) async {
+    return _createListProject(await _controller.getProjectsByIds(ids));
   }
 }

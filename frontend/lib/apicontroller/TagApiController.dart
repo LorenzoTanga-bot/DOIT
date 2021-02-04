@@ -32,4 +32,11 @@ class TagApiController {
             headers: BasicAuthConfig().getBaseHeader()))
         .body;
   }
+
+  Future<String> getTagByIds(List<String> ids) async {
+    return (await http.post("$_baseUrl/getByIds",
+            headers: BasicAuthConfig().getUserHeader(),
+            body: json.encode({ids})))
+        .body;
+  }
 }

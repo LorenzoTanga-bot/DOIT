@@ -7,6 +7,7 @@ abstract class ProjectService {
   Future<Project> updateProject(Project newProject);
   Future<List<Project>> findAll();
   Future<Project> findById(String id);
+   Future<List<Project>> findByIds(List<String> ids);
   Future<List<Project>> findByName(String name);
   Future<List<Project>> findByTag(List<String> tags);
   

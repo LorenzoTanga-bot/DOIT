@@ -44,4 +44,9 @@ class BackendTagService implements TagService {
   Future<Tag> findById(String id) async {
     return _createTag(await _controller.getTagById(id));
   }
+
+  @override
+  Future<List<Tag>> findByIds(List<String> ids)async  {
+    return _createListTag(await _controller.getTagByIds(ids));
+  }
 }

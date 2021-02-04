@@ -2,6 +2,7 @@ import 'package:doit/model/AuthCredential.dart';
 import 'package:doit/providers/AuthCredentialProvider.dart';
 import 'package:doit/providers/UserProvider.dart';
 import 'package:doit/providers/ViewProvider.dart';
+import 'package:doit/view/InitialSelection.dart';
 import 'package:doit/view/Signin.dart';
 import 'package:doit/view/projectproposer/ThreeViewPP.dart';
 import 'package:doit/widget/LoadingScreen.dart';
@@ -20,7 +21,7 @@ class _LoadingLogin extends State<LoadingLogin> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       context.read<AuthCredentialProvider>().getUser().getRoles().first ==
               UserRole.NOT_COMPLETED
-          ? context.read<ViewProvider>().setProfileDefault(Signin())
+          ? context.read<ViewProvider>().setProfileDefault(InitialSelection())
           : context.read<ViewProvider>().setProfileDefault(ThreeViewPP());
     });
   }

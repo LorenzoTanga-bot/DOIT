@@ -12,6 +12,9 @@ import 'package:provider/provider.dart';
 import 'package:smart_select/smart_select.dart';
 
 class Signin extends StatefulWidget {
+  final bool isAPerson;
+
+  const Signin({Key key, @required this.isAPerson}) : super(key: key);
   @override
   _Signin createState() => _Signin();
 }
@@ -26,6 +29,7 @@ class _Signin extends State<Signin> {
     User newUser =
         Provider.of<AuthCredentialProvider>(context, listen: false).getUser();
     newUser.setName(_name.text);
+    newUser.setIsAPerson(widget.isAPerson);
     newUser.setSurname(_surname.text);
     newUser.setUsername(_username.text);
     newUser.setRoles([_role]); //TODO da cambiare SmartSelect<UserRole>.single
@@ -97,9 +101,13 @@ class _Signin extends State<Signin> {
                     decoration: InputDecoration(
                       labelText: 'Name',
                     )),
-                TextField(
-                    controller: _surname,
-                    decoration: InputDecoration(labelText: 'Surname')),
+                widget.isAPerson
+                    ? TextField(
+                        controller: _surname,
+                        decoration: InputDecoration(labelText: 'Surname'))
+                    : TextField(
+                        controller: _surname,
+                        decoration: InputDecoration(labelText: 'P.Iva')),
                 TextField(
                     controller: _username,
                     decoration: InputDecoration(labelText: 'Username')),

@@ -1,6 +1,5 @@
 import 'package:doit/model/User.dart';
 import 'package:doit/services/UserService.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 
 class UserProvider with ChangeNotifier {
@@ -13,9 +12,9 @@ class UserProvider with ChangeNotifier {
   }
 // da cambiare
   Future recoverPassword(String currentEmail) async {
-    await FirebaseAuth.instance.sendPasswordResetEmail(
-      email: currentEmail,
-    );
+   // await FirebaseAuth.instance.sendPasswordResetEmail(
+    //  email: currentEmail,
+    //);
   }
 
   Future<User> findUserById(String id) async {

@@ -16,6 +16,16 @@ class BackendUserService implements UserService {
     return new User.firstAccess(user["id"], user["mail"]);
   }
 
+  List<User> _createListUser(String controllerJson) {
+    if (controllerJson == "") return null;
+    var listUser = json.decode(controllerJson);
+    List<User> users = new List<User>();
+    for (var tag in listUser) {
+      users.add(_newUser(tag));
+    }
+    return users;
+  }
+
   User _newUser(var user) {
     var rolesJson = user["roles"];
     var tagsJson = user["tags"];
@@ -32,7 +42,6 @@ class BackendUserService implements UserService {
       return _newNotCompleted(user);
     else {
       for (String tag in tagsJson) tags.add(tag);
-
       for (String project in projectsFirstJson) projectsFirstRole.add(project);
       for (String project in projectsSecondJson)
         projectsSecondRole.add(project);
@@ -67,13 +76,13 @@ class BackendUserService implements UserService {
   }
 
   @override
-  Future<List<User>> findBySkills(List<String> skills) async {
-    //return _createUser(await _controller.findBySkills(skills));
-    //TODO da fare
+  Future<List<User>> findBySkills(List<String> tags) async {
+    return _createListUser(await _controller.getUsersByTags(tags));
   }
 
   @override
-  Future<User> findByUsername(String username) async {
-    return _createUser(await _controller.getUsersByUsername(username));
+  Future<List<User>> findByUsername(String username, String role) async {
+    return _createListUser(
+        await _controller.getUsersByUsername(username, role));
   }
 }
