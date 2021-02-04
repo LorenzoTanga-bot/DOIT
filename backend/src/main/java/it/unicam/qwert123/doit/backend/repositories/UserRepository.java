@@ -27,9 +27,9 @@ public interface UserRepository extends MongoRepository<User, UUID> {
 
     List<User> findByUsernameContaining(String username);
 
-    List<User> findByTag(UUID tag);
+    List<User> findByTags(UUID tag);
 
-    List<User> findByTagContaining(List<UUID> idTags);
+    List<User> findByTagsContaining(List<UUID> idTags);
 
     boolean existsByUsername(String name);
 }

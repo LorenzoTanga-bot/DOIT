@@ -100,4 +100,12 @@ public class UserController {
     public boolean userExistsByMail(@PathVariable("mail") String mail) {
         return service.existsByMail(mail);
     }
+
+    @GetMapping("/get")
+    public List<User> getAllUsers() {
+        return service.findAll();
+    }
+
+
 }
+

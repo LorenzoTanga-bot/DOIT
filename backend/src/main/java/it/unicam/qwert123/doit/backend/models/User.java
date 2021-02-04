@@ -29,7 +29,7 @@ public class User{
     private String surname; //se è un azienda, qui viene memorizzata la partita iva
     private String mail;
     private List<Role> roles;
-    private List<UUID> tag;
+    private List<UUID> tags;
     private List<UUID> projectsFirtsRole;
     private List<UUID> projectsSecondRole;
 

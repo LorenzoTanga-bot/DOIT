@@ -24,23 +24,22 @@ class BackendUserService implements UserService {
     List<String> tags = [];
     List<String> projects = [];
     for (String role in rolesJson)
-      roles.add(UserRole.values.firstWhere((e) => e.toString() == 'UserRole.'+role)); //TODO da testare
-    for (String skill in tagsJson) tags.add(skill);
-    for (String project in projectsJson) projects.add(project);
-    return new User.complete(user["id"], user["isAPerson"],user["username"], user["name"],
-        user["surname"], user["mail"], tags, roles, projects);
+      roles.add(UserRole.values.firstWhere(
+          (e) => e.toString() == 'UserRole.' + role)); //TODO da testare
+    if (roles.first == UserRole.NOT_COMPLETED)
+      return _newNotCompleted(user);
+    else {
+      for (String tag in tagsJson) tags.add(tag);
+      for (String project in projectsJson) projects.add(project);
+      return new User.complete(user["id"], user["isAPerson"], user["username"],
+          user["name"], user["surname"], user["mail"], tags, roles, projects);
+    }
   }
 
   User _createUser(String controllerJson) {
     if (controllerJson == "") return null;
     var user = json.decode(controllerJson);
-    switch (user["role"]) {
-      case "NOT_COMPLETED":
-        return _newNotCompleted(user);
-      case "PROJECT_PROPOSER":
-        return _newUser(user);
-    }
-    return null;
+    return _newUser(user);
   }
 
   @override

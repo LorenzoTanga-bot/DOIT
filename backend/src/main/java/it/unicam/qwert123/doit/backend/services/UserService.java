@@ -21,6 +21,9 @@ public class UserService {
     private UserRepository repository;
 
     private boolean checkUser(User user) {
+        if (user.getTags().isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid user: it must have at least one tag");
+        }
         if (user.getRoles().isEmpty()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid user: it must have a role");
         }
@@ -39,9 +42,7 @@ public class UserService {
                 }
             }
         }
-        if (user.getTag().isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid user: it must have at least one tag");
-        }
+        
         return true;
     }
 
@@ -64,7 +65,7 @@ public class UserService {
 
     public User updateUser(User modifiedUser) throws ResponseStatusException {
         if (existById(modifiedUser.getId())) {
-            if (repository.findById(modifiedUser.getId()).get().getUsername() == modifiedUser.getUsername()) {
+            if (repository.findById(modifiedUser.getId()).get().getUsername().equals(modifiedUser.getUsername())) {
                 if (checkUser(modifiedUser)) {
                     return repository.save(modifiedUser);
                 }
@@ -112,11 +113,11 @@ public class UserService {
     }
 
     public List<User> findByTag(@NonNull UUID tag) {
-        return repository.findByTag(tag);
+        return repository.findByTags(tag);
     }
 
     public List<User> findByTags(@NonNull List<UUID> tags) {
-        return repository.findByTagContaining(tags);
+        return repository.findByTagsContaining(tags);
     }
 
     public List<User> findByTags(@NonNull List<UUID> tags, Role role) {
@@ -131,5 +132,9 @@ public class UserService {
 
     public boolean existsByMail(@NonNull String mail) {
         return (findByMail(mail) == null) ? false : true;
+    }
+
+    public List<User> findAll() {
+        return repository.findAll();
     }
 }
