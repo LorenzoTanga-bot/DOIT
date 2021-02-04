@@ -1,5 +1,6 @@
 import 'package:doit/view/ListOfProjects.dart';
 import 'package:doit/view/Login.dart';
+import 'package:doit/view/projectproposer/CreateModifyProject.dart';
 import 'package:flutter/material.dart';
 
 class ViewProvider with ChangeNotifier {
@@ -7,7 +8,7 @@ class ViewProvider with ChangeNotifier {
   List<Widget> _listViewPosition;
 
   Widget _firstDefault = ListOfProjects();
-  Widget _secondDefault = Text("Search");
+  Widget _secondDefault = CreateModifyProject();
   Widget _threeDefault = Login();
 
   List<Widget> _listFirstPosition = [];

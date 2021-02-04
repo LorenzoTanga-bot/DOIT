@@ -27,7 +27,6 @@ class _CreateModifyProject extends State<CreateModifyProject> {
   TextEditingController _sDescription = TextEditingController();
   TextEditingController _lDescription = TextEditingController();
   bool _evaluationMode = false;
-  bool _candidacyMode = false;
   DateFormat _df = DateFormat("dd/MM/yyyy");
   DateTime _dateOfStartProject = DateTime.now();
   DateTime _dateOfEndProject = DateTime.now();
@@ -37,7 +36,7 @@ class _CreateModifyProject extends State<CreateModifyProject> {
   @override
   void initState() {
     super.initState();
-    if (widget.id.isNotEmpty) {
+    if (widget.id != null) {
       _project = context.read<ProjectProvider>().findById(widget.id);
       _name.text = _project.getName();
       _sDescription.text = _project.getShortDescription();
@@ -93,7 +92,7 @@ class _CreateModifyProject extends State<CreateModifyProject> {
   }
 
   Widget _insertPrincipalInformations() {
-    return Column(children: [
+    return Column(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
       TextField(
           controller: _name,
           decoration: InputDecoration(labelText: 'Project\'s name')),
@@ -137,17 +136,6 @@ class _CreateModifyProject extends State<CreateModifyProject> {
             activeTrackColor: Colors.lightBlueAccent,
             activeColor: Colors.blue,
           ),
-          Text("Candidacy:"),
-          Switch(
-            value: _candidacyMode,
-            onChanged: (value) {
-              setState(() {
-                _candidacyMode = value;
-              });
-            },
-            activeTrackColor: Colors.lightBlueAccent,
-            activeColor: Colors.blue,
-          ),
         ],
       ),
       Column(
@@ -159,8 +147,7 @@ class _CreateModifyProject extends State<CreateModifyProject> {
               Text(_df.format(_dateOfStartCandidacy)),
               IconButton(
                 icon: Icon(Icons.date_range),
-                onPressed: () =>
-                    _candidacyMode ? _getDate(context, "cStart") : null,
+                onPressed: () => _getDate(context, "cStart"),
               ),
             ],
           ),
@@ -171,8 +158,7 @@ class _CreateModifyProject extends State<CreateModifyProject> {
               Text(_df.format(_dateOfEndCandidacy)),
               IconButton(
                 icon: Icon(Icons.date_range),
-                onPressed: () =>
-                    _candidacyMode ? _getDate(context, "cEnd") : null,
+                onPressed: () => _getDate(context, "cEnd"),
               ),
             ],
           ),
@@ -235,7 +221,7 @@ class _CreateModifyProject extends State<CreateModifyProject> {
                   ? RaisedButton.icon(
                       icon: Icon(Icons.create),
                       onPressed: _createProject,
-                      label: Text('CREATE'),
+                      label: Text('UPLOAD'),
                       color: Colors.blue,
                     )
                   : RaisedButton.icon(
