@@ -90,7 +90,7 @@ public class ProjectService {
 
     public Project findById(@NonNull UUID id) throws ResponseStatusException {
         return repository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "item not found"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Project not found"));
     }
 
     public List<Project> findByName(@NonNull String name) {

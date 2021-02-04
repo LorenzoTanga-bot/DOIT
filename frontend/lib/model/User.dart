@@ -2,12 +2,13 @@ import 'package:doit/model/AuthCredential.dart';
 
 class User {
   String _id;
+  bool _isAPerson;
   String _username;
   String _name;
   String _surname;
   String _mail;
   List<UserRole> _roles = [];
-  List<String> _skills = [];
+  List<String> _tags = [];
   List<String> _projects = [];
 
   User();
@@ -20,6 +21,7 @@ class User {
 
   User.complete(
       String id,
+      bool isAPerson,
       String username,
       String name,
       String surname,
@@ -28,12 +30,13 @@ class User {
       List<UserRole> roles,
       List<String> projects) {
     _id = id;
+    _isAPerson = isAPerson;
     _username = username;
     _name = name;
     _surname = surname;
     _mail = mail;
     _roles = roles;
-    _skills = skills;
+    _tags = skills;
     _projects = this._projects;
   }
 
@@ -86,13 +89,13 @@ class User {
     return _roles;
   }
 
-  bool setSkills(List<String> skills) {
-    _skills = skills;
+  bool setTags(List<String> tags) {
+    _tags = tags;
     return true;
   }
 
-  List<String> getSkills() {
-    return _skills;
+  List<String> getTags() {
+    return _tags;
   }
 
   bool setProjects(List<String> projects) {
@@ -107,5 +110,14 @@ class User {
 
   List<String> getProjects() {
     return _projects;
+  }
+
+  bool getIsAperson() {
+    return _isAPerson;
+  }
+
+  bool setIsAPerson(bool isAPerson) {
+    _isAPerson = isAPerson;
+    return true;
   }
 }

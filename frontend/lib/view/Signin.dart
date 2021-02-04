@@ -28,14 +28,15 @@ class _Signin extends State<Signin> {
     newUser.setName(_name.text);
     newUser.setSurname(_surname.text);
     newUser.setUsername(_username.text);
-    newUser.setRoles([_role]);//TODO da cambiare SmartSelect<UserRole>.single
-    newUser.setSkills(context.read<TagProvider>().getSelectTag());
+    newUser.setRoles([_role]); //TODO da cambiare SmartSelect<UserRole>.single
+    newUser.setTags(context.read<TagProvider>().getSelectTag());
     context.read<AuthCredentialProvider>().updateUser(newUser);
     context.read<ViewProvider>().setProfileDefault(LoadingLogin());
   }
 
   Widget _selectUserRole() {
-    return SmartSelect<UserRole>.single( //TODO da cambiare SmartSelect<UserRole>.multiple
+    return SmartSelect<UserRole>.single(
+      //TODO da cambiare SmartSelect<UserRole>.multiple
       title: 'Role',
       value: _role,
       onChange: (state) => setState(() => _role = state.value),
@@ -61,10 +62,10 @@ class _Signin extends State<Signin> {
     );
   }
 
-  Widget _insertSkills() {
+  Widget _insertTags() {
     return Column(
       children: [
-        SmartSelectTag(title: "Skills"),
+        SmartSelectTag(title: "Tags"),
         RaisedButton.icon(
             icon: Icon(Icons.add),
             onPressed: () {
@@ -74,7 +75,7 @@ class _Signin extends State<Signin> {
                     return NewTagInsertion(context: context);
                   });
             },
-            label: Text('NEW SKILL'),
+            label: Text('NEW TAGS'),
             color: Colors.blue)
       ],
     );
@@ -103,7 +104,7 @@ class _Signin extends State<Signin> {
                     controller: _username,
                     decoration: InputDecoration(labelText: 'Username')),
                 _selectUserRole(),
-                _insertSkills(),
+                _insertTags(),
                 RaisedButton.icon(
                   icon: Icon(Icons.create),
                   onPressed: _completeRegistration,

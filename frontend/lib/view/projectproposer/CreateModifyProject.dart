@@ -43,7 +43,6 @@ class _CreateModifyProject extends State<CreateModifyProject> {
       _sDescription.text = _project.getShortDescription();
       _lDescription.text = _project.getDescription();
       _evaluationMode = _project.getEvaluationMode();
-      _candidacyMode = _project.getCandidacyMode();
       _dateOfStartProject = DateTime.parse(_project.getDateOfStart());
       _dateOfEndProject = DateTime.parse(_project.getDateOfEnd());
       _dateOfStartCandidacy = DateTime.parse(_project.getStartCandidacy());
@@ -62,12 +61,8 @@ class _CreateModifyProject extends State<CreateModifyProject> {
     _project.setDateOfStart(_dateOfStartProject.toIso8601String());
     _project.setDateOfEnd(_dateOfEndProject.toIso8601String());
     _project.setShortDescription(_sDescription.text);
-    _project.setDescriptionIsAFile(false);
     _project.setDescription(_lDescription.text);
     _project.setEvaluationMode(_evaluationMode);
-    _project.setStartEvaluation("");
-    _project.setEndEvaluation("");
-    _project.setCandidacyMode(_candidacyMode);
     _project.setStartCandidacy(_dateOfStartCandidacy.toIso8601String());
     _project.setEndCandidacy(_dateOfEndCandidacy.toIso8601String());
     context.read<ProjectProvider>().addProject(_project);

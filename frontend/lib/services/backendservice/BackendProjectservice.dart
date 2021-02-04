@@ -25,12 +25,10 @@ class BackEndProjectService implements ProjectService {
         project["dateOfStart"],
         project["dateOfEnd"],
         project["shortDescription"],
-        project["descriptionIsAFile"],
+       
         project["description"],
         project["evaluationMode"],
-        project["startEvaluation"],
-        project["endEvaluation"],
-        project["candidacyMode"],
+      
         project["startCandidacy"],
         project["endCandidacy"]);
   }
@@ -67,7 +65,7 @@ class BackEndProjectService implements ProjectService {
 
   @override
   Future<List<Project>> findByName(String name) async {
-    return _createListProject(await _controller.getProjectByName(name));
+    return _createListProject(await _controller.getProjectsByName(name));
   }
 
   
@@ -80,7 +78,7 @@ class BackEndProjectService implements ProjectService {
 
   @override
   Future<List<Project>> findAll() async {
-    return _createListProject(await _controller.getAllProject());
+    return _createListProject(await _controller.getAllProjects());
   }
 
   @override

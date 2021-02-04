@@ -26,36 +26,30 @@ class ProjectApiController {
               "dateOfStart": newProject.getDateOfStart(),
               "dateOfEnd": newProject.getDateOfEnd(),
               "shortDescription": newProject.getShortDescription(),
-              "descriptionIsAFile": newProject.getDescriptionIsAFile(),
               "description": newProject.getDescription(),
               "evaluationMode": newProject.getEvaluationMode(),
-              "startEvaluation": newProject.getStartEvaluation(),
-              "endEvaluation": newProject.getEndEvaluation(),
-              "candidacyMode": newProject.getCandidacyMode(),
               "startCandidacy": newProject.getStartCandidacy(),
               "endCandidacy": newProject.getEndCandidacy()
             })))
         .body;
   }
 
-  Future<String> updateProject(Project newProject) async {
+  Future<String> updateProject(Project modifiedProject) async {
     return (await http.put(Uri.encodeFull("$_baseUrl/update"),
             headers: BasicAuthConfig().getUserHeader(),
             body: json.encode({
-              "name": newProject.getName(),
-              "projectproposer": newProject.getProjectProposer(),
-              "tag": newProject.getTag(),
-              "dateOfCreation": newProject.getDateOfCreation(),
-              "dateOfEnd": newProject.getDateOfEnd(),
-              "shortDescription": newProject.getShortDescription(),
-              "descriptionIsAFile": newProject.getDescriptionIsAFile(),
-              "description": newProject.getDescription(),
-              "evaluationMode": newProject.getEvaluationMode(),
-              "startEvaluation": newProject.getStartEvaluation(),
-              "endEvaluation": newProject.getEndEvaluation(),
-              "candidacyMode": newProject.getCandidacyMode(),
-              "startCandidacy": newProject.getStartCandidacy(),
-              "endCandidacy": newProject.getEndCandidacy()
+              "id": modifiedProject.getId(),
+              "name": modifiedProject.getName(),
+              "projectProposer": modifiedProject.getProjectProposer(),
+              "tag": modifiedProject.getTag(),
+              "dateOfCreation": modifiedProject.getDateOfCreation(),
+              "dateOfStart": modifiedProject.getDateOfStart(),
+              "dateOfEnd": modifiedProject.getDateOfEnd(),
+              "shortDescription": modifiedProject.getShortDescription(),
+              "description": modifiedProject.getDescription(),
+              "evaluationMode": modifiedProject.getEvaluationMode(),
+              "startCandidacy": modifiedProject.getStartCandidacy(),
+              "endCandidacy": modifiedProject.getEndCandidacy()
             })))
         .body;
   }
@@ -66,7 +60,7 @@ class ProjectApiController {
         .body;
   }
 
-  Future<String> getAllProject() async {
+  Future<String> getAllProjects() async {
     return (await http.get(Uri.encodeFull("$_baseUrl/get"),
             headers: BasicAuthConfig().getBaseHeader()))
         .body;
@@ -78,13 +72,13 @@ class ProjectApiController {
         .body;
   }
 
-  Future<String> getProjectByName(String name) async {
+  Future<String> getProjectsByName(String name) async {
     return (await http.get(Uri.encodeFull("$_baseUrl/getByName/$name"),
             headers: BasicAuthConfig().getBaseHeader()))
         .body;
   }
 
-  Future<String> getProjectByUser(String user) async {
+  Future<String> getProjectsByUser(String user) async {
     return (await http.get(Uri.encodeFull("$_baseUrl/getByUser/$user"),
             headers: BasicAuthConfig().getBaseHeader()))
         .body;

@@ -12,25 +12,25 @@ class UserApiController {
     _baseUrl = "http://$_ip:8080/doit/api/user";
   }
 
-  Future<String> findById(String id) async {
-    return (await http.get(Uri.encodeFull("$_baseUrl/id/$id"),
+  Future<String> getUserById(String id) async {
+    return (await http.get(Uri.encodeFull("$_baseUrl/getById/$id"),
             headers: BasicAuthConfig().getBaseHeader()))
         .body;
   }
 
-  Future<String> findByMail(String mail) async {
-    return (await http.get(Uri.encodeFull("$_baseUrl/mail/$mail"),
+  Future<String> getUserByMail(String mail) async {
+    return (await http.get(Uri.encodeFull("$_baseUrl/getByMail/$mail"),
             headers: BasicAuthConfig().getBaseHeader()))
         .body;
   }
 
-  Future<String> findByUsername(String username) async {
-    return (await http.get("$_baseUrl/username/$username",
+  Future<String> getUsersByUsername(String username) async {
+    return (await http.get("$_baseUrl/getByUsername/$username",
             headers: BasicAuthConfig().getBaseHeader()))
         .body;
   }
 
-  Future<List<String>> findByTags(List<String> skills) {
-    //TODO da fare
+  Future<List<String>> getUsersByTags(List<String> tags) {
+
   }
 }

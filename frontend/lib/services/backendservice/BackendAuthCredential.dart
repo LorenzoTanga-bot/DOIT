@@ -11,18 +11,18 @@ class BackendAuthCredential implements AuthCredentialService {
   }
   User _createUser(var user) {
     var rolesJson = user["roles"];
-    var skillsJson = user["skills"];
+    var tagsJson = user["stags"];
     var projectsJson = user["projects"];
     List<UserRole> roles = [];
-    List<String> skills = [];
+    List<String> tags = [];
     List<String> projects = [];
     for (String role in rolesJson)
       roles.add(UserRole.values.firstWhere(
           (e) => e.toString() == 'UserRole.' + role)); //TODO da testare
-    for (String skill in skillsJson) skills.add(skill);
+    for (String skill in tagsJson) tags.add(skill);
     for (String project in projectsJson) projects.add(project);
-    return new User.complete(user["id"], user["username"], user["name"],
-        user["surname"], user["mail"], skills, roles, projects);
+    return new User.complete(user["id"], user["isAPerson"],user["username"], user["name"],
+        user["surname"], user["mail"], tags, roles, projects);
   }
 
   @override
