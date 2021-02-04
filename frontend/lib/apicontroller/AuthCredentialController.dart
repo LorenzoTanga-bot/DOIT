@@ -52,9 +52,10 @@ class AuthCredentialController {
                 "name": newUser.getName(),
                 "surname": newUser.getUsername(),
                 "mail": newUser.getMail(),
-                "role": authCredential.getRolesToString(),
+                "roles": authCredential.getRolesToString(),
                 "tags": newUser.getTags(),
-                "projects": newUser.getProjects(),
+                "projectsFirstRole": newUser.getProjectsFirstRole(),
+                "projectsSecondRole": newUser.getProjectsSecondRole()
               },
               "authCredentials": {
                 "id": authCredential.getId(),
@@ -70,19 +71,19 @@ class AuthCredentialController {
     return (await http.post(Uri.encodeFull("$_baseUrl/updateUser"),
             headers: BasicAuthConfig().getBaseHeader(),
             body: json.encode({
-                "id": newUser.getId(),
-                "isAPerson": newUser.getIsAperson(),
-                "username": newUser.getUsername(),
-                "name": newUser.getName(),
-                "surname": newUser.getUsername(),
-                "mail": newUser.getMail(),
-                "role": BasicAuthConfig().getAuthCredential().getRolesToString(),
-                "tags": newUser.getTags(),
-                "projects": newUser.getProjects(),
-              })))
+              "id": newUser.getId(),
+              "isAPerson": newUser.getIsAperson(),
+              "username": newUser.getUsername(),
+              "name": newUser.getName(),
+              "surname": newUser.getUsername(),
+              "mail": newUser.getMail(),
+              "roles": BasicAuthConfig().getAuthCredential().getRolesToString(),
+              "tags": newUser.getTags(),
+              "projectsFirstRole": newUser.getProjectsFirstRole(),
+              "projectsSecondRole": newUser.getProjectsSecondRole()
+            })))
         .body;
   }
-  
 
   Future<String> deleteCredential(AuthCredential authCredential) async {
     return (await http.post(Uri.encodeFull("$_baseUrl/delete"),

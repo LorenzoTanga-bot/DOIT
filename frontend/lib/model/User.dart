@@ -9,7 +9,8 @@ class User {
   String _mail;
   List<UserRole> _roles = [];
   List<String> _tags = [];
-  List<String> _projects = [];
+  List<String> _projectsFirstRole = [];
+  List<String> _projectsSecondRole = [];
 
   User();
 
@@ -28,7 +29,8 @@ class User {
       String mail,
       List<String> skills,
       List<UserRole> roles,
-      List<String> projects) {
+      List<String> projectsFirstRole,
+      List<String> projectSecondRole) {
     _id = id;
     _isAPerson = isAPerson;
     _username = username;
@@ -37,7 +39,8 @@ class User {
     _mail = mail;
     _roles = roles;
     _tags = skills;
-    _projects = this._projects;
+    _projectsFirstRole = projectsFirstRole;
+    _projectsSecondRole = projectSecondRole;
   }
 
   String getId() {
@@ -98,18 +101,32 @@ class User {
     return _tags;
   }
 
-  bool setProjects(List<String> projects) {
-    _projects = projects;
+  bool setProjectsFirstRole(List<String> projects) {
+    _projectsFirstRole = projects;
     return true;
   }
 
-  bool addProject(String project) {
-    _projects.add(project);
+  bool addProjectFirstRole(String project) {
+    _projectsFirstRole.add(project);
     return true;
   }
 
-  List<String> getProjects() {
-    return _projects;
+  List<String> getProjectsFirstRole() {
+    return _projectsFirstRole;
+  }
+
+  bool setProjectsSecondRole(List<String> projects) {
+    _projectsSecondRole = projects;
+    return true;
+  }
+
+  bool addProjectsSecondRole(String project) {
+    _projectsSecondRole.add(project);
+    return true;
+  }
+
+  List<String> getProjectsSecondRole() {
+    return _projectsSecondRole;
   }
 
   bool getIsAperson() {

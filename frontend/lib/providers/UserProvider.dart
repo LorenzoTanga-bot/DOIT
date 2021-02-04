@@ -18,10 +18,10 @@ class UserProvider with ChangeNotifier {
     );
   }
 
-  User findUserById(String id) {
+  Future<User> findUserById(String id) async {
     List<String> find = [];
     find.add(id);
-    if (_listUsers.isEmpty) updateListUsers(find);
+    if (_listUsers.isEmpty) await updateListUsers(find);
     User user = _listUsers.where((user) => user.getId() == id).first;
 
     return user;

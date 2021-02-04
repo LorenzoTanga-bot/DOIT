@@ -19,10 +19,12 @@ class BackendUserService implements UserService {
   User _newUser(var user) {
     var rolesJson = user["roles"];
     var tagsJson = user["tags"];
-    var projectsJson = user["projects"];
+    var projectsFirstJson = user["projectsFirstRole"];
+    var projectsSecondJson = user["projectsSecondRole"];
     List<UserRole> roles = [];
     List<String> tags = [];
-    List<String> projects = [];
+    List<String> projectsFirstRole = [];
+    List<String> projectsSecondRole = [];
     for (String role in rolesJson)
       roles.add(UserRole.values.firstWhere(
           (e) => e.toString() == 'UserRole.' + role)); //TODO da testare
@@ -30,9 +32,21 @@ class BackendUserService implements UserService {
       return _newNotCompleted(user);
     else {
       for (String tag in tagsJson) tags.add(tag);
-      for (String project in projectsJson) projects.add(project);
-      return new User.complete(user["id"], user["isAPerson"], user["username"],
-          user["name"], user["surname"], user["mail"], tags, roles, projects);
+
+      for (String project in projectsFirstJson) projectsFirstRole.add(project);
+      for (String project in projectsSecondJson)
+        projectsSecondRole.add(project);
+      return new User.complete(
+          user["id"],
+          user["isAPerson"],
+          user["usernameToShow"],
+          user["name"],
+          user["surname"],
+          user["mail"],
+          tags,
+          roles,
+          projectsFirstRole,
+          projectsSecondRole);
     }
   }
 

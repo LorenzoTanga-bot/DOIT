@@ -30,15 +30,15 @@ public class User{
     private String mail;
     private List<Role> roles;
     private List<UUID> tags;
-    private List<UUID> projectsFirtsRole;
+    private List<UUID> projectsFirstRole;
     private List<UUID> projectsSecondRole;
 
-    public boolean addProjectToFistRole(UUID idProject) {
-        return projectsFirtsRole.add(idProject);
+    public boolean addProjectToFirstRole(UUID idProject) {
+        return projectsFirstRole.add(idProject);
     }
 
-    public boolean removeProjectToFistRole(UUID idProject) {
-        return projectsFirtsRole.remove(idProject);
+    public boolean removeProjectToFirstRole(UUID idProject) {
+        return  projectsFirstRole.remove(idProject);
     }
 
     public boolean addProjectToSecondRole(UUID idProject) {
