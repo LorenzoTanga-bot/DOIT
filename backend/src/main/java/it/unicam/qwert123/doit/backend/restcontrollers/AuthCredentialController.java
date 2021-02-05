@@ -1,5 +1,6 @@
 package it.unicam.qwert123.doit.backend.restcontrollers;
 
+import java.security.Principal;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,9 +50,7 @@ public class AuthCredentialController {
 	// TODO da testare e implementare il controllo dove serve
 	@PutMapping("/updateCredential")
 	public boolean updateCredentials(@RequestBody AuthCredential authCredentials, Authentication authentication) {
-		accessCheckerComponent.sameUser(
-				authentication.getDetails() instanceof UserDetails ? (UserDetails) authentication.getDetails() : null,
-				authCredentials.getUsername());
+		accessCheckerComponent.sameUser(authentication.get, authCredentials.getUsername());
 		return authService.updateCredentials(authCredentials);
 	}
 
@@ -73,11 +72,12 @@ public class AuthCredentialController {
 	}
 
 	@PostMapping("/addUser")
-	public User addUser(@RequestBody User user) {
+	public User addUser(@RequestBody User user, Authentication authentication) {
 		user = userService.addUser(user);
 		AuthCredential authCredential = authService.getAuthCredentialsInstance(user.getMail());
 		authCredential.setRoles(user.getRoles());
 		authCredential.setId(user.getId());
+		updateCredentials(authCredential, authentication);
 		return user;
 	}
 

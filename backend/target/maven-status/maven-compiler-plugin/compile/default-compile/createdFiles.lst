@@ -1,7 +1,6 @@
 it/unicam/qwert123/doit/backend/services/AuthCredentialService.class
 it/unicam/qwert123/doit/backend/models/Project.class
 it/unicam/qwert123/doit/backend/DoitApplication.class
-it/unicam/qwert123/doit/backend/restcontrollers/CompleteUser.class
 it/unicam/qwert123/doit/backend/repositories/AuthCredentialRepository.class
 it/unicam/qwert123/doit/backend/restcontrollers/UserController.class
 it/unicam/qwert123/doit/backend/services/TagService.class
