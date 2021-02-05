@@ -1,5 +1,6 @@
 package it.unicam.qwert123.doit.backend.services;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import it.unicam.qwert123.doit.backend.models.AuthCredential;
+import it.unicam.qwert123.doit.backend.models.AuthCredential.Role;
 import it.unicam.qwert123.doit.backend.repositories.AuthCredentialRepository;
 import lombok.NonNull;
 
@@ -31,6 +33,7 @@ public class AuthCredentialService implements UserDetailsService {
 	}
 
 	public boolean addCredentials(@NonNull AuthCredential authCredentials) throws ResponseStatusException {
+		authCredentials.setRoles(Arrays.asList(new Role[]{Role.NOT_COMPLETED}));
 		authCredentials.setPassword(new BCryptPasswordEncoder().encode(authCredentials.getPassword()));
 		if (repository.existsById(authCredentials.getMail())) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid signin");
