@@ -12,7 +12,13 @@ class Project {
   String _startCandidacy;
   String _endCandidacy;
 
-  Project();
+  Project() {
+    this._dateOfCreation = DateTime.now().toIso8601String();
+    this._dateOfEnd = DateTime.now().toIso8601String();
+    this._dateOfStart = DateTime.now().toIso8601String();
+    this._startCandidacy = DateTime.now().toIso8601String();
+    this._endCandidacy = DateTime.now().toIso8601String();
+  }
 
   Project.fromJson(
       String id,

@@ -21,7 +21,8 @@ void main() {
       providers: [
         ChangeNotifierProvider(create: (context) => ViewProvider()),
         ChangeNotifierProvider(
-            create: (context) => AuthCredentialProvider(new BackendAuthCredential(_ip))),
+            create: (context) =>
+                AuthCredentialProvider(new BackendAuthCredential(_ip))),
         ChangeNotifierProvider(
             create: (context) => TagProvider(new BackendTagService(_ip))),
         ChangeNotifierProvider(
