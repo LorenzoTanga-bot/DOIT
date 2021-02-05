@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import it.unicam.qwert123.doit.backend.models.Project;
-import it.unicam.qwert123.doit.backend.models.AuthCredential.Role;
 import it.unicam.qwert123.doit.backend.repositories.ProjectRepository;
 import lombok.NonNull;
 

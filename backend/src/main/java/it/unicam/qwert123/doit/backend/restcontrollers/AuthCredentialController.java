@@ -28,11 +28,6 @@ import it.unicam.qwert123.doit.backend.models.User;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-class CompleteUser {
-	private User user;
-	private AuthCredential authCredential;
-}
-
 @RestController
 @RequestMapping("doit/api/authCredential")
 public class AuthCredentialController {
@@ -52,7 +47,7 @@ public class AuthCredentialController {
 	}
 
 	// TODO da testare e implementare il controllo dove serve
-	@PutMapping("/update")
+	@PutMapping("/updateCredential")
 	public boolean updateCredentials(@RequestBody AuthCredential authCredentials, Authentication authentication) {
 		accessCheckerComponent.sameUser(
 				authentication.getDetails() instanceof UserDetails ? (UserDetails) authentication.getDetails() : null,
@@ -67,15 +62,23 @@ public class AuthCredentialController {
 
 	// TODO da testare l'authentication
 	@PreAuthorize("hasAuthority('ADMIN')")
-	@DeleteMapping("/delete")
+	@DeleteMapping("/deleteCredential")
 	public boolean removeCredentials(Authentication authentication) {
 		return authService.removeCredentials(authentication.getName());
 	}
 
+	@PostMapping("/addCredential")
+	public boolean addCredential(@RequestBody AuthCredential credentials) {
+		return authService.addCredentials(credentials);
+	}
+
 	@PostMapping("/addUser")
-	public boolean addUser(@RequestBody CompleteUser user) {
-		user.getAuthCredential().setId(userService.addUser(user.getUser()).getId());
-		return authService.addCredentials(user.getAuthCredential());
+	public User addUser(@RequestBody User user) {
+		user = userService.addUser(user);
+		AuthCredential authCredential = authService.getAuthCredentialsInstance(user.getMail());
+		authCredential.setRoles(user.getRoles());
+		authCredential.setId(user.getId());
+		return user;
 	}
 
 	@PreAuthorize("hasAuthority('ADMIN')")
