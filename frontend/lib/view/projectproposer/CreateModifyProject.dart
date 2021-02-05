@@ -32,6 +32,10 @@ class _CreateModifyProject extends State<CreateModifyProject> {
   DateTime _dateOfEndProject = DateTime.now();
   DateTime _dateOfStartCandidacy = DateTime.now();
   DateTime _dateOfEndCandidacy = DateTime.now();
+  bool _visibilityLabelStartProject = false;
+  bool _visibilityLabelEndProject = false;
+  bool _visibilityLabelStartCandidacy = false;
+  bool _visibilityLabelEndCandidacy = false;
 
   @override
   void initState() {
@@ -57,13 +61,11 @@ class _CreateModifyProject extends State<CreateModifyProject> {
     _project.setName(_name.text);
     _project.setTag(context.read<TagProvider>().getSelectTag());
     _project.setDateOfCreation(DateTime.now().toIso8601String());
-    _project.setDateOfStart(_dateOfStartProject.toIso8601String());
-    _project.setDateOfEnd(_dateOfEndProject.toIso8601String());
+
     _project.setShortDescription(_sDescription.text);
     _project.setDescription(_lDescription.text);
     _project.setEvaluationMode(_evaluationMode);
-    _project.setStartCandidacy(_dateOfStartCandidacy.toIso8601String());
-    _project.setEndCandidacy(_dateOfEndCandidacy.toIso8601String());
+
     context.read<ProjectProvider>().addProject(_project);
     context.read<ViewProvider>().popWidget();
   }
@@ -78,17 +80,71 @@ class _CreateModifyProject extends State<CreateModifyProject> {
     if (date != null)
       switch (type) {
         case "dStart":
-          setState(() => _dateOfStartProject = date);
+          setState(() => {
+                _dateOfStartProject = date,
+                _project.setDateOfStart(_dateOfStartProject.toIso8601String())
+              });
           break;
+
         case "dEnd":
-          setState(() => _dateOfEndProject = date);
+          setState(() => {
+                _dateOfEndProject = date,
+                _project.setDateOfEnd(_dateOfEndProject.toIso8601String())
+              });
           break;
         case "cStart":
-          setState(() => _dateOfStartCandidacy = date);
+          setState(() => {
+                _dateOfStartCandidacy = date,
+                _project
+                    .setStartCandidacy(_dateOfStartCandidacy.toIso8601String())
+              });
           break;
         case "cEnd":
-          setState(() => _dateOfEndCandidacy = date);
+          setState(() => {
+                _dateOfEndCandidacy = date,
+                _project.setEndCandidacy(_dateOfEndCandidacy.toIso8601String())
+              });
       }
+  }
+
+  bool _checkDate() {
+    if (DateTime.parse(_project.getDateOfStart())
+        .isAfter(DateTime.parse(_project.getEndCandidacy()))) {
+    } else {
+      _visibilityLabelStartProject = true;
+      _visibilityLabelEndCandidacy = false;
+      _visibilityLabelEndProject = false;
+      _visibilityLabelStartCandidacy = false;
+      return false;
+    }
+    if (DateTime.parse(_project.getStartCandidacy())
+        .isBefore(DateTime.parse(_project.getEndCandidacy()))) {
+    } else {
+      _visibilityLabelStartProject = false;
+      _visibilityLabelEndCandidacy = true;
+      _visibilityLabelEndProject = false;
+      _visibilityLabelStartCandidacy = false;
+      return false;
+    }
+    if (DateTime.parse(_project.getDateOfStart())
+        .isBefore(DateTime.parse(_project.getDateOfEnd()))) {
+    } else {
+      _visibilityLabelStartProject = false;
+      _visibilityLabelEndCandidacy = false;
+      _visibilityLabelEndProject = true;
+      _visibilityLabelStartCandidacy = false;
+      return false;
+    }
+    if (!DateTime.parse(_project.getDateOfCreation())
+        .isAfter(DateTime.parse(_project.getStartCandidacy()))) {
+      return true;
+    } else {
+      _visibilityLabelStartProject = false;
+      _visibilityLabelEndCandidacy = false;
+      _visibilityLabelEndProject = false;
+      _visibilityLabelStartCandidacy = true;
+    }
+    return false;
   }
 
   Widget _insertPrincipalInformations() {
@@ -100,25 +156,43 @@ class _CreateModifyProject extends State<CreateModifyProject> {
           controller: _sDescription,
           maxLines: 5,
           decoration: InputDecoration(labelText: 'Short description')),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: <Widget>[
-          Text("Project's Start:"),
-          Text(_df.format(_dateOfStartProject)),
-          IconButton(
-            icon: Icon(Icons.date_range),
-            onPressed: () => _getDate(context, "dStart"),
+      Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Text("Project's Start:"),
+              Text(_df.format(_dateOfStartProject)),
+              IconButton(
+                icon: Icon(Icons.date_range),
+                onPressed: () => _getDate(context, "dStart"),
+              ),
+            ],
+          ),
+          Visibility(
+            child: Text(
+                "Error Date: the start date of the project is before or equal to the end date of the candidacies"),
+            visible: _visibilityLabelStartProject,
           ),
         ],
       ),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: <Widget>[
-          Text("Project's End:"),
-          Text(_df.format(_dateOfEndProject)),
-          IconButton(
-            icon: Icon(Icons.date_range),
-            onPressed: () => _getDate(context, "dEnd"),
+      Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Text("Project's End:"),
+              Text(_df.format(_dateOfEndProject)),
+              IconButton(
+                icon: Icon(Icons.date_range),
+                onPressed: () => _getDate(context, "dEnd"),
+              ),
+            ],
+          ),
+          Visibility(
+            child: Text(
+                "Error Date:  the end date of project is before or equal to the start date of the project"),
+            visible: _visibilityLabelEndProject,
           ),
         ],
       ),
@@ -140,25 +214,43 @@ class _CreateModifyProject extends State<CreateModifyProject> {
       ),
       Column(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              Text("Start \ncandidacy:"),
-              Text(_df.format(_dateOfStartCandidacy)),
-              IconButton(
-                icon: Icon(Icons.date_range),
-                onPressed: () => _getDate(context, "cStart"),
+          Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  Text("Start \ncandidacy:"),
+                  Text(_df.format(_dateOfStartCandidacy)),
+                  IconButton(
+                    icon: Icon(Icons.date_range),
+                    onPressed: () => _getDate(context, "cStart"),
+                  ),
+                ],
+              ),
+              Visibility(
+                child: Text(
+                    "Error Date: the start date of the candidacies is befor to the project creation date"),
+                visible: _visibilityLabelStartCandidacy,
               ),
             ],
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              Text("End \ncandidacy:"),
-              Text(_df.format(_dateOfEndCandidacy)),
-              IconButton(
-                icon: Icon(Icons.date_range),
-                onPressed: () => _getDate(context, "cEnd"),
+          Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  Text("End \ncandidacy:"),
+                  Text(_df.format(_dateOfEndCandidacy)),
+                  IconButton(
+                    icon: Icon(Icons.date_range),
+                    onPressed: () => _getDate(context, "cEnd"),
+                  ),
+                ],
+              ),
+              Visibility(
+                child: Text(
+                    "Error Date: the end date of the candidacies is before or equal to the start date of the candidacies"),
+                visible: _visibilityLabelEndCandidacy,
               ),
             ],
           ),
@@ -217,19 +309,34 @@ class _CreateModifyProject extends State<CreateModifyProject> {
                 label: Text('BACK'),
                 onPressed: onStepCancel,
               ),
-              _currentStep == 2 // this is the last step
+              _currentStep == 0
                   ? RaisedButton.icon(
-                      icon: Icon(Icons.create),
-                      onPressed: _createProject,
-                      label: Text('UPLOAD'),
-                      color: Colors.blue,
-                    )
-                  : RaisedButton.icon(
                       icon: Icon(Icons.navigate_next),
-                      onPressed: onStepContinue,
+                      onPressed: () => {
+                        if (_checkDate())
+                          onStepContinue
+                        else
+                          setState(() {
+                            _currentStep = 0;
+                          })
+                      },
+                      //controllare
                       label: Text('CONTINUE'),
                       color: Colors.blue,
                     )
+                  : _currentStep == 2 // this is the last step
+                      ? RaisedButton.icon(
+                          icon: Icon(Icons.create),
+                          onPressed: _createProject,
+                          label: Text('UPLOAD'),
+                          color: Colors.blue,
+                        )
+                      : RaisedButton.icon(
+                          icon: Icon(Icons.navigate_next),
+                          onPressed: onStepContinue,
+                          label: Text('CONTINUE'),
+                          color: Colors.blue,
+                        )
             ],
           ),
         );
