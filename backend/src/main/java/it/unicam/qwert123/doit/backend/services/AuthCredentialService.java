@@ -37,7 +37,6 @@ public class AuthCredentialService implements UserDetailsService {
 		authCredentials.setPassword(new BCryptPasswordEncoder().encode(authCredentials.getPassword()));
 		if (repository.existsById(authCredentials.getMail())) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid signin");
-
 		}
 		repository.insert(authCredentials);
 		return true;
