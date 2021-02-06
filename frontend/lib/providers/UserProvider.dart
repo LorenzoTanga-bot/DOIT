@@ -1,3 +1,4 @@
+import 'package:doit/model/Project.dart';
 import 'package:doit/model/User.dart';
 import 'package:doit/services/UserService.dart';
 import 'package:flutter/foundation.dart';
@@ -16,7 +17,7 @@ class UserProvider with ChangeNotifier {
     //  email: currentEmail,
     //);
   }
-Future<User> findUserById(String id) async {
+  Future<User> findUserById(String id) async {
     List<String> find = [];
     find.add(id);
     if (_listUsers.isEmpty) await updateListUsers(find);
@@ -35,5 +36,10 @@ Future<User> findUserById(String id) async {
         _listUsers.add(await _service.findById(element));
 
     notifyListeners();
+  }
+
+  Future<List<User>> findByUsername(String username, String role) async {
+    List<User> find = await _service.findByUsername(username, role);
+    return find;
   }
 }

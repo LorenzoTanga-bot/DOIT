@@ -19,23 +19,22 @@ class ListOfProjects extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<GestureDetector> _cardsWithTap = [];
-    for (Project item in projects) {
-      _cardsWithTap.add(GestureDetector(
-        child: CardList(
-            name: item.getName(),
-            sDescription: item.getShortDescription() +
-                "\n" +
-                "State :" +
-                determinateState(item)),
-        onTap: () {
-          Provider.of<ViewProvider>(context, listen: false)
-              .pushWidget(ProjectOverView(id: item.getId()));
-        },
-      ));
-    }
-    return ListView(
-      children: _cardsWithTap,
-    );
+    if (projects.isNotEmpty)
+      return ListView.builder(
+          shrinkWrap: true,
+          itemCount: projects.length,
+          itemBuilder: (context, index) {
+            return GestureDetector(
+                child: CardList(
+                    name: projects[index].getName(),
+                    sDescription: projects[index].getShortDescription() +
+                        "\n" +
+                        "State :" +
+                        determinateState(projects[index])),
+                onTap: () {
+                  Provider.of<ViewProvider>(context, listen: false)
+                      .pushWidget(ProjectOverView(id: projects[index].getId()));
+                });
+          });
   }
 }

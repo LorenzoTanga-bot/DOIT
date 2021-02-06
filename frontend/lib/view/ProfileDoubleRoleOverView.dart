@@ -48,78 +48,79 @@ class _ProfileDoubleRoleOverView extends State<ProfileDoubleRoleOverView> {
             case ConnectionState.waiting:
               return LoadingScreen(message: "Loading");
             case ConnectionState.done:
-              return ListView(children: [
-                PrincipalInformationUser(user: _user, tags: _tags),
-                if (_projectsFirstRole.isNotEmpty)
-                  Padding(
-                      padding: EdgeInsets.all(15),
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            if (_user.getRoles().first == UserRole.DESIGNER)
-                              Text(
-                                "Projects in which he participated ",
-                                textAlign: TextAlign.start,
-                                style: TextStyle(
-                                    fontSize: 30, fontWeight: FontWeight.bold),
+              return Container(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height,
+                child: ListView(children: [
+                  PrincipalInformationUser(user: _user, tags: _tags),
+                  if (_projectsFirstRole.isNotEmpty)
+                    Padding(
+                        padding: EdgeInsets.all(15),
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              if (_user.getRoles().first == UserRole.DESIGNER)
+                                Text(
+                                  "Projects in which he participated ",
+                                  textAlign: TextAlign.start,
+                                  style: TextStyle(
+                                      fontSize: 30,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              if (_user.getRoles().first ==
+                                  UserRole.PROJECT_PROPOSER)
+                                Text(
+                                  ("Proposed projects"),
+                                  textAlign: TextAlign.start,
+                                  style: TextStyle(
+                                      fontSize: 30,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              Divider(
+                                color: Colors.white,
+                                height: 5,
+                                thickness: 1,
+                                indent: 2,
+                                endIndent: 2,
                               ),
-                            if (_user.getRoles().first ==
-                                UserRole.PROJECT_PROPOSER)
-                              Text(
-                                ("Proposed projects"),
-                                textAlign: TextAlign.start,
-                                style: TextStyle(
-                                    fontSize: 30, fontWeight: FontWeight.bold),
+                              // fixed height
+                              ListOfProjects(projects: _projectsFirstRole)
+                            ])),
+                  if (_projectsSecondRole.isNotEmpty &&
+                      _user.getRoles().last != UserRole.DESIGNER)
+                    Padding(
+                        padding: EdgeInsets.all(15),
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              if (_user.getRoles().last == UserRole.DESIGNER)
+                                Text(
+                                  "Projects in which he participated ",
+                                  textAlign: TextAlign.start,
+                                  style: TextStyle(
+                                      fontSize: 30,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              if (_user.getRoles().last ==
+                                  UserRole.PROJECT_PROPOSER)
+                                Text(
+                                  ("Proposed projects"),
+                                  textAlign: TextAlign.start,
+                                  style: TextStyle(
+                                      fontSize: 30,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              Divider(
+                                color: Colors.white,
+                                height: 5,
+                                thickness: 1,
+                                indent: 2,
+                                endIndent: 2,
                               ),
-                            Divider(
-                              color: Colors.white,
-                              height: 5,
-                              thickness: 1,
-                              indent: 2,
-                              endIndent: 2,
-                            ),
-                            SizedBox(
-                              height: 250, // fixed height
-                              child:
-                                  ListOfProjects(projects: _projectsFirstRole),
-                            )
-                          ])),
-                if (_projectsSecondRole.isNotEmpty &&
-                    _user.getRoles().last != UserRole.DESIGNER)
-                  Padding(
-                      padding: EdgeInsets.all(15),
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            if (_user.getRoles().last == UserRole.DESIGNER)
-                              Text(
-                                "Projects in which he participated ",
-                                textAlign: TextAlign.start,
-                                style: TextStyle(
-                                    fontSize: 30, fontWeight: FontWeight.bold),
-                              ),
-                            if (_user.getRoles().last ==
-                                UserRole.PROJECT_PROPOSER)
-                              Text(
-                                ("Proposed projects"),
-                                textAlign: TextAlign.start,
-                                style: TextStyle(
-                                    fontSize: 30, fontWeight: FontWeight.bold),
-                              ),
-                            Divider(
-                              color: Colors.white,
-                              height: 5,
-                              thickness: 1,
-                              indent: 2,
-                              endIndent: 2,
-                            ),
-                            SizedBox(
-                              height: 300, // fixed height
-                              child:
-                                  ListOfProjects(projects: _projectsSecondRole),
-                            )
-                          ])),
-              ]);
+                              ListOfProjects(projects: _projectsSecondRole),
+                            ])),
+                ]),
+              );
           }
         });
   }
