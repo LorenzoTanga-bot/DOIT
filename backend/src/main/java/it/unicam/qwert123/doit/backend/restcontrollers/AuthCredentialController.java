@@ -1,12 +1,11 @@
 package it.unicam.qwert123.doit.backend.restcontrollers;
 
-import java.security.Principal;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -41,44 +40,47 @@ public class AuthCredentialController {
 	@Autowired
 	private AccessCheckerComponent accessCheckerComponent;
 
-	@PreAuthorize("permitAll")
 	@PostMapping("/login")
+	@PreAuthorize("permitAll")
 	public User loginWithCredentials(@RequestBody AuthCredential credentials) {
 		return authService.loginWithCredentials(credentials) ? userService.findById(credentials.getId()) : null;
 	}
 
-	// TODO da testare e implementare il controllo dove serve
-	@PutMapping("/updateCredential")
-	public boolean updateCredentials(@RequestBody AuthCredential authCredentials, Authentication authentication) {
-	//	accessCheckerComponent.sameUser(authentication.get, authCredentials.getUsername());
-		return authService.updateCredentials(authCredentials);
-	}
-
-	@PutMapping("/updateUser")
-	public User updateUser(@RequestBody User user) {
-		return userService.updateUser(user);
-	}
-
-	// TODO da testare l'authentication
-	@PreAuthorize("hasAuthority('ADMIN')")
-	@DeleteMapping("/deleteCredential")
-	public boolean removeCredentials(Authentication authentication) {
-		return authService.removeCredentials(authentication.getName());
-	}
-
 	@PostMapping("/addCredential")
+	@PreAuthorize("permitAll")
 	public boolean addCredential(@RequestBody AuthCredential credentials) {
 		return authService.addCredentials(credentials);
 	}
 
 	@PostMapping("/addUser")
-	public User addUser(@RequestBody User user, Authentication authentication) {
-		user = userService.addUser(user);
+	@PreAuthorize("@accessCheckerComponent.sameUser(principal, #user.getMail()) or hasAuthority('ADMIN')")
+	public User addUser(@RequestBody @Param("user") User user) {
+		User newUser = userService.addUser(user);
 		AuthCredential authCredential = authService.getAuthCredentialsInstance(user.getMail());
-		authCredential.setRoles(user.getRoles());
-		authCredential.setId(user.getId());
-		updateCredentials(authCredential, authentication);
-		return user;
+		authCredential.setRoles(newUser.getRoles());
+		authCredential.setId(newUser.getId());
+		updateCredentials(authCredential);
+		return newUser;
+	}
+
+	// TODO da testare e implementare il controllo dove serve
+	@PutMapping("/updateCredential")
+	@PreAuthorize("@accessCheckerComponent.sameUser(principal, #authCredential.getMail()) or hasAuthority('ADMIN')")
+	public boolean updateCredentials(@RequestBody @Param("authCredential") AuthCredential authCredential) {
+		return authService.updateCredentials(authCredential);
+	}
+
+	@PutMapping("/updateUser")
+	@PreAuthorize("@accessCheckerComponent.sameUser(principal, #user.getMail()) or hasAuthority('ADMIN')")
+	public User updateUser(@RequestBody @Param("user") User user) {
+		return userService.updateUser(user);
+	}
+
+	// TODO da testare l'authentication
+	@DeleteMapping("/deleteCredential")
+	@PreAuthorize("@accessCheckerComponent.sameUser(principal, #authCredential.getUsername()) or hasAuthority('ADMIN')")
+	public boolean removeCredentials(@RequestBody @Param("authCredential") AuthCredential authentication) {
+		return authService.removeCredentials(authentication.getMail());
 	}
 
 	@PreAuthorize("hasAuthority('ADMIN')")
