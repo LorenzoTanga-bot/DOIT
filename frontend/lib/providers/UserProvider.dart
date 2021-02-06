@@ -12,7 +12,7 @@ class UserProvider with ChangeNotifier {
   }
 // da cambiare
   Future recoverPassword(String currentEmail) async {
-   // await FirebaseAuth.instance.sendPasswordResetEmail(
+    // await FirebaseAuth.instance.sendPasswordResetEmail(
     //  email: currentEmail,
     //);
   }
@@ -21,9 +21,12 @@ class UserProvider with ChangeNotifier {
     List<String> find = [];
     find.add(id);
     if (_listUsers.isEmpty) await updateListUsers(find);
-    User user = _listUsers.where((user) => user.getId() == id).first;
-
-    return user;
+    Iterable<User> user = _listUsers.where((user) => user.getId() == id);
+    if (user.isEmpty) {
+      await updateListUsers(find);
+      findUserById(id);
+    } else
+      return user.first;
   }
 
   Future updateListUsers(List<String> id) async {

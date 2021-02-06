@@ -1,8 +1,9 @@
 import 'package:doit/view/ListAllProjects.dart';
 import 'package:doit/view/ListOfProjects.dart';
 import 'package:doit/view/Login.dart';
+import 'package:doit/view/ProfileDoubleRoleOverView.dart';
 import 'package:doit/view/projectproposer/CreateModifyProject.dart';
-import 'package:doit/view/projectproposer/ProfilePP.dart';
+import 'package:doit/view/ProfileUserOverView.dart';
 import 'package:flutter/material.dart';
 
 class ViewProvider with ChangeNotifier {
@@ -10,7 +11,8 @@ class ViewProvider with ChangeNotifier {
   List<Widget> _listViewPosition;
 
   Widget _firstDefault = ListAllProjects();
-  Widget _secondDefault = ProfilePP(id: "be2a3756-819e-4266-89f0-2d78514b820a");
+  Widget _secondDefault =
+      ProfileDoubleRoleOverView(id: "be2a3756-819e-4266-89f0-2d78514b820a");
   Widget _threeDefault = Login();
 
   List<Widget> _listFirstPosition = [];
