@@ -15,8 +15,7 @@ class PrincipalInformationUser extends StatelessWidget {
     return Row(children: [
       if (user.getRoles().length == 1) Text("Role : ") else Text("Roles :"),
       Text(getStringRole(user.getRoles().first)),
-      if (user.getRoles().length == 2)
-        Text(", " + getStringRole(user.getRoles().last))
+      if (user.getRoles().length == 2) Text("," + getStringRole(user.getRoles().last))
     ]);
   }
 

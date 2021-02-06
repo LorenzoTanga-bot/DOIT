@@ -9,7 +9,7 @@ import 'package:doit/providers/UserProvider.dart';
 import 'package:doit/providers/ViewProvider.dart';
 import 'package:doit/view/ProfileDoubleRoleOverView.dart';
 import 'package:doit/view/projectproposer/CreateModifyProject.dart';
-import 'package:doit/view/ProfileUserOverView.dart';
+
 import 'package:doit/widget/ListTags.dart';
 import 'package:doit/widget/LoadingScreen.dart';
 import 'package:flutter/gestures.dart';
@@ -224,7 +224,7 @@ List<RichText> getListDesigner() {
                                           else
                                             Provider.of<ViewProvider>(context,
                                                     listen: false)
-                                                .pushWidget(ProfileUserOverView(
+                                                .pushWidget(ProfileDoubleRoleOverView(
                                                     id: _projectProposer
                                                         .getId()));
                                         }),

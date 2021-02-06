@@ -3,7 +3,7 @@ import 'package:doit/view/ListOfProjects.dart';
 import 'package:doit/view/Login.dart';
 import 'package:doit/view/ProfileDoubleRoleOverView.dart';
 import 'package:doit/view/projectproposer/CreateModifyProject.dart';
-import 'package:doit/view/ProfileUserOverView.dart';
+
 import 'package:flutter/material.dart';
 
 class ViewProvider with ChangeNotifier {

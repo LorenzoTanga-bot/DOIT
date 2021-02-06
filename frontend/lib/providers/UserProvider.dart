@@ -21,12 +21,12 @@ class UserProvider with ChangeNotifier {
     List<String> find = [];
     find.add(id);
     if (_listUsers.isEmpty) await updateListUsers(find);
-    Iterable<User> user = _listUsers.where((user) => user.getId() == id);
-    if (user.isEmpty) {
+    User user = _listUsers.firstWhere((user) => user.getId() == id);
+    if (user == null) {
       await updateListUsers(find);
       findUserById(id);
     } else
-      return user.first;
+      return user;
   }
 
   Future updateListUsers(List<String> id) async {
