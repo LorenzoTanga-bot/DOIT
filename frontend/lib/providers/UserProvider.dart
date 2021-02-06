@@ -16,17 +16,17 @@ class UserProvider with ChangeNotifier {
     //  email: currentEmail,
     //);
   }
-
-  Future<User> findUserById(String id) async {
+Future<User> findUserById(String id) async {
     List<String> find = [];
     find.add(id);
     if (_listUsers.isEmpty) await updateListUsers(find);
-    User user = _listUsers.firstWhere((user) => user.getId() == id);
-    if (user == null) {
-      await updateListUsers(find);
-      findUserById(id);
-    } else
-      return user;
+    for (User user in _listUsers) {
+      if (user.getId() == id) {
+        return user;
+      }
+    }
+    await updateListUsers(find);
+    return findUserById(id);
   }
 
   Future updateListUsers(List<String> id) async {

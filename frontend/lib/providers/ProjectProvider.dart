@@ -60,4 +60,14 @@ class ProjectProvider with ChangeNotifier {
     notifyListeners();
     return true;
   }
+
+  List<Project> findByName(String name) {
+    List<Project> found = [];
+    for (Project project in _listAllProject) {
+      if (project.getName().contains(name)) {
+        found.add(project);
+      }
+    }
+    return found;
+  }
 }
