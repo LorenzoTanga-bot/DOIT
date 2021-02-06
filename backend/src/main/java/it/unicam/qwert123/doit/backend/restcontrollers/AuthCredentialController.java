@@ -50,7 +50,7 @@ public class AuthCredentialController {
 	// TODO da testare e implementare il controllo dove serve
 	@PutMapping("/updateCredential")
 	public boolean updateCredentials(@RequestBody AuthCredential authCredentials, Authentication authentication) {
-		accessCheckerComponent.sameUser(authentication.get, authCredentials.getUsername());
+	//	accessCheckerComponent.sameUser(authentication.get, authCredentials.getUsername());
 		return authService.updateCredentials(authCredentials);
 	}
 

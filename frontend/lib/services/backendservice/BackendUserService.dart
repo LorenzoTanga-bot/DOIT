@@ -47,7 +47,7 @@ class BackendUserService implements UserService {
         projectsSecondRole.add(project);
       return new User.complete(
           user["id"],
-          user["isAPerson"],
+          user["aperson"],
           user["usernameToShow"],
           user["name"],
           user["surname"],

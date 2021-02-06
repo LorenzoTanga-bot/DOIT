@@ -8,6 +8,7 @@ import 'package:doit/providers/TagProvider.dart';
 import 'package:doit/providers/UserProvider.dart';
 import 'package:doit/providers/ViewProvider.dart';
 import 'package:doit/view/projectproposer/CreateModifyProject.dart';
+import 'package:doit/widget/ListTags.dart';
 import 'package:doit/widget/LoadingScreen.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -28,16 +29,6 @@ class _ProjectOverView extends State<ProjectOverView> {
   List<User> _listDesigner;
   User _projectProposer;
   String _state;
-
-  List<Text> getListTag() {
-    List<Text> tags = [];
-
-    for (int i = 0; i < _listTag.length - 1; i++) {
-      tags.add(Text(_listTag[i].getValue() + ", "));
-    }
-    if (_listTag.length > 0) tags.add(Text(_listTag.last.getValue()));
-    return tags;
-  }
 
 /*
 List<RichText> getListDesigner() {
@@ -230,8 +221,7 @@ List<RichText> getListDesigner() {
                                   ),
                                   Row(children: [
                                     Text("Project proposer : "),
-                                    RichText(
-                                      textAlign: TextAlign.center,
+                                    RichText( //TODO non funziona bene, controllare!
                                       text: TextSpan(
                                           text:
                                               (_projectProposer.getUsername()),
@@ -335,11 +325,7 @@ List<RichText> getListDesigner() {
                           endIndent: 2,
                         ),
                         Container(
-                            height: 25,
-                            child: ListView(
-                                padding: EdgeInsets.only(left: 10, right: 10),
-                                scrollDirection: Axis.horizontal,
-                                children: getListTag())),
+                            height: 25, child: ListTags(listTag: _listTag)),
                       ],
                     )),
                 Card(
