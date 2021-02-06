@@ -1,9 +1,9 @@
-import 'package:doit/model/AuthCredential.dart';
+
 import 'package:doit/model/Project.dart';
 import 'package:doit/providers/AuthCredentialProvider.dart';
 import 'package:doit/providers/ProjectProvider.dart';
 import 'package:doit/providers/TagProvider.dart';
-import 'package:doit/providers/UserProvider.dart';
+
 import 'package:doit/providers/ViewProvider.dart';
 import 'package:doit/widget/NewTagInsertion.dart';
 import 'package:doit/widget/SmartSelectTag.dart';
@@ -36,6 +36,9 @@ class _CreateModifyProject extends State<CreateModifyProject> {
   bool _visibilityLabelEndProject = false;
   bool _visibilityLabelStartCandidacy = false;
   bool _visibilityLabelEndCandidacy = false;
+  bool _visibilityLabelName = false;
+  bool _visibilityLabelSDescription = false;
+  bool _visibilityLabelDescription = false;
 
   @override
   void initState() {
@@ -61,11 +64,13 @@ class _CreateModifyProject extends State<CreateModifyProject> {
     _project.setName(_name.text);
     _project.setTag(context.read<TagProvider>().getSelectTag());
     _project.setDateOfCreation(DateTime.now().toIso8601String());
-
+    _project.setDateOfEnd(_dateOfEndProject.toIso8601String());
+    _project.setDateOfStart(_dateOfStartProject.toIso8601String());
+    _project.setStartCandidacy(_dateOfStartCandidacy.toIso8601String());
+    _project.setEndCandidacy(_dateOfEndCandidacy.toIso8601String());
     _project.setShortDescription(_sDescription.text);
     _project.setDescription(_lDescription.text);
     _project.setEvaluationMode(_evaluationMode);
-
     context.read<ProjectProvider>().addProject(_project);
     context.read<ViewProvider>().popWidget();
   }
@@ -80,82 +85,113 @@ class _CreateModifyProject extends State<CreateModifyProject> {
     if (date != null)
       switch (type) {
         case "dStart":
-          setState(() => {
-                _dateOfStartProject = date,
-                _project.setDateOfStart(_dateOfStartProject.toIso8601String())
-              });
+          setState(
+            () => _dateOfStartProject = date,
+          );
           break;
 
         case "dEnd":
-          setState(() => {
-                _dateOfEndProject = date,
-                _project.setDateOfEnd(_dateOfEndProject.toIso8601String())
-              });
+          setState(
+            () => _dateOfEndProject = date,
+          );
           break;
         case "cStart":
-          setState(() => {
-                _dateOfStartCandidacy = date,
-                _project
-                    .setStartCandidacy(_dateOfStartCandidacy.toIso8601String())
-              });
+          setState(
+            () => _dateOfStartCandidacy = date,
+          );
           break;
         case "cEnd":
-          setState(() => {
-                _dateOfEndCandidacy = date,
-                _project.setEndCandidacy(_dateOfEndCandidacy.toIso8601String())
-              });
+          setState(
+            () => _dateOfEndCandidacy = date,
+          );
       }
   }
 
   bool _checkDate() {
-    if (DateTime.parse(_project.getDateOfStart())
-        .isAfter(DateTime.parse(_project.getEndCandidacy()))) {
+    if ((_dateOfStartProject).isAfter(_dateOfEndCandidacy)) {
+      _visibilityLabelStartProject = false;
     } else {
       _visibilityLabelStartProject = true;
-      _visibilityLabelEndCandidacy = false;
-      _visibilityLabelEndProject = false;
-      _visibilityLabelStartCandidacy = false;
+
       return false;
     }
-    if (DateTime.parse(_project.getStartCandidacy())
-        .isBefore(DateTime.parse(_project.getEndCandidacy()))) {
+    if (_dateOfStartCandidacy.isBefore(_dateOfEndCandidacy)) {
+      _visibilityLabelEndCandidacy = false;
     } else {
-      _visibilityLabelStartProject = false;
       _visibilityLabelEndCandidacy = true;
+
+      return false;
+    }
+    if (_dateOfStartProject.isBefore(_dateOfEndProject)) {
       _visibilityLabelEndProject = false;
-      _visibilityLabelStartCandidacy = false;
-      return false;
-    }
-    if (DateTime.parse(_project.getDateOfStart())
-        .isBefore(DateTime.parse(_project.getDateOfEnd()))) {
     } else {
-      _visibilityLabelStartProject = false;
-      _visibilityLabelEndCandidacy = false;
       _visibilityLabelEndProject = true;
-      _visibilityLabelStartCandidacy = false;
+
       return false;
     }
-    if (!DateTime.parse(_project.getDateOfCreation())
-        .isAfter(DateTime.parse(_project.getStartCandidacy()))) {
+    if (DateTime.now().isAfter(_dateOfStartCandidacy)) {
+      _visibilityLabelStartCandidacy = false;
       return true;
     } else {
-      _visibilityLabelStartProject = false;
-      _visibilityLabelEndCandidacy = false;
-      _visibilityLabelEndProject = false;
       _visibilityLabelStartCandidacy = true;
     }
     return false;
   }
 
+  bool _checkPrincipalInfomration() {
+    if (_name.text.isEmpty) {
+      _checkDate();
+      _visibilityLabelName = true;
+      _visibilityLabelSDescription = false;
+      return false;
+    }
+    if (_sDescription.text.isEmpty) {
+      _checkDate();
+      _visibilityLabelSDescription = true;
+      _visibilityLabelName = false;
+      return false;
+    }
+    _visibilityLabelSDescription = false;
+    _visibilityLabelName = false;
+    if (_checkDate()) {
+      return true;
+    } else
+      return false;
+  }
+
+  bool _checkDescription() {
+    if (_lDescription.text.isEmpty) {
+      _visibilityLabelDescription = true;
+      return false;
+    } else {
+      _visibilityLabelDescription = false;
+      return true;
+    }
+  }
+
   Widget _insertPrincipalInformations() {
-    return Column(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
+    return Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
       TextField(
           controller: _name,
-          decoration: InputDecoration(labelText: 'Project\'s name')),
+          decoration: InputDecoration(
+            labelText: 'Project\'s name',
+          )),
+      Visibility(
+        child: Text("The name cannot be empty",
+            style: TextStyle(color: Colors.red)),
+        visible: _visibilityLabelName,
+      ),
       TextField(
           controller: _sDescription,
           maxLines: 5,
-          decoration: InputDecoration(labelText: 'Short description')),
+          decoration: InputDecoration(
+            labelText: 'Short description',
+          )),
+      Visibility(
+        child: Text("The short description cannot be empty",
+            style: TextStyle(color: Colors.red)),
+        visible: _visibilityLabelSDescription,
+      ),
       Column(
         children: [
           Row(
@@ -171,7 +207,9 @@ class _CreateModifyProject extends State<CreateModifyProject> {
           ),
           Visibility(
             child: Text(
-                "Error Date: the start date of the project is before or equal to the end date of the candidacies"),
+              "Error Date: the start date of the project is before or equal to the end date of the candidacies",
+              style: TextStyle(color: Colors.red),
+            ),
             visible: _visibilityLabelStartProject,
           ),
         ],
@@ -191,7 +229,8 @@ class _CreateModifyProject extends State<CreateModifyProject> {
           ),
           Visibility(
             child: Text(
-                "Error Date:  the end date of project is before or equal to the start date of the project"),
+                "Error Date:  the end date of project is before or equal to the start date of the project",
+                style: TextStyle(color: Colors.red)),
             visible: _visibilityLabelEndProject,
           ),
         ],
@@ -229,7 +268,8 @@ class _CreateModifyProject extends State<CreateModifyProject> {
               ),
               Visibility(
                 child: Text(
-                    "Error Date: the start date of the candidacies is befor to the project creation date"),
+                    "Error Date: the start date of the candidacies is befor to the project creation date",
+                    style: TextStyle(color: Colors.red)),
                 visible: _visibilityLabelStartCandidacy,
               ),
             ],
@@ -249,7 +289,8 @@ class _CreateModifyProject extends State<CreateModifyProject> {
               ),
               Visibility(
                 child: Text(
-                    "Error Date: the end date of the candidacies is before or equal to the start date of the candidacies"),
+                    "Error Date: the end date of the candidacies is before or equal to the start date of the candidacies",
+                    style: TextStyle(color: Colors.red)),
                 visible: _visibilityLabelEndCandidacy,
               ),
             ],
@@ -260,10 +301,19 @@ class _CreateModifyProject extends State<CreateModifyProject> {
   }
 
   Widget _insertDescription() {
-    return TextField(
-        controller: _lDescription,
-        maxLines: 15,
-        decoration: InputDecoration(labelText: 'Description'));
+    return Column(
+      children: [
+        TextField(
+            controller: _lDescription,
+            maxLines: 15,
+            decoration: InputDecoration(labelText: 'Description')),
+        Visibility(
+          child: Text("The description cannot be empty",
+              style: TextStyle(color: Colors.red)),
+          visible: _visibilityLabelDescription,
+        ),
+      ],
+    );
   }
 
   Widget _insertTag() {
@@ -313,8 +363,8 @@ class _CreateModifyProject extends State<CreateModifyProject> {
                   ? RaisedButton.icon(
                       icon: Icon(Icons.navigate_next),
                       onPressed: () => {
-                        if (_checkDate())
-                          onStepContinue
+                        if (_checkPrincipalInfomration())
+                          onStepContinue()
                         else
                           setState(() {
                             _currentStep = 0;
@@ -324,17 +374,24 @@ class _CreateModifyProject extends State<CreateModifyProject> {
                       label: Text('CONTINUE'),
                       color: Colors.blue,
                     )
-                  : _currentStep == 2 // this is the last step
+                  : _currentStep == 1 // this is the last step
                       ? RaisedButton.icon(
-                          icon: Icon(Icons.create),
-                          onPressed: _createProject,
-                          label: Text('UPLOAD'),
+                          icon: Icon(Icons.navigate_next),
+                          onPressed: () => {
+                            if (_checkDescription())
+                              onStepContinue()
+                            else
+                              setState(() {
+                                _currentStep = 1;
+                              })
+                          },
+                          label: Text('CONTINUE'),
                           color: Colors.blue,
                         )
                       : RaisedButton.icon(
-                          icon: Icon(Icons.navigate_next),
-                          onPressed: onStepContinue,
-                          label: Text('CONTINUE'),
+                          icon: Icon(Icons.create),
+                          onPressed: _createProject,
+                          label: Text('UPLOAD'),
                           color: Colors.blue,
                         )
             ],
