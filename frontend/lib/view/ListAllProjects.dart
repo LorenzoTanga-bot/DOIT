@@ -13,7 +13,7 @@ class _ListAllProjectsState extends State<ListAllProjects> {
   List<Project> _projects;
   @override
   Widget build(BuildContext context) {
-    _projects = context.read<ProjectProvider>().getListAllProject();
+    _projects = context.watch<ProjectProvider>().getListAllProject();
     return ListOfProjects(projects: _projects);
   }
 }
