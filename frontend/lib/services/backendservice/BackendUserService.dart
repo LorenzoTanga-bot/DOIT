@@ -20,6 +20,7 @@ class BackendUserService implements UserService {
     if (controllerJson == "") return null;
     var listUser = json.decode(controllerJson);
     List<User> users = new List<User>();
+    
     for (var tag in listUser) {
       users.add(_newUser(tag));
     }

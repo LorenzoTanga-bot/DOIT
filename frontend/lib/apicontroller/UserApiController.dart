@@ -24,19 +24,21 @@ class UserApiController {
         .body;
   }
 
-  Future<String> getUsersByUsername(String username,String role) async {
-    return (await http.get("$_baseUrl/getByUsername/$role$username",
+  Future<String> getUsersByUsername(String username, String role) async {
+    return (await http.get("$_baseUrl/getByUsername/$role/$username",
             headers: BasicAuthConfig().getBaseHeader()))
         .body;
   }
- Future<String> getUsersByIds(List<String> ids) async {
+
+  Future<String> getUsersByIds(List<String> ids) async {
     return (await http.post("$_baseUrl/getByIds",
             headers: BasicAuthConfig().getUserHeader(),
             body: json.encode({ids})))
         .body;
   }
-  Future<String> getUsersByTags(List<String> tags) async{
-    return (await http.put(Uri.encodeFull("$_baseUrl/getByUTags"),
+
+  Future<String> getUsersByTags(List<String> tags) async {
+    return (await http.put(Uri.encodeFull("$_baseUrl/getByTags"),
             headers: BasicAuthConfig().getUserHeader(),
             body: json.encode({tags})))
         .body;

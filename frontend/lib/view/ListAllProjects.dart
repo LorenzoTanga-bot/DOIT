@@ -14,6 +14,8 @@ class _ListAllProjectsState extends State<ListAllProjects> {
   @override
   Widget build(BuildContext context) {
     _projects = context.read<ProjectProvider>().getListAllProject();
-    return ListOfProjects(projects: _projects);
+    return Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [ListOfProjects(projects: _projects)]);
   }
 }
