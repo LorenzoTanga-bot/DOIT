@@ -84,4 +84,19 @@ class BackEndProjectService implements ProjectService {
   Future<List<Project>> findByIds(List<String> ids) async {
     return _createListProject(await _controller.getProjectsByIds(ids));
   }
+
+  @override
+  Future<ProjectsPage> getProjectsPage(int index) async {
+    var page = json.decode(await _controller.getProjectsPage(index));
+    ProjectsPage pPage = new ProjectsPage(
+        _createListProject(json.encode(page["content"])),
+        page["totalPages"],
+        page["totalElements"],
+        page["last"],
+        page["first"],
+        page["size"],
+        page["numberOfElements"],
+        page["number"]);
+    return pPage;
+  }
 }

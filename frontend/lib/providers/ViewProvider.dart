@@ -1,4 +1,4 @@
-import 'package:doit/view/ListAllProjects.dart';
+import 'package:doit/view/ListOfProjects.dart';
 import 'package:doit/view/Login.dart';
 import 'package:doit/view/SearchPage.dart';
 
@@ -8,7 +8,7 @@ class ViewProvider with ChangeNotifier {
   int _selectedItemPosition = 0;
   List<Widget> _listViewPosition;
 
-  Widget _firstDefault = ListAllProjects();
+  Widget _firstDefault = ListOfProjects();
   Widget _secondDefault = SearchPage();
   Widget _threeDefault = Login();
 

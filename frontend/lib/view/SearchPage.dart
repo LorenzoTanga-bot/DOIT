@@ -3,9 +3,9 @@ import 'package:doit/model/User.dart';
 import 'package:doit/providers/ProjectProvider.dart';
 import 'package:doit/providers/UserProvider.dart';
 import 'package:doit/providers/ViewProvider.dart';
-import 'package:doit/view/ListOfProjects.dart';
 import 'package:doit/view/ProfileOverView.dart';
 import 'package:doit/widget/CardList.dart';
+import 'package:doit/widget/ListProjects.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -50,7 +50,7 @@ class _SearchPage extends State<SearchPage> {
   }
 
   Widget buildResults(BuildContext context) {
-    return ListOfProjects(
+    return ListProjects(
       projects: projectsFind,
     );
   }
@@ -101,7 +101,7 @@ class _SearchPage extends State<SearchPage> {
                         indent: 2,
                         endIndent: 2,
                       ),
-                      (ListOfProjects(projects: projectsFind)),
+                      (ListProjects(projects: projectsFind)),
                     ])),
           if (usersFind.isNotEmpty)
             Padding(

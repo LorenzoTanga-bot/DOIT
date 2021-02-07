@@ -60,6 +60,12 @@ class ProjectApiController {
         .body;
   }
 
+  Future<String> getProjectsPage(int index) async {
+    return (await http.get(Uri.encodeFull("$_baseUrl/getPage/$index/15"),
+            headers: BasicAuthConfig().getBaseHeader()))
+        .body;
+  }
+
   Future<String> getAllProjects() async {
     return (await http.get(Uri.encodeFull("$_baseUrl/get"),
             headers: BasicAuthConfig().getBaseHeader()))
@@ -73,14 +79,12 @@ class ProjectApiController {
   }
 
   Future<String> getProjectsByIds(List<String> ids) async {
-   return (await http.put(Uri.encodeFull("$_baseUrl/getByIds"),
+    return (await http.put(Uri.encodeFull("$_baseUrl/getByIds"),
             headers: BasicAuthConfig().getUserHeader(),
-            body: json.encode({
-              ids
-            })))
+            body: json.encode({ids})))
         .body;
   }
- 
+
   Future<String> getProjectsByName(String name) async {
     return (await http.get(Uri.encodeFull("$_baseUrl/getByName/$name"),
             headers: BasicAuthConfig().getBaseHeader()))
@@ -88,13 +92,9 @@ class ProjectApiController {
   }
 
   Future<String> getProjectsByTags(List<String> tags) async {
-   return (await http.put(Uri.encodeFull("$_baseUrl/getByTags"),
+    return (await http.put(Uri.encodeFull("$_baseUrl/getByTags"),
             headers: BasicAuthConfig().getUserHeader(),
-            body: json.encode({
-              tags
-            })))
+            body: json.encode({tags})))
         .body;
   }
-
- 
 }

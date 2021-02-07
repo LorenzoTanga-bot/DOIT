@@ -23,6 +23,12 @@ class ProjectProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  Future<ProjectsPage> pageListUser(int index) async {
+    ProjectsPage page = await _service.getProjectsPage(index);
+    _listAllProject.addAll(page.getListProject());
+    return page;
+  }
+
   List<Project> getListAllProject() {
     return _listAllProject;
   }

@@ -11,12 +11,10 @@ class LoadingView extends StatefulWidget {
 }
 
 class _LoadingViewState extends State<LoadingView> {
+  //Provider.of<ProjectProvider>(context, listen: false).updateListAllProject()
   Future _uploadData() async {
-    await Future.wait([
-      Provider.of<ProjectProvider>(context, listen: false)
-          .updateListAllProject(),
-      Provider.of<TagProvider>(context, listen: false).updateListTag()
-    ]);
+    await Future.wait(
+        [Provider.of<TagProvider>(context, listen: false).updateListTag()]);
   }
 
   @override

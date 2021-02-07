@@ -5,7 +5,7 @@ import 'package:doit/model/User.dart';
 import 'package:doit/providers/ProjectProvider.dart';
 import 'package:doit/providers/TagProvider.dart';
 import 'package:doit/providers/UserProvider.dart';
-import 'package:doit/view/ListOfProjects.dart';
+import 'package:doit/widget/ListProjects.dart';
 import 'package:doit/widget/LoadingScreen.dart';
 import 'package:doit/widget/PrincipalInformationUser.dart';
 import 'package:flutter/material.dart';
@@ -84,7 +84,7 @@ class _ProfileOverView extends State<ProfileOverView> {
                                 endIndent: 2,
                               ),
                               // fixed height
-                              ListOfProjects(projects: _projectsFirstRole)
+                              ListProjects(projects: _projectsFirstRole)
                             ])),
                   if (_projectsSecondRole.isNotEmpty &&
                       _user.getRoles().last != UserRole.DESIGNER)
@@ -117,7 +117,7 @@ class _ProfileOverView extends State<ProfileOverView> {
                                 indent: 2,
                                 endIndent: 2,
                               ),
-                              ListOfProjects(projects: _projectsSecondRole),
+                              ListProjects(projects: _projectsSecondRole),
                             ])),
                 ]),
               );

@@ -46,9 +46,9 @@ public class ProjectController {
         
     }
 
-    @GetMapping("/getPage/{page}")
-    public Page<Project> getProjectsPage(@PathVariable("page") int index){
-        return service.getProjectsPage(index, 15);
+    @GetMapping("/getPage/{index}/{size}")
+    public Page<Project> getProjectsPage(@PathVariable("index") int index, @PathVariable("size") int size){
+        return service.getProjectsPage(index, size);
     }
 
     @GetMapping("/get")

@@ -4,7 +4,7 @@ import 'package:doit/model/User.dart';
 import 'package:doit/providers/ProjectProvider.dart';
 import 'package:doit/providers/TagProvider.dart';
 import 'package:doit/providers/UserProvider.dart';
-import 'package:doit/view/ListOfProjects.dart';
+import 'package:doit/widget/ListProjects.dart';
 import 'package:doit/widget/LoadingScreen.dart';
 import 'package:doit/widget/PrincipalInformationUser.dart';
 import 'package:flutter/material.dart';
@@ -67,7 +67,7 @@ class _ProfileD extends State<ProfileD> {
                           ),
                           SizedBox(
                             height: 300, // fixed height
-                            child: ListOfProjects(projects: _projects),
+                            child: ListProjects(projects: _projects),
                           )
                         ])),
               ]);

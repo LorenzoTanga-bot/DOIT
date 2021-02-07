@@ -10,11 +10,9 @@ class UserProvider with ChangeNotifier {
   UserProvider(UserService service) {
     _service = service;
   }
-// da cambiare
+
   Future recoverPassword(String currentEmail) async {
-    // await FirebaseAuth.instance.sendPasswordResetEmail(
-    //  email: currentEmail,
-    //);
+      //TODO da fare
   }
   Future<User> findUserById(String id) async {
     if (_listUsers.isEmpty) _listUsers.add(await _service.findById(id));
