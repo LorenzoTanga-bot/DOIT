@@ -31,3 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
