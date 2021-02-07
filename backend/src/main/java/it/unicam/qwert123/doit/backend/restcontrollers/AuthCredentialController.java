@@ -5,7 +5,6 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -43,7 +42,7 @@ public class AuthCredentialController {
 	@PostMapping("/login")
 	@PreAuthorize("permitAll")
 	public User loginWithCredentials(@RequestBody AuthCredential credentials) {
-		return authService.loginWithCredentials(credentials) ? userService.findById(credentials.getId()) : null;
+		return authService.loginWithCredentials(credentials) ? userService.findByMail(credentials.getMail()): null;
 	}
 
 	@PostMapping("/addCredential")
@@ -58,7 +57,7 @@ public class AuthCredentialController {
 		User newUser = userService.addUser(user);
 		AuthCredential authCredential = authService.getAuthCredentialsInstance(user.getMail());
 		authCredential.setRoles(newUser.getRoles());
-		authCredential.setId(newUser.getId());
+		authCredential.setUserId(user.getId());
 		updateCredentials(authCredential);
 		return newUser;
 	}

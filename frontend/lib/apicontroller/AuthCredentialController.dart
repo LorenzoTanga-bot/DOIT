@@ -19,12 +19,31 @@ class AuthCredentialController {
     _baseUrl = "http://$_ip:8080/doit/api/authCredential";
   }
 
+  List<String> _rolesToString(List<UserRole> roles) {
+    List<String> stringRoles = [];
+    for (UserRole item in roles) {
+      stringRoles
+          .add(item.toString().substring(item.toString().indexOf('.') + 1));
+    }
+    return stringRoles;
+  }
+
   Future<String> loginWithCredentials(AuthCredential authCredential) async {
     return (await http.post(Uri.encodeFull("$_baseUrl/login"),
             headers: BasicAuthConfig().getBaseHeader(),
             body: json.encode({
               "mail": authCredential.getMail(),
               "password": authCredential.getPassword(),
+            })))
+        .body;
+  }
+
+  Future<String> addCredential(AuthCredential authCredential) async {
+    return (await http.post(Uri.encodeFull("$_baseUrl/update"),
+            headers: BasicAuthConfig().getBaseHeader(),
+            body: json.encode({
+              "mail": authCredential.getMail(),
+              "password": authCredential.getPassword()
             })))
         .body;
   }
@@ -36,32 +55,26 @@ class AuthCredentialController {
               "id": authCredential.getId(),
               "mail": authCredential.getMail(),
               "password": authCredential.getPassword(),
-              "role": authCredential.getRolesToString(),
+              "role": _rolesToString(authCredential.getRoles()),
             })))
         .body;
   }
 
-  Future<String> addUser(User newUser, AuthCredential authCredential) async {
+  Future<String> addUser(User newUser) async {
     return (await http.post(Uri.encodeFull("$_baseUrl/addUser"),
             headers: BasicAuthConfig().getBaseHeader(),
             body: json.encode({
-              "user": {
+              {
                 "id": newUser.getId(),
                 "isAPerson": newUser.getIsAperson(),
                 "username": newUser.getUsername(),
                 "name": newUser.getName(),
                 "surname": newUser.getUsername(),
                 "mail": newUser.getMail(),
-                "roles": authCredential.getRolesToString(),
+                "roles": _rolesToString(newUser.getRoles()),
                 "tags": newUser.getTags(),
                 "projectsFirstRole": newUser.getProjectsFirstRole(),
                 "projectsSecondRole": newUser.getProjectsSecondRole()
-              },
-              "authCredentials": {
-                "id": authCredential.getId(),
-                "mail": authCredential.getMail(),
-                "password": authCredential.getPassword(),
-                "role": authCredential.getRolesToString(),
               }
             })))
         .body;
@@ -77,7 +90,8 @@ class AuthCredentialController {
               "name": newUser.getName(),
               "surname": newUser.getUsername(),
               "mail": newUser.getMail(),
-              "roles": BasicAuthConfig().getAuthCredential().getRolesToString(),
+              "roles": _rolesToString(
+                  BasicAuthConfig().getAuthCredential().getRoles()),
               "tags": newUser.getTags(),
               "projectsFirstRole": newUser.getProjectsFirstRole(),
               "projectsSecondRole": newUser.getProjectsSecondRole()
