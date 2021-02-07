@@ -1,13 +1,11 @@
-import 'dart:convert';
-
 import 'package:doit/model/AuthCredential.dart';
 
 class User {
   String _id;
-  bool _isAPerson = false;
-  String _username = "";
-  String _name = "";
-  String _surname = "";
+  bool _isAPerson;
+  String _username;
+  String _name;
+  String _surname;
   String _mail;
   List<UserRole> _roles = [];
   List<String> _tags = [];
@@ -22,23 +20,6 @@ class User {
     _roles.add(UserRole.NOT_COMPLETED);
   }
 
-  User.fromJson(
-      String id,
-      bool isAPerson,
-      String username,
-      String name,
-      String surname,
-      String mail,
-      List<String> tags,
-      List<UserRole> roles,
-      List<String> projectsFirstRole,
-      List<String> projectsSecondRole) {
-    User.complete(id, isAPerson, username, name, surname, mail, tags, roles,
-        projectsFirstRole, projectsSecondRole);
-  }
-
-
-
   User.complete(
       String id,
       bool isAPerson,
@@ -46,10 +27,10 @@ class User {
       String name,
       String surname,
       String mail,
-      List<String> tags,
+      List<String> skills,
       List<UserRole> roles,
       List<String> projectsFirstRole,
-      List<String> projectsSecondRole) {
+      List<String> projectSecondRole) {
     _id = id;
     _isAPerson = isAPerson;
     _username = username;
@@ -57,9 +38,9 @@ class User {
     _surname = surname;
     _mail = mail;
     _roles = roles;
-    _tags = tags;
+    _tags = skills;
     _projectsFirstRole = projectsFirstRole;
-    _projectsSecondRole = projectsSecondRole;
+    _projectsSecondRole = projectSecondRole;
   }
 
   String getId() {

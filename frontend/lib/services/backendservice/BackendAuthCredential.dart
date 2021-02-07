@@ -19,12 +19,12 @@ class BackendAuthCredential implements AuthCredentialService {
     List<String> projectsFirstRole = [];
     List<String> projectsSecondRole = [];
     for (String role in rolesJson)
-      roles.add(UserRole.values
-          .firstWhere((e) => e.toString() == 'UserRole.' + role));
+      roles.add(UserRole.values.firstWhere(
+          (e) => e.toString() == 'UserRole.' + role)); //TODO da testare
     for (String tag in tagsJson) tags.add(tag);
     for (String project in projectsFirstJson) projectsFirstRole.add(project);
     for (String project in projectsSecondJson) projectsSecondRole.add(project);
-    return new User.fromJson(
+    return new User.complete(
         user["id"],
         user["isAPerson"],
         user["username"],
@@ -38,22 +38,15 @@ class BackendAuthCredential implements AuthCredentialService {
   }
 
   @override
-  Future<User> addUser(User newUser) async {
-   var b = await _controller.addUser(newUser);
-    User a = _createUser(b);
-    return a;
-  }
-
-  @override
-  Future<bool> deleteCredential(AuthCredential authCredential) async {
-    return (await _controller.deleteCredential(authCredential)) == "true"
-        ? true
-        : false;
-  }
-
-  @override
   Future<User> loginWithCredentials(AuthCredential authCredential) async {
     return _createUser(await _controller.loginWithCredentials(authCredential));
+  }
+
+  @override
+  Future<bool> addCredentials(AuthCredential authCredential) async {
+    return (await _controller.addCredential(authCredential)) == "true"
+        ? true
+        : false;
   }
 
   @override
@@ -64,7 +57,19 @@ class BackendAuthCredential implements AuthCredentialService {
   }
 
   @override
+  Future<User> addUser(User newUser) async {
+    return _createUser(await _controller.addUser(newUser));
+  }
+
+  @override
   Future<User> updateUser(User newUser) async {
     return _createUser(await _controller.updateUser(newUser));
+  }
+
+  @override
+  Future<bool> deleteCredential(AuthCredential authCredential) async {
+    return (await _controller.deleteCredential(authCredential)) == "true"
+        ? true
+        : false;
   }
 }

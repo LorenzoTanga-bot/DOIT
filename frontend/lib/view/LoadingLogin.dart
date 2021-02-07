@@ -1,9 +1,7 @@
 import 'package:doit/model/AuthCredential.dart';
 import 'package:doit/providers/AuthCredentialProvider.dart';
-import 'package:doit/providers/UserProvider.dart';
 import 'package:doit/providers/ViewProvider.dart';
 import 'package:doit/view/InitialSelection.dart';
-import 'package:doit/view/Signin.dart';
 import 'package:doit/view/projectproposer/ThreeViewPP.dart';
 import 'package:doit/widget/LoadingScreen.dart';
 import 'package:flutter/material.dart';

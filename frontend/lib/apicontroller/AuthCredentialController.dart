@@ -34,12 +34,13 @@ class AuthCredentialController {
             body: json.encode({
               "mail": authCredential.getMail(),
               "password": authCredential.getPassword(),
+              "id": authCredential.getId()
             })))
         .body;
   }
 
   Future<String> addCredential(AuthCredential authCredential) async {
-    return (await http.post(Uri.encodeFull("$_baseUrl/update"),
+    return (await http.post(Uri.encodeFull("$_baseUrl/addCredential"),
             headers: BasicAuthConfig().getBaseHeader(),
             body: json.encode({
               "mail": authCredential.getMail(),
@@ -49,7 +50,7 @@ class AuthCredentialController {
   }
 
   Future<String> updateCredential(AuthCredential authCredential) async {
-    return (await http.post(Uri.encodeFull("$_baseUrl/update"),
+    return (await http.post(Uri.encodeFull("$_baseUrl/updateCredential"),
             headers: BasicAuthConfig().getUserHeader(),
             body: json.encode({
               "id": authCredential.getId(),
@@ -67,9 +68,9 @@ class AuthCredentialController {
               {
                 "id": newUser.getId(),
                 "isAPerson": newUser.getIsAperson(),
-                "usernameToShow": newUser.getUsername(),
+                "username": newUser.getUsername(),
                 "name": newUser.getName(),
-                "surname": newUser.getSurname(),
+                "surname": newUser.getUsername(),
                 "mail": newUser.getMail(),
                 "roles": _rolesToString(newUser.getRoles()),
                 "tags": newUser.getTags(),

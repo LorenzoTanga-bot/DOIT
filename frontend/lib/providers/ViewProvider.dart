@@ -1,9 +1,6 @@
 import 'package:doit/view/ListAllProjects.dart';
-import 'package:doit/view/ListOfProjects.dart';
 import 'package:doit/view/Login.dart';
-import 'package:doit/view/ProfileOverView.dart';
 import 'package:doit/view/SearchPage.dart';
-import 'package:doit/view/projectproposer/CreateModifyProject.dart';
 
 import 'package:flutter/material.dart';
 

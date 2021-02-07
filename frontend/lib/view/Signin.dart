@@ -2,7 +2,6 @@ import 'package:doit/model/AuthCredential.dart';
 import 'package:doit/model/User.dart';
 import 'package:doit/providers/AuthCredentialProvider.dart';
 import 'package:doit/providers/TagProvider.dart';
-import 'package:doit/providers/UserProvider.dart';
 import 'package:doit/providers/ViewProvider.dart';
 import 'package:doit/view/LoadingLogin.dart';
 import 'package:doit/widget/NewTagInsertion.dart';

@@ -1,5 +1,4 @@
 import 'package:doit/model/Project.dart';
-import 'package:doit/providers/ProjectProvider.dart';
 import 'package:doit/providers/ViewProvider.dart';
 import 'package:doit/view/ProjectOverView.dart';
 import 'package:doit/widget/CardList.dart';

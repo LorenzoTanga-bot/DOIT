@@ -1,6 +1,5 @@
 import 'package:doit/providers/ViewProvider.dart';
 import 'package:doit/view/Signin.dart';
-import 'package:doit/view/projectproposer/CreateModifyProject.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

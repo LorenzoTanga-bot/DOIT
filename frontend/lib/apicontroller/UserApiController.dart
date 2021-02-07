@@ -1,5 +1,4 @@
 import 'package:doit/apicontroller/BasicAuthConfig.dart';
-import 'package:doit/model/User.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 

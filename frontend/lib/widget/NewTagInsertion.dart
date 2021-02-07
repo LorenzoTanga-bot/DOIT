@@ -21,7 +21,7 @@ class NewTagInsertion extends StatelessWidget {
             context: context,
             builder: (BuildContext context) {
               return AlertDialog(
-                title: Text("Attention"),
+                title: Text("Attetion"),
                 content: Text("Tag already exist"),
               );
             });
@@ -29,7 +29,6 @@ class NewTagInsertion extends StatelessWidget {
       }
 
     if (controller) {
-     //che roba è??
       Navigator.pop(context, true);
       Provider.of<TagProvider>(context, listen: false).addListTag(newTag);
     }

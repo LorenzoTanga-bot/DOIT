@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:doit/apicontroller/ProjectApiController.dart';
-import 'package:doit/model/Tag.dart';
 import 'package:doit/model/Project.dart';
 import 'package:doit/services/ProjectService.dart';
 

@@ -23,8 +23,8 @@ class AuthCredentialProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future newMailPassword(User newUser, AuthCredential authCredential) async {
-    _user = await _service.addUser(newUser);
+  Future newMailPassword(AuthCredential authCredential) async {
+    await _service.addCredentials(authCredential);
     BasicAuthConfig().setAuthCredential(authCredential);
     notifyListeners();
   }
@@ -32,6 +32,11 @@ class AuthCredentialProvider with ChangeNotifier {
   logout() {
     _user = null;
     BasicAuthConfig().deleteAuthCredential();
+    notifyListeners();
+  }
+
+  Future addUser(User user) async {
+    _user = await _service.addUser(user);
     notifyListeners();
   }
 

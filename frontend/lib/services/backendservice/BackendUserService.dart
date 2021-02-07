@@ -20,7 +20,6 @@ class BackendUserService implements UserService {
     if (controllerJson == "") return null;
     var listUser = json.decode(controllerJson);
     List<User> users = new List<User>();
-    
     for (var tag in listUser) {
       users.add(_newUser(tag));
     }
@@ -69,6 +68,11 @@ class BackendUserService implements UserService {
   @override
   Future<User> findById(String id) async {
     return _createUser(await _controller.getUserById(id));
+  }
+
+  @override
+  Future<List<User>> findByIds(List<String> id) async {
+    return _createListUser(await _controller.getUsersByIds(id));
   }
 
   @override

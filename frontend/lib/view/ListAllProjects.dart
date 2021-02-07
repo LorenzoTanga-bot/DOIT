@@ -11,9 +11,16 @@ class ListAllProjects extends StatefulWidget {
 
 class _ListAllProjectsState extends State<ListAllProjects> {
   List<Project> _projects;
+
+  @override
+  void initState() { 
+    super.initState();
+    _projects = context.read<ProjectProvider>().getListAllProject();
+    
+  }
+
   @override
   Widget build(BuildContext context) {
-    _projects = context.read<ProjectProvider>().getListAllProject();
     return Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [ListOfProjects(projects: _projects)]);

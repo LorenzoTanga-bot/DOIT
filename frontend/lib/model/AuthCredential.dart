@@ -3,12 +3,13 @@ enum UserRole { PROJECT_PROPOSER, EXPERT, DESIGNER, NOT_COMPLETED }
 class AuthCredential {
   String _mail;
   String _password;
-  List<UserRole> _roles=[];
+  List<UserRole> _roles = [];
   String _id;
 
   AuthCredential(String mail, String password) {
-    this._mail = mail;
-    this._password = password;
+    _mail = mail;
+    _password = password;
+    _id = "";
   }
   AuthCredential.complete(String mail, String password, List<UserRole> roles) {
     this._mail = mail;
