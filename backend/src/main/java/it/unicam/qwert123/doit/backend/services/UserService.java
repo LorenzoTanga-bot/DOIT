@@ -53,7 +53,7 @@ public class UserService {
     }
 
     public User addUser(@NonNull User newUser) throws ResponseStatusException {
-        newUser.setUsername(newUser.getUsername().toUpperCase().trim());
+        newUser.setUsername(newUser.getUsernameToShow().toUpperCase().trim());
         if (repository.existsByUsername(newUser.getUsername()))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Username already used");
         if (checkUser(newUser)) {
@@ -64,6 +64,7 @@ public class UserService {
     }
 
     public User updateUser(User modifiedUser) throws ResponseStatusException {
+        modifiedUser.setUsername(modifiedUser.getUsernameToShow().toUpperCase().trim());
         if (existById(modifiedUser.getId())) {
             if (repository.findById(modifiedUser.getId()).get().getUsername().equals(modifiedUser.getUsername())) {
                 if (checkUser(modifiedUser)) {

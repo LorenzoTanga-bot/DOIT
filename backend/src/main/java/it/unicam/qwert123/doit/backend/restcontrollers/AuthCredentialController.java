@@ -53,7 +53,7 @@ public class AuthCredentialController {
 
 	@PostMapping("/addUser")
 	@PreAuthorize("@accessCheckerComponent.sameUser(principal, #user.getMail()) or hasAuthority('ADMIN')")
-	public User addUser(@RequestBody @Param("user") User user) {
+	public User addUser(@RequestBody User user) {
 		User newUser = userService.addUser(user);
 		AuthCredential authCredential = authService.getAuthCredentialsInstance(user.getMail());
 		authCredential.setRoles(newUser.getRoles());

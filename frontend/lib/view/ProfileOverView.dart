@@ -11,17 +11,17 @@ import 'package:doit/widget/PrincipalInformationUser.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class ProfileDoubleRoleOverView extends StatefulWidget {
+class ProfileOverView extends StatefulWidget {
   final String id;
 
-  const ProfileDoubleRoleOverView({Key key, @required this.id})
+  const ProfileOverView({Key key, @required this.id})
       : super(key: key);
 
   @override
-  _ProfileDoubleRoleOverView createState() => _ProfileDoubleRoleOverView();
+  _ProfileOverView createState() => _ProfileOverView();
 }
 
-class _ProfileDoubleRoleOverView extends State<ProfileDoubleRoleOverView> {
+class _ProfileOverView extends State<ProfileOverView> {
   User _user;
   List<Project> _projectsFirstRole;
   List<Project> _projectsSecondRole;

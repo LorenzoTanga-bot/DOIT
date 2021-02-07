@@ -7,7 +7,8 @@ import 'package:doit/providers/ProjectProvider.dart';
 import 'package:doit/providers/TagProvider.dart';
 import 'package:doit/providers/UserProvider.dart';
 import 'package:doit/providers/ViewProvider.dart';
-import 'package:doit/view/ProfileDoubleRoleOverView.dart';
+
+import 'package:doit/view/ProfileOverView.dart';
 import 'package:doit/view/projectproposer/CreateModifyProject.dart';
 
 import 'package:doit/widget/ListTags.dart';
@@ -211,22 +212,11 @@ List<RichText> getListDesigner() {
                                       style: TextStyle(color: Colors.black),
                                       recognizer: TapGestureRecognizer()
                                         ..onTap = () {
-                                          if (_projectProposer
-                                                  .getRoles()
-                                                  .length ==
-                                              2)
-                                            Provider.of<ViewProvider>(context,
-                                                    listen: false)
-                                                .pushWidget(
-                                                    ProfileDoubleRoleOverView(
-                                                        id: _projectProposer
-                                                            .getId()));
-                                          else
-                                            Provider.of<ViewProvider>(context,
-                                                    listen: false)
-                                                .pushWidget(ProfileDoubleRoleOverView(
-                                                    id: _projectProposer
-                                                        .getId()));
+                                          Provider.of<ViewProvider>(context,
+                                                  listen: false)
+                                              .pushWidget(ProfileOverView(
+                                                  id: _projectProposer
+                                                      .getId()));
                                         }),
                                 )
                               ]),

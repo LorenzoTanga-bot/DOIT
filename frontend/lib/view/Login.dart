@@ -60,6 +60,7 @@ class _Login extends State<Login> {
       Provider.of<AuthCredentialProvider>(context, listen: false)
           .newMailPassword(new User.firstAccess("", login.name),
               new AuthCredential(login.name, login.password));
+              
     } catch (e) {
       switch (e.code) {
         case 'ERROR_INVALID_EMAIL':

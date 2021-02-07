@@ -5,7 +5,7 @@ import 'package:doit/providers/UserProvider.dart';
 import 'package:doit/providers/ViewProvider.dart';
 import 'package:doit/view/ListAllProjects.dart';
 import 'package:doit/view/ListOfProjects.dart';
-import 'package:doit/view/ProfileDoubleRoleOverView.dart';
+import 'package:doit/view/ProfileOverView.dart';
 import 'package:doit/view/ProjectOverView.dart';
 import 'package:doit/view/projectproposer/CreateModifyProject.dart';
 import 'package:doit/widget/CardList.dart';
@@ -137,7 +137,7 @@ class _SearchPage extends State<SearchPage> {
                                 onTap: () {
                                   Provider.of<ViewProvider>(context,
                                           listen: false)
-                                      .pushWidget(ProfileDoubleRoleOverView(
+                                      .pushWidget(ProfileOverView(
                                           id: usersFind[index].getId()));
                                 });
                           })

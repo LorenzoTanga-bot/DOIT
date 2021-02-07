@@ -67,9 +67,9 @@ class AuthCredentialController {
               {
                 "id": newUser.getId(),
                 "isAPerson": newUser.getIsAperson(),
-                "username": newUser.getUsername(),
+                "usernameToShow": newUser.getUsername(),
                 "name": newUser.getName(),
-                "surname": newUser.getUsername(),
+                "surname": newUser.getSurname(),
                 "mail": newUser.getMail(),
                 "roles": _rolesToString(newUser.getRoles()),
                 "tags": newUser.getTags(),

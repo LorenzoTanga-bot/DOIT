@@ -19,7 +19,7 @@ class ListOfProjects extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (projects.isNotEmpty)
+
       return ListView.builder(
           shrinkWrap: true,
           itemCount: projects.length,
