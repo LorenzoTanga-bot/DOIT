@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -104,5 +106,9 @@ public class ProjectService {
     public List<Project> findByIds(@NonNull List<UUID> ids) {
         return repository.findByIds(ids);
     }
+
+	public Page<Project> getProjectsPage(int index, int size) {
+		return repository.findAll(PageRequest.of(index, size));
+	}
 
 }
