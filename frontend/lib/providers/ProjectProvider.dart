@@ -50,6 +50,12 @@ class ProjectProvider with ChangeNotifier {
     return _listAllProject.where((project) => project.getId() == id).first;
   }
 
+  Future<List<Project>> findByTags(List<String> tags) async {
+    List<Project> found = [];
+    found.addAll(await _service.findByTags(tags));
+    return found;
+  }
+
   List<Project> findByIds(List<String> ids) {
     List<Project> found = [];
     for (String id in ids) {

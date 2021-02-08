@@ -7,7 +7,7 @@ abstract class ProjectService {
   Future<Project> findById(String id);
   Future<List<Project>> findByIds(List<String> ids);
   Future<List<Project>> findByName(String name);
-  Future<List<Project>> findByTag(List<String> tags);
+  Future<List<Project>> findByTags(List<String> tags);
   Future<ProjectsPage> getProjectsPage(int index);
   Future<Project> updateProject(Project newProject);
 }
@@ -22,8 +22,15 @@ class ProjectsPage {
   int _numberOfElements;
   int _number;
 
-  ProjectsPage(this._listProject, this._totalPages, this._totalElements, this._isLast, this._isFirst,
-      this._size, this._numberOfElements, this._number);
+  ProjectsPage(
+      this._listProject,
+      this._totalPages,
+      this._totalElements,
+      this._isLast,
+      this._isFirst,
+      this._size,
+      this._numberOfElements,
+      this._number);
 
   List<Project> getListProject() {
     return _listProject;

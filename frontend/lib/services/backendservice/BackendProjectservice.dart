@@ -66,7 +66,7 @@ class BackEndProjectService implements ProjectService {
   }
 
   @override
-  Future<List<Project>> findByTag(List<String> tags) async {
+  Future<List<Project>> findByTags(List<String> tags) async {
     return _createListProject(await _controller.getProjectsByTags(tags));
   }
 
