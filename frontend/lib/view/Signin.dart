@@ -3,7 +3,6 @@ import 'package:doit/model/User.dart';
 import 'package:doit/providers/AuthCredentialProvider.dart';
 import 'package:doit/providers/TagProvider.dart';
 import 'package:doit/providers/ViewProvider.dart';
-import 'package:doit/view/LoadingLogin.dart';
 import 'package:doit/widget/NewTagInsertion.dart';
 import 'package:doit/widget/SmartSelectTag.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +33,7 @@ class _Signin extends State<Signin> {
     newUser.setRoles([_role]); //TODO da cambiare SmartSelect<UserRole>.single
     newUser.setTags(context.read<TagProvider>().getSelectTag());
     context.read<AuthCredentialProvider>().updateUser(newUser);
-    context.read<ViewProvider>().setProfileDefault(LoadingLogin());
+   //TODO da sistemare context.read<ViewProvider>().setProfileDefault(LoadingLogin());
   }
 
   Widget _selectUserRole() {

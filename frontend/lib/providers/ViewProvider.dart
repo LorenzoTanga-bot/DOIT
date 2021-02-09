@@ -10,14 +10,14 @@ class ViewProvider with ChangeNotifier {
 
   Widget _firstDefault = ListOfProjects();
   Widget _secondDefault = SearchPage();
-  Widget _threeDefault = Login();
+  Widget _thirdDefault = Login();
 
   List<Widget> _listFirstPosition = [];
   List<Widget> _listSecondPosition = [];
   List<Widget> _listThreePosition = [];
 
   ViewProvider() {
-    _listViewPosition = [_firstDefault, _secondDefault, _threeDefault];
+    _listViewPosition = [_firstDefault, _secondDefault, _thirdDefault];
   }
 
   List<Widget> getViewPosition() {
@@ -33,7 +33,7 @@ class ViewProvider with ChangeNotifier {
   }
 
   void setProfileDefault(Widget widget) {
-    _threeDefault = widget;
+    _thirdDefault = widget;
     _listViewPosition.removeAt(2);
     _listViewPosition.insert(2, widget);
     notifyListeners();
@@ -50,6 +50,13 @@ class ViewProvider with ChangeNotifier {
     _listSecondPosition.clear();
     _listViewPosition.removeAt(1);
     _listViewPosition.insert(1, _secondDefault);
+    notifyListeners();
+  }
+
+  void dropThirdWidget() {
+    _listThreePosition.clear();
+    _listViewPosition.removeAt(2);
+    _listViewPosition.insert(2, _thirdDefault);
     notifyListeners();
   }
 
@@ -94,17 +101,10 @@ class ViewProvider with ChangeNotifier {
         _listViewPosition.insert(
             _selectedItemPosition,
             _listThreePosition.isEmpty
-                ? _threeDefault
+                ? _thirdDefault
                 : _listThreePosition.last);
         break;
     }
-    notifyListeners();
-  }
-
-  void dropThreeWidget() {
-    _listThreePosition.clear();
-    _listViewPosition.removeAt(2);
-    _listViewPosition.insert(2, _threeDefault);
     notifyListeners();
   }
 }

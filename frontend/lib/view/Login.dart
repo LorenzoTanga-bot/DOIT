@@ -2,7 +2,8 @@ import 'package:doit/model/AuthCredential.dart';
 import 'package:doit/providers/AuthCredentialProvider.dart';
 import 'package:doit/providers/UserProvider.dart';
 import 'package:doit/providers/ViewProvider.dart';
-import 'package:doit/view/LoadingLogin.dart';
+import 'package:doit/view/InitialSelection.dart';
+import 'package:doit/view/ThirdView.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
 import 'package:provider/provider.dart';
@@ -13,6 +14,8 @@ class Login extends StatefulWidget {
 }
 
 class _Login extends State<Login> {
+  bool _isFirstAccess;
+
   LoginMessages _buildLoginMessages() {
     return LoginMessages(
       usernameHint: 'Email',
@@ -33,6 +36,7 @@ class _Login extends State<Login> {
     try {
       Provider.of<AuthCredentialProvider>(context, listen: false)
           .loginWithCredentials(new AuthCredential(login.name, login.password));
+      _isFirstAccess = false;
     } catch (e) {
       switch (e.code) {
         case 'ERROR_USER_NOT_FOUND':
@@ -58,6 +62,7 @@ class _Login extends State<Login> {
     try {
       Provider.of<AuthCredentialProvider>(context, listen: false)
           .newMailPassword(new AuthCredential(login.name, login.password));
+      _isFirstAccess = true;
     } catch (e) {
       switch (e.code) {
         case 'ERROR_INVALID_EMAIL':
@@ -101,8 +106,12 @@ class _Login extends State<Login> {
           return value.isEmpty ? 'Invalid password entered' : null;
         },
         onSubmitAnimationCompleted: () {
-          Provider.of<ViewProvider>(context, listen: false)
-              .setProfileDefault(LoadingLogin());
+          if (_isFirstAccess)
+            Provider.of<ViewProvider>(context, listen: false)
+                .setProfileDefault(InitialSelection());
+          else
+            Provider.of<ViewProvider>(context, listen: false)
+                .setProfileDefault(ThirdView());
         });
   }
 }
