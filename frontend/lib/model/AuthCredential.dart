@@ -4,11 +4,11 @@ class AuthCredential {
   String _mail;
   String _password;
   List<UserRole> _roles = [];
-  String _id;
 
-  AuthCredential(_mail, _password);
 
-  AuthCredential.complete(_mail, _password, _roles, _id);
+  AuthCredential(this._mail, this._password);
+
+  AuthCredential.complete(this._mail,this. _password, this._roles) ;
 
   String getMail() {
     return _mail;
@@ -38,7 +38,4 @@ class AuthCredential {
     return roles;
   }
 
-  String getId() {
-    return _id;
-  }
 }

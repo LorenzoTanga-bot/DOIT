@@ -46,7 +46,7 @@ public class UserService {
         return true;
     }
 
-    private boolean existById(String mail) throws ResponseStatusException {
+    private boolean existByMail(String mail) throws ResponseStatusException {
         if (repository.existsById(mail))
             return true;
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
@@ -64,7 +64,7 @@ public class UserService {
 
     public User updateUser(User modifiedUser) throws ResponseStatusException {
         modifiedUser.setUsername(modifiedUser.getUsernameToShow().toUpperCase().trim());
-        if (existById(modifiedUser.getMail())) {
+        if (existByMail(modifiedUser.getMail())) {
             if (repository.findById(modifiedUser.getMail()).get().getUsername().equals(modifiedUser.getUsername())) {
                 if (checkUser(modifiedUser)) {
                     return repository.save(modifiedUser);
@@ -77,19 +77,19 @@ public class UserService {
     }
 
     public boolean deleteUser(@NonNull String mail) throws ResponseStatusException {
-        if (existById(mail)) {
+        if (existByMail(mail)) {
             repository.deleteById(mail);
             return true;
         }
         return false;
     }
 
-    public User findById(@NonNull String mail) throws ResponseStatusException {
+    public User findByMail(@NonNull String mail) throws ResponseStatusException {
         return repository.findById(mail)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
     }
 
-    public List<User> findByIds(@NonNull List<String> mails) {
+    public List<User> findByMails(@NonNull List<String> mails) {
         return repository.findByIds(mails);
     }
 

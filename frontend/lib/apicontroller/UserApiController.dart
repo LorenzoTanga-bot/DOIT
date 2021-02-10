@@ -11,12 +11,6 @@ class UserApiController {
     _baseUrl = "http://$_ip:8080/doit/api/user";
   }
 
-  Future<String> getUserById(String id) async {
-    return (await http.get(Uri.encodeFull("$_baseUrl/getById/$id"),
-            headers: BasicAuthConfig().getBaseHeader()))
-        .body;
-  }
-
   Future<String> getUserByMail(String mail) async {
     return (await http.get(Uri.encodeFull("$_baseUrl/getByMail/$mail"),
             headers: BasicAuthConfig().getBaseHeader()))
@@ -29,17 +23,17 @@ class UserApiController {
         .body;
   }
 
-  Future<String> getUsersByIds(List<String> ids) async {
-    return (await http.post("$_baseUrl/getByIds",
-            headers: BasicAuthConfig().getUserHeader(),
-            body: json.encode({ids})))
-        .body;
-  }
-
   Future<String> getUsersByTags(List<String> tags) async {
     return (await http.put(Uri.encodeFull("$_baseUrl/getByTags"),
             headers: BasicAuthConfig().getUserHeader(),
             body: json.encode({tags})))
+        .body;
+  }
+
+  getUsersByMails(List<String> mails) async {
+    return (await http.put(Uri.encodeFull("$_baseUrl/getByMails"),
+            headers: BasicAuthConfig().getUserHeader(),
+            body: json.encode({mails})))
         .body;
   }
 }

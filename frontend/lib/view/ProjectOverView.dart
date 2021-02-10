@@ -103,7 +103,7 @@ List<RichText> getListDesigner() {
     // _listDesigner = context.read()<UserProvider>().getUsersById(_project.getDesigner());
     _projectProposer = await context
         .read<UserProvider>()
-        .findUserById(_project.getProjectProposer());
+        .findUserByMail(_project.getProjectProposer());
     _state = determinateState();
   }
 
@@ -148,7 +148,7 @@ List<RichText> getListDesigner() {
   bool isTheProjectProposer() {
     return true; // rimuovere
     return _project.getProjectProposer() ==
-        context.read<AuthCredentialProvider>().getUser().getId();
+        context.read<AuthCredentialProvider>().getUser().getMail();
   }
 
   @override
@@ -215,8 +215,8 @@ List<RichText> getListDesigner() {
                                           Provider.of<ViewProvider>(context,
                                                   listen: false)
                                               .pushWidget(ProfileOverView(
-                                                  id: _projectProposer
-                                                      .getId()));
+                                                  mail: _projectProposer
+                                                      .getMail()));
                                         }),
                                 )
                               ]),

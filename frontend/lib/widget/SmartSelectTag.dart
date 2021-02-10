@@ -5,8 +5,9 @@ import 'package:smart_select/smart_select.dart';
 
 class SmartSelectTag extends StatefulWidget {
   final String title;
-
-  SmartSelectTag({Key key, @required this.title}) : super(key: key);
+  final String index;
+  SmartSelectTag({Key key, @required this.title, @required this.index})
+      : super(key: key);
 
   _SmartSelectTag createState() => _SmartSelectTag();
 }
@@ -17,8 +18,9 @@ class _SmartSelectTag extends State<SmartSelectTag> {
     return Consumer<TagProvider>(builder: (context, tag, child) {
       return SmartSelect<String>.multiple(
         title: widget.title,
-        value: tag.getSelectTag(),
-        onChange: (state) => setState(() => tag.setSelectTag(state.value)),
+        value: tag.getSelectTag(widget.index),
+        onChange: (state) =>
+            setState(() => tag.setSelectTag(state.value, widget.index)),
         choiceItems: S2Choice.listFrom<String, Map<String, String>>(
           source: tag.getListMapTag(),
           value: (index, item) => item['id'],

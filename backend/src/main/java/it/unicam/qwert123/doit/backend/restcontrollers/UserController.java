@@ -25,13 +25,13 @@ public class UserController {
     private UserService service;
 
     @GetMapping("/getByMail/{mail}")
-    public User getUserById(@PathVariable("mail") String mail) {
-            return service.findById(mail);
+    public User getUserByMail(@PathVariable("mail") String mail) {
+            return service.findByMail(mail);
     }
 
     @GetMapping("/getByMails")
-    public List<User> getUsersByIds(@RequestBody List<String> mails) {
-        return service.findByIds(mails);
+    public List<User> getUsersByMails(@RequestBody List<String> mails) {
+        return service.findByMails(mails);
     }
 
     @GetMapping("/getByUsername/{role}/{username}")

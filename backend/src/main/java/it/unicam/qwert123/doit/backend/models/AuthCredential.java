@@ -3,7 +3,6 @@ package it.unicam.qwert123.doit.backend.models;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.UUID;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -32,8 +31,8 @@ public class AuthCredential implements UserDetails {
     private String password;
     private List<Role> roles;
 
-    public enum Role {
-        PROJECT_PROPOSER, EXPERT, DESIGNER, ADMIN, NOT_COMPLETED
+    public enum Role  {
+        ADMIN, DESIGNER, EXPERT, NOT_COMPLETED, PROJECT_PROPOSER
     }
 
     @Override

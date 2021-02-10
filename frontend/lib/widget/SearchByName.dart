@@ -1,6 +1,7 @@
 import 'package:doit/model/Project.dart';
 import 'package:doit/model/User.dart';
 import 'package:doit/providers/ProjectProvider.dart';
+import 'package:doit/providers/SearchProvider.dart';
 import 'package:doit/providers/UserProvider.dart';
 import 'package:doit/providers/ViewProvider.dart';
 import 'package:doit/view/ProfileOverView.dart';
@@ -21,11 +22,8 @@ class _SearchByName extends State<SearchByName> {
   final List<Project> projects = [];
   List<Project> projectsFind = [];
   final List<User> users = [];
+
   List<User> usersFind = [];
-  bool searchUser = true;
-  bool searchDesigner = true;
-  bool searchProjectProposer = true;
-  bool searchProject = true;
 
   void buildSuggestions(BuildContext context, String query) async {
     if (query.isEmpty) {
@@ -39,7 +37,8 @@ class _SearchByName extends State<SearchByName> {
   }
 
   void searchProjects(String query) {
-    if (searchProject) {
+    if (Provider.of<SearchProvider>(context, listen: false)
+        .getSearchProject()) {
       List<Project> projectsTemp = [];
       projectsTemp.addAll(Provider.of<ProjectProvider>(context, listen: false)
           .findByName(query));
@@ -48,21 +47,25 @@ class _SearchByName extends State<SearchByName> {
   }
 
   Future searchUsers(String query, BuildContext context) async {
-    if (searchUser) {
+    if (Provider.of<SearchProvider>(context, listen: false).getSearchUser()) {
       List<User> usersTemp = [];
       usersTemp.addAll(await Provider.of<UserProvider>(context, listen: false)
           .findByUsername(query, "null"));
       usersFind = usersTemp;
-    } else if (searchDesigner) {
-      List<User> usersTemp = [];
-      usersTemp.addAll(await Provider.of<UserProvider>(context, listen: false)
-          .findByUsername(query, "DESIGNER"));
-      usersFind = usersTemp;
-    } else if (searchProjectProposer) {
-      List<User> usersTemp = [];
-      usersTemp.addAll(await Provider.of<UserProvider>(context, listen: false)
-          .findByUsername(query, "PROJECT_PROPOSER"));
-      usersFind = usersTemp;
+      if (Provider.of<SearchProvider>(context, listen: false)
+          .getSearchDesigner()) {
+        List<User> usersTemp = [];
+        usersTemp.addAll(await Provider.of<UserProvider>(context, listen: false)
+            .findByUsername(query, "DESIGNER"));
+        usersFind = usersTemp;
+      }
+      if (Provider.of<SearchProvider>(context, listen: false)
+          .getSearchProjectProposer()) {
+        List<User> usersTemp = [];
+        usersTemp.addAll(await Provider.of<UserProvider>(context, listen: false)
+            .findByUsername(query, "PROJECT_PROPOSER"));
+        usersFind = usersTemp;
+      }
     }
   }
 
@@ -161,7 +164,7 @@ class _SearchByName extends State<SearchByName> {
                                     Provider.of<ViewProvider>(context,
                                             listen: false)
                                         .pushWidget(ProfileOverView(
-                                            id: usersFind[index].getId()));
+                                            mail: usersFind[index].getMail()));
                                   });
                             })
                       ]))

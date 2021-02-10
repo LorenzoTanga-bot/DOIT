@@ -12,24 +12,24 @@ class UserProvider with ChangeNotifier {
   }
 
   Future recoverPassword(String currentEmail) async {
-      //TODO da fare
+    //TODO da fare
   }
-  Future<User> findUserById(String id) async {
-    if (_listUsers.isEmpty) _listUsers.add(await _service.findById(id));
-    User user = _listUsers.firstWhere((user) => user.getId() == id);
+  Future<User> findUserByMail(String mail) async {
+    if (_listUsers.isEmpty) _listUsers.add(await _service.findByMail(mail));
+    User user = _listUsers.firstWhere((user) => user.getMail() == mail);
     if (user == null) {
-      user = await _service.findById(id);
+      user = await _service.findByMail(mail);
       _listUsers.add(user);
     }
     return user;
   }
 
   Future updateListUsers(List<String> id) async {
-    List<String> idNotFount = [];
+    List<String> mailsNotFount = [];
     for (String element in id)
-      if (_listUsers.where((tag) => tag.getId() == element).isEmpty)
-        idNotFount.add(element);
-    _listUsers.addAll(await _service.findByIds(idNotFount));
+      if (_listUsers.where((tag) => tag.getMail() == element).isEmpty)
+        mailsNotFount.add(element);
+    _listUsers.addAll(await _service.findByMails(mailsNotFount));
     notifyListeners();
   }
 

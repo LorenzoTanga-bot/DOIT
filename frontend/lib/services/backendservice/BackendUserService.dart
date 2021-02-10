@@ -13,7 +13,7 @@ class BackendUserService implements UserService {
   }
 
   User _newNotCompleted(var user) {
-    return new User.firstAccess(user["id"], user["mail"]);
+    return new User.firstAccess(user["mail"]);
   }
 
   List<User> _createListUser(String controllerJson) {
@@ -29,34 +29,42 @@ class BackendUserService implements UserService {
   User _newUser(var user) {
     var rolesJson = user["roles"];
     var tagsJson = user["tags"];
-    var projectsFirstJson = user["projectsFirstRole"];
-    var projectsSecondJson = user["projectsSecondRole"];
+    var proposedProjectsJson = user["proposedProjects"];
+    var partecipateInProjectsJson = user["partecipateInProjects"];
+    var evaluationsJson = user["evaluations"];
+    var invitesJson = user["invites"];
+    var candidaciesJson = user["candidacies"];
     List<UserRole> roles = [];
     List<String> tags = [];
-    List<String> projectsFirstRole = [];
-    List<String> projectsSecondRole = [];
+    List<String> proposedProjects = [];
+    List<String> partecipateInProjects = [];
+    List<String> evaluations = [];
+    List<String> invites = [];
+    List<String> candidacies = [];
     for (String role in rolesJson)
-      roles.add(UserRole.values.firstWhere(
-          (e) => e.toString() == 'UserRole.' + role)); //TODO da testare
-    if (roles.first == UserRole.NOT_COMPLETED)
-      return _newNotCompleted(user);
-    else {
-      for (String tag in tagsJson) tags.add(tag);
-      for (String project in projectsFirstJson) projectsFirstRole.add(project);
-      for (String project in projectsSecondJson)
-        projectsSecondRole.add(project);
-      return new User.complete(
-          user["id"],
-          user["aperson"],
-          user["usernameToShow"],
-          user["name"],
-          user["surname"],
-          user["mail"],
-          tags,
-          roles,
-          projectsFirstRole,
-          projectsSecondRole);
-    }
+      roles.add(UserRole.values
+          .firstWhere((e) => e.toString() == 'UserRole.' + role));
+    if (roles.first == UserRole.NOT_COMPLETED) return _newNotCompleted(user);
+    for (String tag in tagsJson) tags.add(tag);
+    for (String project in proposedProjectsJson) proposedProjects.add(project);
+    for (String project in partecipateInProjectsJson)
+      partecipateInProjects.add(project);
+    for (String evaluation in evaluationsJson) evaluations.add(evaluation);
+    for (String invite in invitesJson) invites.add(invite);
+    for (String candidacy in candidaciesJson) candidacies.add(candidacy);
+    return new User.complete(
+        user["mail"],
+        user["aperson"],
+        user["usernameToShow"],
+        user["name"],
+        user["surname"],
+        tags,
+        roles,
+        proposedProjects,
+        partecipateInProjects,
+        evaluations,
+        invites,
+        candidacies);
   }
 
   User _createUser(String controllerJson) {
@@ -66,22 +74,17 @@ class BackendUserService implements UserService {
   }
 
   @override
-  Future<User> findById(String id) async {
-    return _createUser(await _controller.getUserById(id));
-  }
-
-  @override
-  Future<List<User>> findByIds(List<String> id) async {
-    return _createListUser(await _controller.getUsersByIds(id));
-  }
-
-  @override
   Future<User> findByMail(String mail) async {
     return _createUser(await _controller.getUserByMail(mail));
   }
 
   @override
-  Future<List<User>> findBySkills(List<String> tags) async {
+  Future<List<User>> findByMails(List<String> mails) async {
+    return _createListUser(await _controller.getUsersByMails(mails));
+  }
+
+  @override
+  Future<List<User>> findByTags(List<String> tags) async {
     return _createListUser(await _controller.getUsersByTags(tags));
   }
 

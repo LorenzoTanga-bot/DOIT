@@ -1,19 +1,8 @@
-import 'package:doit/model/Project.dart';
-import 'package:doit/model/Tag.dart';
-import 'package:doit/model/User.dart';
-import 'package:doit/providers/ProjectProvider.dart';
-import 'package:doit/providers/UserProvider.dart';
-import 'package:doit/providers/ViewProvider.dart';
-import 'package:doit/view/ProfileOverView.dart';
-import 'package:doit/widget/CardList.dart';
-import 'package:doit/widget/CardListProject.dart';
-import 'package:doit/widget/ListProjects.dart';
-import 'package:doit/widget/NewTagInsertion.dart';
+
 import 'package:doit/widget/SearchByName.dart';
 import 'package:doit/widget/SearchByTag.dart';
-import 'package:doit/widget/SmartSelectTag.dart';
+
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class SearchPage extends StatefulWidget {
   @override

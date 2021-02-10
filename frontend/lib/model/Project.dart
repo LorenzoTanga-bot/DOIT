@@ -21,31 +21,18 @@ class Project {
   }
 
   Project.fromJson(
-      String id,
-      String name,
-      String projectProposer,
-      List<String> tag,
-      String dateOfCreation,
-      String dateOfStart,
-      String dateOfEnd,
-      String shortDescription,
-      String description,
-      bool evaluationMode,
-      String startCandidacy,
-      String endCandidacy) {
-    this._id = id;
-    this._name = name;
-    this._projectProposer = projectProposer;
-    this._tag = tag;
-    this._dateOfCreation = dateOfCreation;
-    this._dateOfStart = dateOfStart;
-    this._dateOfEnd = dateOfEnd;
-    this._shortDescription = shortDescription;
-    this._description = description;
-    this._evaluationMode = evaluationMode;
-    this._startCandidacy = startCandidacy;
-    this._endCandidacy = endCandidacy;
-  }
+      this._id,
+      this._name,
+      this._projectProposer,
+      this._tag,
+      this._dateOfCreation,
+      this._dateOfStart,
+      this._dateOfEnd,
+      this._shortDescription,
+      this._description,
+      this._evaluationMode,
+      this._startCandidacy,
+      this._endCandidacy);
 
   String getId() {
     return _id;

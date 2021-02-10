@@ -1,5 +1,6 @@
 import 'package:doit/providers/AuthCredentialProvider.dart';
 import 'package:doit/providers/ProjectProvider.dart';
+import 'package:doit/providers/SearchProvider.dart';
 import 'package:doit/providers/TagProvider.dart';
 import 'package:doit/providers/UserProvider.dart';
 import 'package:doit/providers/ViewProvider.dart';
@@ -20,6 +21,7 @@ void main() {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => ViewProvider()),
+        ChangeNotifierProvider(create: (context) => SearchProvider()),
         ChangeNotifierProvider(
             create: (context) =>
                 AuthCredentialProvider(new BackendAuthCredential(_ip))),

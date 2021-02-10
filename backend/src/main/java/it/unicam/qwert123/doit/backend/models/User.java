@@ -17,7 +17,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Document(collection = "user")
-public class User{
+public class User {
 
     @EqualsAndHashCode.Include
     @Id
@@ -26,34 +26,52 @@ public class User{
     private String username;
     private String usernameToShow;
     private String name;
-    private String surname; //se è un azienda, qui viene memorizzata la partita iva
+    private String surname; // se è un azienda, qui viene memorizzata la partita iva
     private List<Role> roles;
     private List<UUID> tags;
-    private List<UUID> proposedProjects;
-    private List<UUID> supportedProjects;
+    private List<UUID> proposedProjets;
+    private List<UUID> partecipateInProjects;
+    private List<UUID> invites;
+    private List<UUID> candidacies;
     private List<UUID> evaluations;
 
-    public boolean addProposedProjects(UUID idProject) {
-        return proposedProjects.add(idProject);
+    public boolean addPProposedProject(UUID idProject) {
+        return proposedProjets.add(idProject);
     }
 
     public boolean removeProposedProjects(UUID idProject) {
-        return  proposedProjects.remove(idProject);
+        return proposedProjets.remove(idProject);
     }
 
-    public boolean addSupportedProjects(UUID idProject) {
-        return supportedProjects.add(idProject);
+    public boolean addPartecipateInProject(UUID idProject) {
+        return partecipateInProjects.add(idProject);
     }
 
-    public boolean removeSupportedProjects(UUID idProject) {
-        return supportedProjects.remove(idProject);
+    public boolean removepPrtecipateInProject(UUID idProject) {
+        return partecipateInProjects.remove(idProject);
     }
 
     public boolean addEvaluations(UUID idEvaluations) {
-        return supportedProjects.add(idEvaluations);
+        return evaluations.add(idEvaluations);
     }
 
     public boolean removeEvaluationss(UUID idEvaluations) {
-        return supportedProjects.remove(idEvaluations);
+        return evaluations.remove(idEvaluations);
+    }
+
+    public boolean addCandidacy(UUID idCandidacy) {
+        return candidacies.add(idCandidacy);
+    }
+
+    public boolean removeCandidacy(UUID idCandidacy) {
+        return candidacies.remove(idCandidacy);
+    }
+
+    public boolean addInvite(UUID idInvite) {
+        return invites.add(idInvite);
+    }
+
+    public boolean removeInvite(UUID idInvite) {
+        return invites.remove(idInvite);
     }
 }

@@ -44,8 +44,8 @@ public class ProjectController {
 	@PreAuthorize("hasAuthority('PROJECT_PROPOSER') and @accessCheckerComponent.sameUser(principal, #project.getProjectProposer())")
     public Project addProject(@RequestBody @Param("project") Project newProject) {
         Project returnProject = projectService.addProject(newProject);
-        User user = userService.findById(returnProject.getProjectProposer());
-        user.addProposedProjects(returnProject.getId());
+        User user = userService.findByMail(returnProject.getProjectProposer());
+        user.addPProposedProject(returnProject.getId());
         userService.updateUser(user);
         return returnProject;
     }
@@ -59,7 +59,9 @@ public class ProjectController {
     @DeleteMapping("/delete/{id}")
     public boolean deleteProject(@PathVariable("id") String id) {
         try {
+            //aggiungere che cancella il progetto dalla lista dei progetti del projectProposer
             return projectService.deleteProject(UUID.fromString(id));
+
         } catch (IllegalArgumentException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }

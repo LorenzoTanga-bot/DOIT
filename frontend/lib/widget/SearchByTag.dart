@@ -1,7 +1,6 @@
 import 'package:doit/model/Project.dart';
 import 'package:doit/model/User.dart';
 import 'package:doit/providers/ProjectProvider.dart';
-import 'package:doit/providers/TagProvider.dart';
 import 'package:doit/providers/ViewProvider.dart';
 import 'package:doit/view/ProfileOverView.dart';
 import 'package:flutter/material.dart';
@@ -35,20 +34,12 @@ class _SearchByTag extends State<SearchByTag> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    Provider.of<TagProvider>(context, listen: false).setSelectTag([]);
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
         child: ListView(children: [
-          new SmartSelectTag(
-            title: "Select Tags",
-          ),
+          new SmartSelectTag(title: "Select Tags", index: "SEARCH"),
           if (projectsFind.isNotEmpty)
             Padding(
                 padding: const EdgeInsets.all(10.0),
@@ -102,7 +93,7 @@ class _SearchByTag extends State<SearchByTag> {
                                   Provider.of<ViewProvider>(context,
                                           listen: false)
                                       .pushWidget(ProfileOverView(
-                                          id: usersFind[index].getId()));
+                                          mail: usersFind[index].getMail()));
                                 });
                           })
                     ]))

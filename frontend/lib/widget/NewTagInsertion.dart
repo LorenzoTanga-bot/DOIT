@@ -5,10 +5,12 @@ import 'package:provider/provider.dart';
 
 class NewTagInsertion extends StatelessWidget {
   final BuildContext context;
+  final String index;
 
   final TextEditingController _valueTag = TextEditingController();
 
-  NewTagInsertion({Key key, @required this.context}) : super(key: key);
+  NewTagInsertion({Key key, @required this.context, @required this.index})
+      : super(key: key);
 
   _createTag() async {
     Tag newTag = new Tag(_valueTag.text);
@@ -30,7 +32,8 @@ class NewTagInsertion extends StatelessWidget {
 
     if (controller) {
       Navigator.pop(context, true);
-      Provider.of<TagProvider>(context, listen: false).addListTag(newTag);
+      Provider.of<TagProvider>(context, listen: false)
+          .addListTag(newTag, index);
     }
   }
 

@@ -12,29 +12,41 @@ class BackendAuthCredential implements AuthCredentialService {
   User _createUser(var user) {
     var rolesJson = user["roles"];
     var tagsJson = user["tags"];
-    var projectsFirstJson = user["projectsFirstRole"];
-    var projectsSecondJson = user["projectsSecondRole"];
+    var proposedProjectsJson = user["proposedProjects"];
+    var partecipateInProjectsJson = user["partecipateInProjects"];
+    var evaluationsJson = user["evaluations"];
+    var invitesJson = user["invites"];
+    var candidaciesJson = user["candidacies"];
     List<UserRole> roles = [];
     List<String> tags = [];
-    List<String> projectsFirstRole = [];
-    List<String> projectsSecondRole = [];
+    List<String> proposedProjects = [];
+    List<String> partecipateInProjects = [];
+    List<String> evaluations = [];
+    List<String> invites = [];
+    List<String> candidacies = [];
     for (String role in rolesJson)
-      roles.add(UserRole.values.firstWhere(
-          (e) => e.toString() == 'UserRole.' + role)); //TODO da testare
+      roles.add(UserRole.values
+          .firstWhere((e) => e.toString() == 'UserRole.' + role));
     for (String tag in tagsJson) tags.add(tag);
-    for (String project in projectsFirstJson) projectsFirstRole.add(project);
-    for (String project in projectsSecondJson) projectsSecondRole.add(project);
+    for (String project in proposedProjectsJson) proposedProjects.add(project);
+    for (String project in partecipateInProjectsJson)
+      partecipateInProjects.add(project);
+    for (String evaluation in evaluationsJson) evaluations.add(evaluation);
+    for (String invite in invitesJson) invites.add(invite);
+    for (String candidacy in candidaciesJson) candidacies.add(candidacy);
     return new User.complete(
-        user["id"],
-        user["isAPerson"],
-        user["username"],
+        user["mail"],
+        user["aperson"],
+        user["usernameToShow"],
         user["name"],
         user["surname"],
-        user["mail"],
         tags,
         roles,
-        projectsFirstRole,
-        projectsSecondRole);
+        proposedProjects,
+        partecipateInProjects,
+        evaluations,
+        invites,
+        candidacies);
   }
 
   @override

@@ -1,50 +1,56 @@
 import 'package:doit/model/AuthCredential.dart';
 
 class User {
-  String _id;
+  String _mail;
   bool _isAPerson;
   String _username;
   String _name;
-  String _surname;
-  String _mail;
+  String _surname; //se è una azienda qui viene salvata la Paritta iva
   List<UserRole> _roles = [];
   List<String> _tags = [];
-  List<String> _projectsFirstRole = [];
-  List<String> _projectsSecondRole = [];
+  List<String> _proposedProjets=[];
+  List<String> _partecipateInProjects=[];
+  List<String> _evaluations=[];
+  List<String> _invites=[];
+  List<String> _candidacies=[];
 
   User();
 
-  User.firstAccess(String id, String mail) {
-    _id = id;
+  User.firstAccess(String mail) {
     _mail = mail;
     _roles.add(UserRole.NOT_COMPLETED);
   }
 
   User.complete(
-      String id,
-      bool isAPerson,
-      String username,
-      String name,
-      String surname,
-      String mail,
-      List<String> skills,
-      List<UserRole> roles,
-      List<String> projectsFirstRole,
-      List<String> projectSecondRole) {
-    _id = id;
-    _isAPerson = isAPerson;
-    _username = username;
-    _name = name;
-    _surname = surname;
+      this._mail,
+      this._isAPerson,
+      this._username,
+      this._name,
+      this._surname,
+      this._tags,
+      this._roles,
+      this._proposedProjets,
+      this._partecipateInProjects,
+      this._evaluations,
+      this._invites,
+      this._candidacies);
+
+  bool setMail(String mail) {
     _mail = mail;
-    _roles = roles;
-    _tags = skills;
-    _projectsFirstRole = projectsFirstRole;
-    _projectsSecondRole = projectSecondRole;
+    return true;
   }
 
-  String getId() {
-    return _id;
+  String getMail() {
+    return _mail;
+  }
+
+  bool getIsAperson() {
+    return _isAPerson;
+  }
+
+  bool setIsAPerson(bool isAPerson) {
+    _isAPerson = isAPerson;
+    return true;
   }
 
   bool setUsername(String username) {
@@ -74,15 +80,6 @@ class User {
     return _surname;
   }
 
-  bool setMail(String mail) {
-    _mail = mail;
-    return true;
-  }
-
-  String getMail() {
-    return _mail;
-  }
-
   bool setRoles(List<UserRole> roles) {
     _roles = roles;
     return true;
@@ -101,40 +98,93 @@ class User {
     return _tags;
   }
 
-  bool setProjectsFirstRole(List<String> projects) {
-    _projectsFirstRole = projects;
+  bool setProposedProjects(List<String> projects) {
+    _proposedProjets = projects;
     return true;
   }
 
-  bool addProjectFirstRole(String project) {
-    _projectsFirstRole.add(project);
+  bool addProposedProject(String idProject) {
+    _proposedProjets.add(idProject);
     return true;
   }
 
-  List<String> getProjectsFirstRole() {
-    return _projectsFirstRole;
+  bool removeProposedProjects(String idProject) {
+    return _proposedProjets.remove(idProject);
   }
 
-  bool setProjectsSecondRole(List<String> projects) {
-    _projectsSecondRole = projects;
+  List<String> getProposedProjects() {
+    return _proposedProjets;
+  }
+
+  bool setPartecipateInProjects(List<String> projects) {
+    _partecipateInProjects = projects;
     return true;
   }
 
-  bool addProjectsSecondRole(String project) {
-    _projectsSecondRole.add(project);
+  bool addPartecipateInProject(String idProject) {
+    _partecipateInProjects.add(idProject);
     return true;
   }
 
-  List<String> getProjectsSecondRole() {
-    return _projectsSecondRole;
+  bool removepPrtecipateInProject(String idProject) {
+    return _partecipateInProjects.remove(idProject);
   }
 
-  bool getIsAperson() {
-    return _isAPerson;
+  List<String> getPartecipateInProjects() {
+    return _partecipateInProjects;
   }
 
-  bool setIsAPerson(bool isAPerson) {
-    _isAPerson = isAPerson;
+  bool setEvaluations(List<String> evaluation) {
+    _evaluations = evaluation;
     return true;
+  }
+
+  bool addEvaluations(String idEvaluations) {
+    _evaluations.add(idEvaluations);
+    return true;
+  }
+
+  bool removeEvaluations(String idEvaluations) {
+    return _evaluations.remove(idEvaluations);
+  }
+
+  List<String> getEvaluations() {
+    return _evaluations;
+  }
+
+  bool setCandidacies(List<String> candidacies) {
+    _candidacies = candidacies;
+    return true;
+  }
+
+  bool addCandidacy(String idCandidacy) {
+    _candidacies.add(idCandidacy);
+    return true;
+  }
+
+  bool removeCandidacy(String idCandidacy) {
+    return _candidacies.remove(idCandidacy);
+  }
+
+  List<String> getCandidacies() {
+    return _candidacies;
+  }
+
+  bool setInvites(List<String> invites) {
+    _invites = invites;
+    return true;
+  }
+
+  bool addInvite(String idInvite) {
+    _invites.add(idInvite);
+    return true;
+  }
+
+  bool removeInvite(String idInvite) {
+    return _invites.remove(idInvite);
+  }
+
+  List<String> getInvites() {
+    return _invites;
   }
 }

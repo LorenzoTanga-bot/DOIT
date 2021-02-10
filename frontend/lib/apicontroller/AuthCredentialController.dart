@@ -34,7 +34,7 @@ class AuthCredentialController {
             body: json.encode({
               "mail": authCredential.getMail(),
               "password": authCredential.getPassword(),
-              "id": authCredential.getId()
+             
             })))
         .body;
   }
@@ -53,7 +53,7 @@ class AuthCredentialController {
     return (await http.post(Uri.encodeFull("$_baseUrl/updateCredential"),
             headers: BasicAuthConfig().getUserHeader(),
             body: json.encode({
-              "id": authCredential.getId(),
+            
               "mail": authCredential.getMail(),
               "password": authCredential.getPassword(),
               "role": _rolesToString(authCredential.getRoles()),
@@ -66,16 +66,18 @@ class AuthCredentialController {
             headers: BasicAuthConfig().getBaseHeader(),
             body: json.encode({
               {
-                "id": newUser.getId(),
+                "mail": newUser.getMail(),
                 "isAPerson": newUser.getIsAperson(),
                 "username": newUser.getUsername(),
                 "name": newUser.getName(),
                 "surname": newUser.getUsername(),
-                "mail": newUser.getMail(),
                 "roles": _rolesToString(newUser.getRoles()),
                 "tags": newUser.getTags(),
-                "projectsFirstRole": newUser.getProjectsFirstRole(),
-                "projectsSecondRole": newUser.getProjectsSecondRole()
+                "propodesProjects": newUser.getProposedProjects(),
+                "partecipateInProjects": newUser.getPartecipateInProjects(),
+                "evaluations": newUser.getEvaluations(),
+                "invites": newUser.getInvites(),
+                "candidacies": newUser.getCandidacies()
               }
             })))
         .body;
@@ -85,17 +87,18 @@ class AuthCredentialController {
     return (await http.post(Uri.encodeFull("$_baseUrl/updateUser"),
             headers: BasicAuthConfig().getBaseHeader(),
             body: json.encode({
-              "id": newUser.getId(),
-              "isAPerson": newUser.getIsAperson(),
-              "username": newUser.getUsername(),
-              "name": newUser.getName(),
-              "surname": newUser.getUsername(),
               "mail": newUser.getMail(),
-              "roles": _rolesToString(
-                  BasicAuthConfig().getAuthCredential().getRoles()),
-              "tags": newUser.getTags(),
-              "projectsFirstRole": newUser.getProjectsFirstRole(),
-              "projectsSecondRole": newUser.getProjectsSecondRole()
+                "isAPerson": newUser.getIsAperson(),
+                "username": newUser.getUsername(),
+                "name": newUser.getName(),
+                "surname": newUser.getUsername(),
+                "roles": _rolesToString(newUser.getRoles()),
+                "tags": newUser.getTags(),
+                "propodesProjects": newUser.getProposedProjects(),
+                "partecipateInProjects": newUser.getPartecipateInProjects(),
+                "evaluations": newUser.getEvaluations(),
+                "invites": newUser.getInvites(),
+                "candidacies": newUser.getCandidacies()
             })))
         .body;
   }

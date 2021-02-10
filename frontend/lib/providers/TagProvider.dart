@@ -5,8 +5,9 @@ import 'package:flutter/foundation.dart';
 class TagProvider with ChangeNotifier {
   TagService _service;
   List<Tag> _listTag = [];
-  List<String> _selectedTag = List<String>();
-
+  List<String> _selectedTagForProject = List<String>();
+  List<String> _selectedTagForSearch = List<String>();
+  List<String> _selectedTagForSignin = List<String>();
   TagProvider(TagService service) {
     _service = service;
   }
@@ -20,31 +21,86 @@ class TagProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<bool> addListTag(Tag newTag) async {
+  Future<bool> addListTag(Tag newTag, String index) async {
     newTag = await _service.addTag(newTag);
     _listTag.add(newTag);
-    _selectedTag.add(newTag.getId());
-    notifyListeners();
-    return true;
+    switch (index) {
+      case "PROJECT":
+        _selectedTagForProject.add(newTag.getId());
+        notifyListeners();
+        return true;
+      case "SEARCH":
+        _selectedTagForSearch.add(newTag.getId());
+        notifyListeners();
+        return true;
+      case "SIGNIN":
+        _selectedTagForSignin.add(newTag.getId());
+        notifyListeners();
+        return true;
+      default:
+        return null;
+    }
   }
 
-  List<String> getSelectTag() {
-    return _selectedTag;
+  List<String> getSelectTag(String index) {
+    switch (index) {
+      case "PROJECT":
+        return _selectedTagForProject;
+      case "SEARCH":
+        return _selectedTagForSearch;
+      case "SIGNIN":
+        return _selectedTagForSignin;
+      default:
+        return null;
+    }
   }
 
-  bool addSelectedTag(String newTag) {
-    _selectedTag.add(newTag);
-    return true;
+  bool addSelectedTag(String newTag, String index) {
+    switch (index) {
+      case "PROJECT":
+        _selectedTagForProject.add(newTag);
+        return true;
+      case "SEARCH":
+        _selectedTagForSearch.add(newTag);
+        return true;
+      case "SIGNIN":
+        _selectedTagForSignin.add(newTag);
+        return true;
+      default:
+        return false;
+    }
   }
 
-  bool setSelectTag(List<String> selectedTag) {
-    _selectedTag = selectedTag;
-    return true;
+  bool setSelectTag(List<String> selectedTag, String index) {
+    switch (index) {
+      case "PROJECT":
+        _selectedTagForProject = selectedTag;
+        return true;
+      case "SEARCH":
+        _selectedTagForSearch = selectedTag;
+        return true;
+      case "SIGNIN":
+        _selectedTagForSignin = selectedTag;
+        return true;
+      default:
+        return false;
+    }
   }
 
-  bool clearSelectedTag() {
-    _selectedTag.clear();
-    return true;
+  bool clearSelectedTag(String index) {
+    switch (index) {
+      case "PROJECT":
+        _selectedTagForProject.clear();
+        return true;
+      case "SEARCH":
+        _selectedTagForSearch.clear();
+        return true;
+      case "SIGNIN":
+        _selectedTagForSignin.clear();
+        return true;
+      default:
+        return false;
+    }
   }
 
   List<Map<String, String>> getListMapTag() {

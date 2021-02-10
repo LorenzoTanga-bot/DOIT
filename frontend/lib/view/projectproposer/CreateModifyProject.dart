@@ -1,4 +1,3 @@
-
 import 'package:doit/model/Project.dart';
 import 'package:doit/providers/AuthCredentialProvider.dart';
 import 'package:doit/providers/ProjectProvider.dart';
@@ -53,16 +52,16 @@ class _CreateModifyProject extends State<CreateModifyProject> {
       _dateOfEndProject = DateTime.parse(_project.getDateOfEnd());
       _dateOfStartCandidacy = DateTime.parse(_project.getStartCandidacy());
       _dateOfEndCandidacy = DateTime.parse(_project.getEndCandidacy());
-      context.read<TagProvider>().setSelectTag(_project.getTag());
+      context.read<TagProvider>().setSelectTag(_project.getTag(), "PROJECT");
     } else
       _project = new Project();
   }
 
   _createProject() async {
     _project.setProjectProposer(
-        context.read<AuthCredentialProvider>().getUser().getId());
+        context.read<AuthCredentialProvider>().getUser().getMail());
     _project.setName(_name.text);
-    _project.setTag(context.read<TagProvider>().getSelectTag());
+    _project.setTag(context.read<TagProvider>().getSelectTag("PROJECT"));
     _project.setDateOfCreation(DateTime.now().toIso8601String());
     _project.setDateOfEnd(_dateOfEndProject.toIso8601String());
     _project.setDateOfStart(_dateOfStartProject.toIso8601String());
@@ -319,14 +318,14 @@ class _CreateModifyProject extends State<CreateModifyProject> {
   Widget _insertTag() {
     return Column(
       children: [
-        SmartSelectTag(title: "Tag"),
+        SmartSelectTag(title: "Tag", index: "PROJECT"),
         RaisedButton.icon(
             icon: Icon(Icons.add),
             onPressed: () {
               showDialog(
                   context: context,
                   builder: (context) {
-                    return NewTagInsertion(context: context);
+                    return NewTagInsertion(context: context, index: "PROJECT");
                   });
             },
             label: Text('NEW TAG'),

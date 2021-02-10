@@ -31,9 +31,9 @@ class _Signin extends State<Signin> {
     newUser.setSurname(_surname.text);
     newUser.setUsername(_username.text);
     newUser.setRoles([_role]); //TODO da cambiare SmartSelect<UserRole>.single
-    newUser.setTags(context.read<TagProvider>().getSelectTag());
+    newUser.setTags(context.read<TagProvider>().getSelectTag("SINGIN"));
     context.read<AuthCredentialProvider>().updateUser(newUser);
-   //TODO da sistemare context.read<ViewProvider>().setProfileDefault(LoadingLogin());
+    //TODO da sistemare context.read<ViewProvider>().setProfileDefault(LoadingLogin());
   }
 
   Widget _selectUserRole() {
@@ -67,14 +67,14 @@ class _Signin extends State<Signin> {
   Widget _insertTags() {
     return Column(
       children: [
-        SmartSelectTag(title: "Tags"),
+        SmartSelectTag(title: "Tags", index: "SIGNIN"),
         RaisedButton.icon(
             icon: Icon(Icons.add),
             onPressed: () {
               showDialog(
                   context: context,
                   builder: (context) {
-                    return NewTagInsertion(context: context);
+                    return NewTagInsertion(context: context, index: "SIGNIN");
                   });
             },
             label: Text('NEW TAGS'),

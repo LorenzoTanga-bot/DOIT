@@ -35,7 +35,7 @@ public class AuthCredentialController {
 	@PostMapping("/login")
 	@PreAuthorize("permitAll")
 	public User loginWithCredentials(@RequestBody AuthCredential credentials) {
-		return authService.loginWithCredentials(credentials) ? userService.findById(credentials.getMail()): null;
+		return authService.loginWithCredentials(credentials) ? userService.findByMail(credentials.getMail()): null;
 	}
 
 	@PostMapping("/addCredential")
@@ -45,7 +45,7 @@ public class AuthCredentialController {
 	}
 
 	@PostMapping("/addUser")
-	@PreAuthorize("@accessCheckerComponent.sameUser(principal, #user.getMail()) or hasAuthority('ADMIN')")
+	//@PreAuthorize("@accessCheckerComponent.sameUser(principal, #user.getMail()) or hasAuthority('ADMIN')")
 	public User addUser(@RequestBody @Param("user") User user) {
 		User newUser = userService.addUser(user);
 		AuthCredential authCredential = authService.getAuthCredentialsInstance(user.getMail());
