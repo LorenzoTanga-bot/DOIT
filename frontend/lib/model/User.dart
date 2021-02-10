@@ -8,11 +8,11 @@ class User {
   String _surname; //se è una azienda qui viene salvata la Paritta iva
   List<UserRole> _roles = [];
   List<String> _tags = [];
-  List<String> _proposedProjets=[];
-  List<String> _partecipateInProjects=[];
-  List<String> _evaluations=[];
-  List<String> _invites=[];
-  List<String> _candidacies=[];
+  List<String> _proposedProjects = [];
+  List<String> _partecipateInProjects = [];
+  List<String> _evaluations = [];
+  List<String> _invites = [];
+  List<String> _candidacies = [];
 
   User();
 
@@ -29,7 +29,7 @@ class User {
       this._surname,
       this._tags,
       this._roles,
-      this._proposedProjets,
+      this._proposedProjects,
       this._partecipateInProjects,
       this._evaluations,
       this._invites,
@@ -44,7 +44,7 @@ class User {
     return _mail;
   }
 
-  bool getIsAperson() {
+  bool getIsAPerson() {
     return _isAPerson;
   }
 
@@ -99,21 +99,21 @@ class User {
   }
 
   bool setProposedProjects(List<String> projects) {
-    _proposedProjets = projects;
+    _proposedProjects = projects;
     return true;
   }
 
   bool addProposedProject(String idProject) {
-    _proposedProjets.add(idProject);
+    _proposedProjects.add(idProject);
     return true;
   }
 
   bool removeProposedProjects(String idProject) {
-    return _proposedProjets.remove(idProject);
+    return _proposedProjects.remove(idProject);
   }
 
   List<String> getProposedProjects() {
-    return _proposedProjets;
+    return _proposedProjects;
   }
 
   bool setPartecipateInProjects(List<String> projects) {

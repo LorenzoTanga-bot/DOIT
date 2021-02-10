@@ -29,18 +29,18 @@ public class User {
     private String surname; // se è un azienda, qui viene memorizzata la partita iva
     private List<Role> roles;
     private List<UUID> tags;
-    private List<UUID> proposedProjets;
+    private List<UUID> proposedProjects;
     private List<UUID> partecipateInProjects;
     private List<UUID> invites;
     private List<UUID> candidacies;
     private List<UUID> evaluations;
 
     public boolean addPProposedProject(UUID idProject) {
-        return proposedProjets.add(idProject);
+        return proposedProjects.add(idProject);
     }
 
     public boolean removeProposedProjects(UUID idProject) {
-        return proposedProjets.remove(idProject);
+        return proposedProjects.remove(idProject);
     }
 
     public boolean addPartecipateInProject(UUID idProject) {

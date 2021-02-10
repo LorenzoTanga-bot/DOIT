@@ -15,6 +15,7 @@ class Login extends StatefulWidget {
 
 class _Login extends State<Login> {
   bool _isFirstAccess;
+  String mail;
 
   LoginMessages _buildLoginMessages() {
     return LoginMessages(
@@ -36,6 +37,7 @@ class _Login extends State<Login> {
     try {
       Provider.of<AuthCredentialProvider>(context, listen: false)
           .loginWithCredentials(new AuthCredential(login.name, login.password));
+
       _isFirstAccess = false;
     } catch (e) {
       switch (e.code) {
@@ -62,6 +64,7 @@ class _Login extends State<Login> {
     try {
       Provider.of<AuthCredentialProvider>(context, listen: false)
           .newMailPassword(new AuthCredential(login.name, login.password));
+      mail = login.name;
       _isFirstAccess = true;
     } catch (e) {
       switch (e.code) {
@@ -108,7 +111,7 @@ class _Login extends State<Login> {
         onSubmitAnimationCompleted: () {
           if (_isFirstAccess)
             Provider.of<ViewProvider>(context, listen: false)
-                .setProfileDefault(InitialSelection());
+                .setProfileDefault(InitialSelection(mail: mail));
           else
             Provider.of<ViewProvider>(context, listen: false)
                 .setProfileDefault(ThirdView());

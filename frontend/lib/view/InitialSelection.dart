@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class InitialSelection extends StatefulWidget {
+   final String mail;
+
+  const InitialSelection({Key key, @required this.mail}) : super(key: key);
   @override
   _InitialSelectionState createState() => _InitialSelectionState();
 }
@@ -19,6 +22,7 @@ class _InitialSelectionState extends State<InitialSelection> {
           RaisedButton(
             onPressed: () => Provider.of<ViewProvider>(context, listen: false)
                 .pushWidget(Signin(
+                  mail: widget.mail,
               isAPerson: false,
             )),
             child: Text("Entity"),
@@ -26,6 +30,7 @@ class _InitialSelectionState extends State<InitialSelection> {
           RaisedButton(
             onPressed: () => Provider.of<ViewProvider>(context, listen: false)
                 .pushWidget(Signin(
+                  mail: widget.mail,
               isAPerson: true,
             )),
             child: Text("Person"),

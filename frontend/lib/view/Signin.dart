@@ -3,6 +3,7 @@ import 'package:doit/model/User.dart';
 import 'package:doit/providers/AuthCredentialProvider.dart';
 import 'package:doit/providers/TagProvider.dart';
 import 'package:doit/providers/ViewProvider.dart';
+import 'package:doit/view/ProfileOverView.dart';
 import 'package:doit/widget/NewTagInsertion.dart';
 import 'package:doit/widget/SmartSelectTag.dart';
 import 'package:flutter/material.dart';
@@ -11,8 +12,10 @@ import 'package:smart_select/smart_select.dart';
 
 class Signin extends StatefulWidget {
   final bool isAPerson;
+  final String mail;
 
-  const Signin({Key key, @required this.isAPerson}) : super(key: key);
+  const Signin({Key key, @required this.isAPerson, @required this.mail})
+      : super(key: key);
   @override
   _Signin createState() => _Signin();
 }
@@ -21,32 +24,36 @@ class _Signin extends State<Signin> {
   TextEditingController _name = TextEditingController();
   TextEditingController _surname = TextEditingController();
   TextEditingController _username = TextEditingController();
-  UserRole _role;
+  List<UserRole> _roles;
 
-  _completeRegistration() {
-    User newUser =
-        Provider.of<AuthCredentialProvider>(context, listen: false).getUser();
+  _completeRegistration() async {
+    User newUser = new User();
+    newUser.setMail(widget.mail);
     newUser.setName(_name.text);
     newUser.setIsAPerson(widget.isAPerson);
     newUser.setSurname(_surname.text);
     newUser.setUsername(_username.text);
-    newUser.setRoles([_role]); //TODO da cambiare SmartSelect<UserRole>.single
-    newUser.setTags(context.read<TagProvider>().getSelectTag("SINGIN"));
-    context.read<AuthCredentialProvider>().updateUser(newUser);
-    //TODO da sistemare context.read<ViewProvider>().setProfileDefault(LoadingLogin());
+    newUser.setRoles(_roles);
+    newUser.setTags(context.read<TagProvider>().getSelectTag("SIGNIN"));
+    await Provider.of<AuthCredentialProvider>(context, listen: false)
+        .addUser(newUser);
+    context
+        .read<ViewProvider>()
+        .setProfileDefault(ProfileOverView(mail: newUser.getMail()));
   }
 
   Widget _selectUserRole() {
-    return SmartSelect<UserRole>.single(
-      //TODO da cambiare SmartSelect<UserRole>.multiple
+    return SmartSelect<UserRole>.multiple(
       title: 'Role',
-      value: _role,
-      onChange: (state) => setState(() => _role = state.value),
+      value: _roles,
+      onChange: (state) => setState(() => _roles = state.value),
       choiceItems: <S2Choice<UserRole>>[
-        S2Choice<UserRole>(
-            value: UserRole.PROJECT_PROPOSER, title: 'PROJECT PROPOSER'),
+        if (!widget.isAPerson)
+          S2Choice<UserRole>(
+              value: UserRole.PROJECT_PROPOSER, title: 'PROJECT PROPOSER'),
         S2Choice<UserRole>(value: UserRole.DESIGNER, title: 'DESIGNER'),
-        S2Choice<UserRole>(value: UserRole.EXPERT, title: 'EXPERT'),
+        if (widget.isAPerson)
+          S2Choice<UserRole>(value: UserRole.EXPERT, title: 'EXPERT'),
       ],
       choiceType: S2ChoiceType.switches,
       modalType: S2ModalType.bottomSheet,

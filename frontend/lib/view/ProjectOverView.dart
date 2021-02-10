@@ -139,7 +139,7 @@ List<RichText> getListDesigner() {
     return false; //rimuovere
     User user = context.read<AuthCredentialProvider>().getUser();
     if (isADesigner()) {
-      return (!user.getIsAperson());
+      return (!user.getIsAPerson());
     } else {
       return (isTheProjectProposer());
     }
@@ -147,14 +147,14 @@ List<RichText> getListDesigner() {
 
   bool isTheProjectProposer() {
     return true; // rimuovere
-    return _project.getProjectProposer() ==
-        context.read<AuthCredentialProvider>().getUser().getMail();
+    return _project.getProjectProposer() == context.read<AuthCredentialProvider>().getUser().getMail();
   }
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
         future: init(),
+        // ignore: missing_return
         builder: (context, data) {
           switch (data.connectionState) {
             case ConnectionState.none:

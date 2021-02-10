@@ -74,7 +74,7 @@ public class ProjectService {
                 if (checkProject(modifiedProject)) {
                     return repository.save(modifiedProject);
                 }
-            }
+           }
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The projectProposer must be immutable");
         }
         return null;

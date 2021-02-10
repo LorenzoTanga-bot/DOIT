@@ -22,8 +22,8 @@ class ProfileOverView extends StatefulWidget {
 
 class _ProfileOverView extends State<ProfileOverView> {
   User _user;
-  List<Project> _proposedProjects;
-  List<Project> _parteciateInProjects;
+  List<Project> _proposedProjects=[];
+  List<Project> _parteciateInProjects=[];
   List<Tag> _tags;
 
   Future init() async {

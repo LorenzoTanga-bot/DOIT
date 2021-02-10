@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:doit/apicontroller/AuthCredentialController.dart';
 import 'package:doit/model/User.dart';
 import 'package:doit/model/AuthCredential.dart';
@@ -9,7 +11,7 @@ class BackendAuthCredential implements AuthCredentialService {
   BackendAuthCredential(String ip) {
     _controller = new AuthCredentialController(ip);
   }
-  User _createUser(var user) {
+  User _newUser(var user) {
     var rolesJson = user["roles"];
     var tagsJson = user["tags"];
     var proposedProjectsJson = user["proposedProjects"];
@@ -47,6 +49,11 @@ class BackendAuthCredential implements AuthCredentialService {
         evaluations,
         invites,
         candidacies);
+  }
+
+  User _createUser(String controllerJson) {
+    if (controllerJson == "") return null;
+    return _newUser(json.decode(controllerJson));
   }
 
   @override

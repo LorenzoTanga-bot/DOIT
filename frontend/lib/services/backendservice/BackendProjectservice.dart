@@ -13,13 +13,13 @@ class BackEndProjectService implements ProjectService {
 
   Project _newProject(var project) {
     var parseJson = project["tag"];
-    List<String> skills = new List<String>();
-    for (String skill in parseJson) skills.add(skill);
+    List<String> tags = new List<String>();
+    for (String tag in parseJson) tags.add(tag);
     return new Project.fromJson(
         project["id"],
         project["name"],
         project["projectProposer"],
-        skills,
+        tags,
         project["dateOfCreation"],
         project["dateOfStart"],
         project["dateOfEnd"],

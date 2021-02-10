@@ -20,6 +20,7 @@ class PrincipalInformationUser extends StatelessWidget {
     ]);
   }
 
+  // ignore: missing_return
   String getStringRole(UserRole role) {
     if (role == UserRole.EXPERT) return "Expert";
     if (role == UserRole.DESIGNER) return "Designer";
@@ -77,7 +78,7 @@ class PrincipalInformationUser extends StatelessWidget {
                     ),
                     Row(
                       children: [
-                        user.getIsAperson()
+                        user.getIsAPerson()
                             ? Text("Surname : ")
                             : Text("Partita iva : "),
                         Text(user.getSurname())

@@ -34,7 +34,6 @@ class AuthCredentialController {
             body: json.encode({
               "mail": authCredential.getMail(),
               "password": authCredential.getPassword(),
-             
             })))
         .body;
   }
@@ -53,7 +52,6 @@ class AuthCredentialController {
     return (await http.post(Uri.encodeFull("$_baseUrl/updateCredential"),
             headers: BasicAuthConfig().getUserHeader(),
             body: json.encode({
-            
               "mail": authCredential.getMail(),
               "password": authCredential.getPassword(),
               "role": _rolesToString(authCredential.getRoles()),
@@ -65,40 +63,38 @@ class AuthCredentialController {
     return (await http.post(Uri.encodeFull("$_baseUrl/addUser"),
             headers: BasicAuthConfig().getBaseHeader(),
             body: json.encode({
-              {
-                "mail": newUser.getMail(),
-                "isAPerson": newUser.getIsAperson(),
-                "username": newUser.getUsername(),
-                "name": newUser.getName(),
-                "surname": newUser.getUsername(),
-                "roles": _rolesToString(newUser.getRoles()),
-                "tags": newUser.getTags(),
-                "propodesProjects": newUser.getProposedProjects(),
-                "partecipateInProjects": newUser.getPartecipateInProjects(),
-                "evaluations": newUser.getEvaluations(),
-                "invites": newUser.getInvites(),
-                "candidacies": newUser.getCandidacies()
-              }
+              'mail': newUser.getMail(),
+              'aperson': newUser.getIsAPerson(),
+              'usernameToShow': newUser.getUsername(),
+              'name': newUser.getName(),
+              'surname': newUser.getSurname(),
+              'roles': _rolesToString(newUser.getRoles()),
+              'tags': newUser.getTags(),
+              'proposedProjects': newUser.getProposedProjects(),
+              'partecipateInProjects': newUser.getPartecipateInProjects(),
+              'evaluations': newUser.getEvaluations(),
+              'invites': newUser.getInvites(),
+              'candidacies': newUser.getCandidacies(),
             })))
         .body;
-  }
-
+  } 
+  
   Future<String> updateUser(User newUser) async {
     return (await http.post(Uri.encodeFull("$_baseUrl/updateUser"),
             headers: BasicAuthConfig().getBaseHeader(),
             body: json.encode({
               "mail": newUser.getMail(),
-                "isAPerson": newUser.getIsAperson(),
-                "username": newUser.getUsername(),
-                "name": newUser.getName(),
-                "surname": newUser.getUsername(),
-                "roles": _rolesToString(newUser.getRoles()),
-                "tags": newUser.getTags(),
-                "propodesProjects": newUser.getProposedProjects(),
-                "partecipateInProjects": newUser.getPartecipateInProjects(),
-                "evaluations": newUser.getEvaluations(),
-                "invites": newUser.getInvites(),
-                "candidacies": newUser.getCandidacies()
+              "isAPerson": newUser.getIsAPerson(),
+              "username": newUser.getUsername(),
+              "name": newUser.getName(),
+              "surname": newUser.getUsername(),
+              "roles": _rolesToString(newUser.getRoles()),
+              "tags": newUser.getTags(),
+              "propodesProjects": newUser.getProposedProjects(),
+              "partecipateInProjects": newUser.getPartecipateInProjects(),
+              "evaluations": newUser.getEvaluations(),
+              "invites": newUser.getInvites(),
+              "candidacies": newUser.getCandidacies(),
             })))
         .body;
   }

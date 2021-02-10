@@ -25,7 +25,6 @@ import it.unicam.qwert123.doit.backend.utility.AccessCheckerComponent;
 import it.unicam.qwert123.doit.backend.models.Project;
 import it.unicam.qwert123.doit.backend.models.User;
 
-
 @RestController
 @RequestMapping("doit/api/project")
 public class ProjectController {
@@ -35,13 +34,12 @@ public class ProjectController {
     @Autowired
     private UserService userService;
 
-    //NON ELIMINARE
+    // NON ELIMINARE
     @Autowired
-	private AccessCheckerComponent accessCheckerComponent;
-    
+    private AccessCheckerComponent accessCheckerComponent;
 
     @PostMapping("/new")
-	@PreAuthorize("hasAuthority('PROJECT_PROPOSER') and @accessCheckerComponent.sameUser(principal, #project.getProjectProposer())")
+    @PreAuthorize("hasAuthority('PROJECT_PROPOSER') and @accessCheckerComponent.sameUser(principal, #project.getProjectProposer())")
     public Project addProject(@RequestBody @Param("project") Project newProject) {
         Project returnProject = projectService.addProject(newProject);
         User user = userService.findByMail(returnProject.getProjectProposer());
@@ -51,7 +49,7 @@ public class ProjectController {
     }
 
     @PutMapping("/update")
-	@PreAuthorize("hasAuthority('PROJECT_PROPOSER') and @accessCheckerComponent.sameUser(principal, #project.getProjectProposer())")
+    @PreAuthorize("hasAuthority('PROJECT_PROPOSER') and @accessCheckerComponent.sameUser(principal, #project.getProjectProposer())")
     public Project updateProject(@RequestBody @Param("project") Project modifiedProject) {
         return projectService.updateProject(modifiedProject);
     }
@@ -59,17 +57,18 @@ public class ProjectController {
     @DeleteMapping("/delete/{id}")
     public boolean deleteProject(@PathVariable("id") String id) {
         try {
-            //aggiungere che cancella il progetto dalla lista dei progetti del projectProposer
+            // aggiungere che cancella il progetto dalla lista dei progetti del
+            // projectProposer
             return projectService.deleteProject(UUID.fromString(id));
 
         } catch (IllegalArgumentException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
-        
+
     }
 
     @GetMapping("/getPage/{index}/{size}")
-    public Page<Project> getProjectsPage(@PathVariable("index") int index, @PathVariable("size") int size){
+    public Page<Project> getProjectsPage(@PathVariable("index") int index, @PathVariable("size") int size) {
         return projectService.getProjectsPage(index, size);
     }
 
@@ -85,7 +84,7 @@ public class ProjectController {
         } catch (IllegalArgumentException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
-        
+
     }
 
     @GetMapping("/getByIds")
@@ -118,7 +117,5 @@ public class ProjectController {
         }
         return projectService.findByTags(tagsUuid);
     }
-
-
 
 }

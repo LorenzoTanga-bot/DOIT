@@ -23,7 +23,9 @@ class TagApiController {
     return (await http.post("$_baseUrl/new",
             headers: BasicAuthConfig().getUserHeader(),
             body: json
-                .encode({"id": newTag.getId(), "value": newTag.getValue()})))
+                .encode({
+                  "id": newTag.getId(), 
+                  "value": newTag.getValue()})))
         .body;
   }
 

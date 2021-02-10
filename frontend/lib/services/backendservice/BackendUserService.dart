@@ -68,9 +68,8 @@ class BackendUserService implements UserService {
   }
 
   User _createUser(String controllerJson) {
-    if (controllerJson == "") return null;
-    var user = json.decode(controllerJson);
-    return _newUser(user);
+   if (controllerJson == "") return null;
+    return _newUser(json.decode(controllerJson));
   }
 
   @override
