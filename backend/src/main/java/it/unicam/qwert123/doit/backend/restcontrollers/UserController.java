@@ -24,31 +24,14 @@ public class UserController {
     @Autowired
     private UserService service;
 
-    @GetMapping("/getById/{id}")
-    public User getUserById(@PathVariable("id") String id) {
-        try {
-            return service.findById(UUID.fromString(id));
-        } catch (IllegalArgumentException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
-        }
-    }
-
-    @GetMapping("/getByIds")
-    public List<User> getUsersByIds(@RequestBody List<String> ids) {
-        List<UUID> uuidIds = new ArrayList<UUID>();
-        for (String id : ids) {
-            try {
-                uuidIds.add(UUID.fromString(id));
-            } catch (IllegalArgumentException e) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
-            }
-        }
-        return service.findByIds(uuidIds);
-    }
-
     @GetMapping("/getByMail/{mail}")
-    public User getUserByMail(@PathVariable("mail") String mail) {
-        return service.findByMail(mail);
+    public User getUserById(@PathVariable("mail") String mail) {
+            return service.findById(mail);
+    }
+
+    @GetMapping("/getByMails")
+    public List<User> getUsersByIds(@RequestBody List<String> mails) {
+        return service.findByIds(mails);
     }
 
     @GetMapping("/getByUsername/{role}/{username}")
@@ -94,11 +77,6 @@ public class UserController {
             default:
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid Path Variables");
         }
-    }
-
-    @GetMapping("/exists/{mail}")
-    public boolean userExistsByMail(@PathVariable("mail") String mail) {
-        return service.existsByMail(mail);
     }
 
     @GetMapping("/get")

@@ -31,7 +31,6 @@ public class AuthCredential implements UserDetails {
     private String mail;
     private String password;
     private List<Role> roles;
-    private UUID userId;
 
     public enum Role {
         PROJECT_PROPOSER, EXPERT, DESIGNER, ADMIN, NOT_COMPLETED

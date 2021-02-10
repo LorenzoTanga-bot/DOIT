@@ -16,17 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 import it.unicam.qwert123.doit.backend.services.AuthCredentialService;
 import it.unicam.qwert123.doit.backend.services.UserService;
 import it.unicam.qwert123.doit.backend.utility.AccessCheckerComponent;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 import it.unicam.qwert123.doit.backend.models.AuthCredential;
 import it.unicam.qwert123.doit.backend.models.User;
 
-@Setter
-@Getter
-@NoArgsConstructor
-@AllArgsConstructor
 @RestController
 @RequestMapping("doit/api/authCredential")
 public class AuthCredentialController {
@@ -36,13 +28,14 @@ public class AuthCredentialController {
 	@Autowired
 	private AuthCredentialService authService;
 
+    //NON ELIMINARE
 	@Autowired
 	private AccessCheckerComponent accessCheckerComponent;
 
 	@PostMapping("/login")
 	@PreAuthorize("permitAll")
 	public User loginWithCredentials(@RequestBody AuthCredential credentials) {
-		return authService.loginWithCredentials(credentials) ? userService.findByMail(credentials.getMail()): null;
+		return authService.loginWithCredentials(credentials) ? userService.findById(credentials.getMail()): null;
 	}
 
 	@PostMapping("/addCredential")
@@ -53,12 +46,11 @@ public class AuthCredentialController {
 
 	@PostMapping("/addUser")
 	@PreAuthorize("@accessCheckerComponent.sameUser(principal, #user.getMail()) or hasAuthority('ADMIN')")
-	public User addUser(@RequestBody User user) {
+	public User addUser(@RequestBody @Param("user") User user) {
 		User newUser = userService.addUser(user);
 		AuthCredential authCredential = authService.getAuthCredentialsInstance(user.getMail());
 		authCredential.setRoles(newUser.getRoles());
-		authCredential.setUserId(user.getId());
-		updateCredentials(authCredential);
+		authService.updateRolesCredential(authCredential);
 		return newUser;
 	}
 

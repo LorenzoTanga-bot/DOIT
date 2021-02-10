@@ -21,31 +21,39 @@ public class User{
 
     @EqualsAndHashCode.Include
     @Id
-    private UUID id;
+    private String mail;
     private boolean isAPerson;
     private String username;
     private String usernameToShow;
     private String name;
     private String surname; //se è un azienda, qui viene memorizzata la partita iva
-    private String mail;
     private List<Role> roles;
     private List<UUID> tags;
-    private List<UUID> projectsFirstRole;
-    private List<UUID> projectsSecondRole;
+    private List<UUID> proposedProjects;
+    private List<UUID> supportedProjects;
+    private List<UUID> evaluations;
 
-    public boolean addProjectToFirstRole(UUID idProject) {
-        return projectsFirstRole.add(idProject);
+    public boolean addProposedProjects(UUID idProject) {
+        return proposedProjects.add(idProject);
     }
 
-    public boolean removeProjectToFirstRole(UUID idProject) {
-        return  projectsFirstRole.remove(idProject);
+    public boolean removeProposedProjects(UUID idProject) {
+        return  proposedProjects.remove(idProject);
     }
 
-    public boolean addProjectToSecondRole(UUID idProject) {
-        return projectsSecondRole.add(idProject);
+    public boolean addSupportedProjects(UUID idProject) {
+        return supportedProjects.add(idProject);
     }
 
-    public boolean removeProjectToSecondRole(UUID idProject) {
-        return projectsSecondRole.remove(idProject);
+    public boolean removeSupportedProjects(UUID idProject) {
+        return supportedProjects.remove(idProject);
+    }
+
+    public boolean addEvaluations(UUID idEvaluations) {
+        return supportedProjects.add(idEvaluations);
+    }
+
+    public boolean removeEvaluationss(UUID idEvaluations) {
+        return supportedProjects.remove(idEvaluations);
     }
 }

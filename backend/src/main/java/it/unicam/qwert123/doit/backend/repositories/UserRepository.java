@@ -8,22 +8,17 @@ import it.unicam.qwert123.doit.backend.models.User;
 import java.util.UUID;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Repository
-public interface UserRepository extends MongoRepository<User, UUID> {
+public interface UserRepository extends MongoRepository<User, String> {
 
-    Optional<User> findById(UUID id);
-
-    default List<User> findByIds(List<UUID> ids) {
+    default List<User> findByIds(List<String> mails) {
         List<User> users = new ArrayList<User>();
-        for (UUID id : ids) {
-            users.add(findById(id).get());
+        for (String mail : mails) {
+            users.add(findById(mail).get());
         }
         return users;
     }
-
-    Optional<User> findByMail(String mail);
 
     List<User> findByUsernameContaining(String username);
 

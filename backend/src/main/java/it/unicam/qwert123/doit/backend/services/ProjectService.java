@@ -55,11 +55,6 @@ public class ProjectService {
     public Project addProject(@NonNull Project newProject) throws ResponseStatusException {
         if (checkProject(newProject)) {
             newProject.setId(UUID.randomUUID());
-            /*
-             * if (user.getRole().first() == Role.PROJECT_PROPOSER) {
-             * user.addProjectToFistRole(newProject.getId()); } else
-             * user.addProjectToSecondRole(newProject.getId());
-             */
             return repository.insert(newProject);
         } else
             return null;

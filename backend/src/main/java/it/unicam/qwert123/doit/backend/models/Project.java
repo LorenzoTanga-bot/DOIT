@@ -22,7 +22,7 @@ public class Project {
 
     @Id
     private UUID id;
-    private UUID projectProposer;
+    private String projectProposer;
     private List<UUID> tag;
     private Date dateOfCreation;
     private Date dateOfStart;

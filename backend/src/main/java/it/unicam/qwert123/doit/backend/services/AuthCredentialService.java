@@ -35,28 +35,34 @@ public class AuthCredentialService implements UserDetailsService {
 	public boolean addCredentials(@NonNull AuthCredential authCredentials) throws ResponseStatusException {
 		authCredentials.setRoles(Arrays.asList(new Role[]{Role.NOT_COMPLETED}));
 		authCredentials.setPassword(new BCryptPasswordEncoder().encode(authCredentials.getPassword()));
-		if (repository.existsById(authCredentials.getMail())) {
+		if (repository.existsById(authCredentials.getMail())) 
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid signin");
-		}
+		
 		repository.insert(authCredentials);
 		return true;
 	}
 
 	public boolean updateCredentials(@NonNull AuthCredential authCredentials) {
-		AuthCredential oldAuthCredentials = getAuthCredentialsInstance(authCredentials.getMail());
-		if (oldAuthCredentials == null) {
-			return false;
-		}
+		if (!repository.existsById(authCredentials.getMail())) 
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid update");
+		
 		authCredentials.setPassword(new BCryptPasswordEncoder().encode(authCredentials.getPassword()));
 		repository.save(authCredentials);
 		return true;
 	}
 
+	public boolean updateRolesCredential(@NonNull AuthCredential authCredentials) {
+		if (!repository.existsById(authCredentials.getMail())) 
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid update");
+		
+		repository.save(authCredentials);
+		return true;
+	}
+
 	public boolean removeCredentials(@NonNull String mail) {
-		AuthCredential oldAuthCredentials = getAuthCredentialsInstance(mail);
-		if (oldAuthCredentials == null) {
-			return false;
-		}
+		if (!repository.existsById(mail)) 
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid update");
+		
 		repository.delete(getAuthCredentialsInstance(mail));
 		return true;
 	}

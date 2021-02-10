@@ -6,7 +6,9 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,28 +20,46 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import it.unicam.qwert123.doit.backend.services.ProjectService;
+import it.unicam.qwert123.doit.backend.services.UserService;
+import it.unicam.qwert123.doit.backend.utility.AccessCheckerComponent;
 import it.unicam.qwert123.doit.backend.models.Project;
+import it.unicam.qwert123.doit.backend.models.User;
+
 
 @RestController
 @RequestMapping("doit/api/project")
 public class ProjectController {
     @Autowired
-    private ProjectService service;
+    private ProjectService projectService;
+
+    @Autowired
+    private UserService userService;
+
+    //NON ELIMINARE
+    @Autowired
+	private AccessCheckerComponent accessCheckerComponent;
+    
 
     @PostMapping("/new")
-    public Project addProject(@RequestBody Project newProject) {
-        return service.addProject(newProject);
+	@PreAuthorize("hasAuthority('PROJECT_PROPOSER') and @accessCheckerComponent.sameUser(principal, #project.getProjectProposer())")
+    public Project addProject(@RequestBody @Param("project") Project newProject) {
+        Project returnProject = projectService.addProject(newProject);
+        User user = userService.findById(returnProject.getProjectProposer());
+        user.addProposedProjects(returnProject.getId());
+        userService.updateUser(user);
+        return returnProject;
     }
 
     @PutMapping("/update")
-    public Project updateProject(@RequestBody Project modifiedProject) {
-        return service.updateProject(modifiedProject);
+	@PreAuthorize("hasAuthority('PROJECT_PROPOSER') and @accessCheckerComponent.sameUser(principal, #project.getProjectProposer())")
+    public Project updateProject(@RequestBody @Param("project") Project modifiedProject) {
+        return projectService.updateProject(modifiedProject);
     }
 
     @DeleteMapping("/delete/{id}")
     public boolean deleteProject(@PathVariable("id") String id) {
         try {
-            return service.deleteProject(UUID.fromString(id));
+            return projectService.deleteProject(UUID.fromString(id));
         } catch (IllegalArgumentException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
@@ -48,18 +68,18 @@ public class ProjectController {
 
     @GetMapping("/getPage/{index}/{size}")
     public Page<Project> getProjectsPage(@PathVariable("index") int index, @PathVariable("size") int size){
-        return service.getProjectsPage(index, size);
+        return projectService.getProjectsPage(index, size);
     }
 
     @GetMapping("/get")
     public List<Project> getAllProjects() {
-        return service.findAll();
+        return projectService.findAll();
     }
 
     @GetMapping("/getById/{id}")
     public Project getProjectById(@PathVariable("id") String id) {
         try {
-            return service.findById(UUID.fromString(id));
+            return projectService.findById(UUID.fromString(id));
         } catch (IllegalArgumentException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
@@ -76,12 +96,12 @@ public class ProjectController {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
             }
         }
-        return service.findByIds(projectsUuid);
+        return projectService.findByIds(projectsUuid);
     }
 
     @GetMapping("/getByName/{name}")
     public List<Project> getProjectsByName(@PathVariable("name") String name) {
-        return service.findByName(name);
+        return projectService.findByName(name);
     }
 
     @GetMapping("/getByTags")
@@ -94,7 +114,7 @@ public class ProjectController {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
             }
         }
-        return service.findByTags(tagsUuid);
+        return projectService.findByTags(tagsUuid);
     }
 
 
