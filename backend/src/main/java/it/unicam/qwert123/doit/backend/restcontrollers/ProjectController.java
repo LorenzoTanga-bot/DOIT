@@ -87,7 +87,7 @@ public class ProjectController {
 
     }
 
-    @GetMapping("/getByIds")
+    @PutMapping("/getByIds")
     public List<Project> getProjectsByIds(@RequestBody List<String> ids) {
         List<UUID> projectsUuid = new ArrayList<>();
         for (String id : ids) {
@@ -105,7 +105,7 @@ public class ProjectController {
         return projectService.findByName(name);
     }
 
-    @GetMapping("/getByTags")
+    @PutMapping("/getByTags")
     public List<Project> getProjectsByTags(@RequestBody List<String> tagsId) {
         List<UUID> tagsUuid = new ArrayList<>();
         for (String tagId : tagsId) {

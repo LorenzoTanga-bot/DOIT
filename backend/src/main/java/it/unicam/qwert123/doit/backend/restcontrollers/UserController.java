@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,7 +30,7 @@ public class UserController {
             return service.findByMail(mail);
     }
 
-    @GetMapping("/getByMails")
+    @PutMapping("/getByMails")
     public List<User> getUsersByMails(@RequestBody List<String> mails) {
         return service.findByMails(mails);
     }
@@ -57,7 +58,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("/getByTags/{role}")
+    @PutMapping("/getByTags/{role}")
     public List<User> getUsersByTags(@RequestBody List<String> tags, @PathVariable("role") String role) {
         List<UUID> idTag = new ArrayList<UUID>();
         for (String tag : tags) {
