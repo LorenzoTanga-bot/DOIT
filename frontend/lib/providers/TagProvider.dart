@@ -16,8 +16,18 @@ class TagProvider with ChangeNotifier {
     return _listTag;
   }
 
-  Future updateListTag() async {
+  Future updateListAllTag() async {
     _listTag = await _service.findAll();
+    notifyListeners();
+  }
+
+  Future updateListTag(List<String> tagid) async {
+    List<String> tagNotFount = [];
+    for (String id in tagid)
+      if (_listTag.where((tag) => tag.getId() == id).isEmpty)
+        tagNotFount.add(id);
+
+    _listTag.addAll(await _service.findByIds(tagNotFount));
     notifyListeners();
   }
 
@@ -118,7 +128,7 @@ class TagProvider with ChangeNotifier {
           returnTag.add(_listTag.where((tag) => tag.getId() == id).first);
           i = i + 1;
         } else
-          updateListTag();
+          updateListAllTag();
       }
     } while (listId.length != i);
 

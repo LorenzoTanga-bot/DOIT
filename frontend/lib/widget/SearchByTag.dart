@@ -93,7 +93,7 @@ class _SearchByTag extends State<SearchByTag> {
                                   Provider.of<ViewProvider>(context,
                                           listen: false)
                                       .pushWidget(ProfileOverView(
-                                          mail: usersFind[index].getMail()));
+                                          user: usersFind[index]));
                                 });
                           })
                     ]))

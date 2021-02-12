@@ -23,22 +23,19 @@ class TagApiController {
     return (await http.post("$_baseUrl/new",
             headers: BasicAuthConfig().getUserHeader(),
             body: json
-                .encode({
-                  "id": newTag.getId(), 
-                  "value": newTag.getValue()})))
+                .encode({"id": newTag.getId(), "value": newTag.getValue()})))
         .body;
   }
 
   Future<String> getTagById(String id) async {
-    return (await http.post("$_baseUrl/getById/$id",
+    return (await http.get("$_baseUrl/getById/$id",
             headers: BasicAuthConfig().getBaseHeader()))
         .body;
   }
 
   Future<String> getTagByIds(List<String> ids) async {
-    return (await http.post("$_baseUrl/getByIds",
-            headers: BasicAuthConfig().getUserHeader(),
-            body: json.encode({ids})))
+    return (await http.put("$_baseUrl/getByIds",
+            headers: BasicAuthConfig().getBaseHeader(), body: json.encode(ids)))
         .body;
   }
 }

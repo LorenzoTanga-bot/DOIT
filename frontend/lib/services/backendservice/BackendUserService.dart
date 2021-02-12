@@ -44,7 +44,7 @@ class BackendUserService implements UserService {
     for (String role in rolesJson)
       roles.add(UserRole.values
           .firstWhere((e) => e.toString() == 'UserRole.' + role));
-    if (roles.first == UserRole.NOT_COMPLETED) return _newNotCompleted(user);
+    if (roles.contains(UserRole.NOT_COMPLETED)) return _newNotCompleted(user);
     for (String tag in tagsJson) tags.add(tag);
     for (String project in proposedProjectsJson) proposedProjects.add(project);
     for (String project in partecipateInProjectsJson)
@@ -68,7 +68,7 @@ class BackendUserService implements UserService {
   }
 
   User _createUser(String controllerJson) {
-   if (controllerJson == "") return null;
+    if (controllerJson == "") return null;
     return _newUser(json.decode(controllerJson));
   }
 

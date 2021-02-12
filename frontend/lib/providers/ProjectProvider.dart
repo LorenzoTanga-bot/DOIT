@@ -47,7 +47,7 @@ class ProjectProvider with ChangeNotifier {
   }
 
   Project findById(String id) {
-    return _listAllProject.where((project) => project.getId() == id).first;
+    return _listAllProject.firstWhere((project) => project.getId() == id);
   }
 
   Future<List<Project>> findByTags(List<String> tags) async {

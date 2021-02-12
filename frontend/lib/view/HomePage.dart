@@ -3,6 +3,7 @@ import 'package:doit/widget/DoitAppBar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_snake_navigationbar/flutter_snake_navigationbar.dart';
 import 'package:provider/provider.dart';
+import 'package:swipedetector/swipedetector.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -20,10 +21,15 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: DoitAppBar(),
       body: Center(
-        child: context
-            .watch<ViewProvider>()
-            .getViewPosition()
-            .elementAt(context.watch<ViewProvider>().getSelectedItemPosition()),
+        child: SwipeDetector(
+          child: context.watch<ViewProvider>().getViewPosition().elementAt(
+              context.watch<ViewProvider>().getSelectedItemPosition()),
+          onSwipeRight: () {
+            setState(() {
+              context.read<ViewProvider>().popWidget();
+            });
+          },
+        ),
       ),
       bottomNavigationBar: SnakeNavigationBar.color(
         behaviour: SnakeBarBehaviour.pinned,

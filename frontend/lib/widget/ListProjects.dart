@@ -16,11 +16,10 @@ class ListProjects extends StatelessWidget {
         itemCount: projects.length,
         itemBuilder: (context, index) {
           return GestureDetector(
-              child: CardListProject(
-                  project: projects[index]),
+              child: CardListProject(project: projects[index]),
               onTap: () {
                 Provider.of<ViewProvider>(context, listen: false)
-                    .pushWidget(ProjectOverView(id: projects[index].getId()));
+                    .pushWidget(ProjectOverView(project: projects[index]));
               });
         });
   }

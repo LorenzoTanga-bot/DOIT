@@ -38,9 +38,9 @@ class CardListProject extends StatelessWidget {
         ),
       ),
       onTap: () {
-                  Provider.of<ViewProvider>(context, listen: false)
-                      .pushWidget(ProjectOverView(id: project.getId()));
-                },
+        Provider.of<ViewProvider>(context, listen: false)
+            .pushWidget(ProjectOverView(project: project));
+      },
     );
   }
 }

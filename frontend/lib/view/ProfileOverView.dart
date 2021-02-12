@@ -1,10 +1,8 @@
-import 'package:doit/model/AuthCredential.dart';
 import 'package:doit/model/Project.dart';
 import 'package:doit/model/Tag.dart';
 import 'package:doit/model/User.dart';
 import 'package:doit/providers/ProjectProvider.dart';
 import 'package:doit/providers/TagProvider.dart';
-import 'package:doit/providers/UserProvider.dart';
 import 'package:doit/widget/ListProjects.dart';
 import 'package:doit/widget/LoadingScreen.dart';
 import 'package:doit/widget/PrincipalInformationUser.dart';
@@ -12,35 +10,40 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class ProfileOverView extends StatefulWidget {
-  final String mail;
+  final User user;
 
-  const ProfileOverView({Key key, @required this.mail}) : super(key: key);
+  const ProfileOverView({Key key, @required this.user}) : super(key: key);
 
   @override
   _ProfileOverView createState() => _ProfileOverView();
 }
 
 class _ProfileOverView extends State<ProfileOverView> {
-  User _user;
-  List<Project> _proposedProjects=[];
-  List<Project> _parteciateInProjects=[];
+  List<Project> _proposedProjects = [];
+  List<Project> _parteciateInProjects = [];
   List<Tag> _tags;
 
-  Future init() async {
-    _user = await context.read<UserProvider>().findUserByMail(widget.mail);
-    _proposedProjects =
-        context.read<ProjectProvider>().findByIds(_user.getProposedProjects());
-    _parteciateInProjects = context
-        .read<ProjectProvider>()
-        .findByIds(_user.getPartecipateInProjects());
-    _tags = context.read<TagProvider>().getTagsByIds(_user.getTags());
+  Future _uploadData() async {
+    await Future.wait([
+      Provider.of<ProjectProvider>(context, listen: false)
+          .updateListProject(widget.user.getProposedProjects()),
+      Provider.of<ProjectProvider>(context, listen: false)
+          .updateListProject(widget.user.getPartecipateInProjects()),
+      Provider.of<TagProvider>(context, listen: false)
+          .updateListTag(widget.user.getTags())
+    ]);
+    _proposedProjects = Provider.of<ProjectProvider>(context, listen: false)
+        .findByIds(widget.user.getProposedProjects());
+    _parteciateInProjects = Provider.of<ProjectProvider>(context, listen: false)
+        .findByIds(widget.user.getPartecipateInProjects());
+    _tags = Provider.of<TagProvider>(context, listen: false)
+        .getTagsByIds(widget.user.getTags());
   }
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: init(),
-        // ignore: missing_return
+        future: _uploadData(),
         builder: (context, data) {
           switch (data.connectionState) {
             case ConnectionState.none:
@@ -52,7 +55,7 @@ class _ProfileOverView extends State<ProfileOverView> {
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height,
                 child: ListView(children: [
-                  PrincipalInformationUser(user: _user, tags: _tags),
+                  PrincipalInformationUser(user: widget.user, tags: _tags),
                   if (_proposedProjects.isNotEmpty)
                     Padding(
                         padding: EdgeInsets.all(15),
@@ -72,11 +75,9 @@ class _ProfileOverView extends State<ProfileOverView> {
                                 indent: 2,
                                 endIndent: 2,
                               ),
-                              // fixed height
                               ListProjects(projects: _proposedProjects)
                             ])),
-                  if (_parteciateInProjects.isNotEmpty &&
-                      _user.getRoles().last != UserRole.DESIGNER)
+                  if (_parteciateInProjects.isNotEmpty)
                     Padding(
                         padding: EdgeInsets.all(15),
                         child: Column(
@@ -93,6 +94,7 @@ class _ProfileOverView extends State<ProfileOverView> {
                 ]),
               );
           }
+          return null;
         });
   }
 }

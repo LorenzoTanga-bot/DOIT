@@ -4,6 +4,7 @@ import 'package:doit/providers/AuthCredentialProvider.dart';
 import 'package:doit/providers/TagProvider.dart';
 import 'package:doit/providers/ViewProvider.dart';
 import 'package:doit/view/ProfileOverView.dart';
+import 'package:doit/view/ThirdView.dart';
 import 'package:doit/widget/NewTagInsertion.dart';
 import 'package:doit/widget/SmartSelectTag.dart';
 import 'package:flutter/material.dart';
@@ -37,9 +38,7 @@ class _Signin extends State<Signin> {
     newUser.setTags(context.read<TagProvider>().getSelectTag("SIGNIN"));
     await Provider.of<AuthCredentialProvider>(context, listen: false)
         .addUser(newUser);
-    context
-        .read<ViewProvider>()
-        .setProfileDefault(ProfileOverView(mail: newUser.getMail()));
+    context.read<ViewProvider>().setProfileDefault(ThirdView());
   }
 
   Widget _selectUserRole() {

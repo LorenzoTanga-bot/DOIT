@@ -1,9 +1,6 @@
-
-import 'package:doit/providers/TagProvider.dart';
 import 'package:doit/view/HomePage.dart';
 import 'package:doit/widget/LoadingScreen.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class LoadingView extends StatefulWidget {
   @override
@@ -13,8 +10,7 @@ class LoadingView extends StatefulWidget {
 class _LoadingViewState extends State<LoadingView> {
   //Provider.of<ProjectProvider>(context, listen: false).updateListAllProject()
   Future _uploadData() async {
-    await Future.wait(
-        [Provider.of<TagProvider>(context, listen: false).updateListTag()]);
+    await Future.wait([]);
   }
 
   @override

@@ -49,7 +49,7 @@ class AuthCredentialController {
   }
 
   Future<String> updateCredential(AuthCredential authCredential) async {
-    return (await http.post(Uri.encodeFull("$_baseUrl/updateCredential"),
+    return (await http.put(Uri.encodeFull("$_baseUrl/updateCredential"),
             headers: BasicAuthConfig().getUserHeader(),
             body: json.encode({
               "mail": authCredential.getMail(),
@@ -61,7 +61,7 @@ class AuthCredentialController {
 
   Future<String> addUser(User newUser) async {
     return (await http.post(Uri.encodeFull("$_baseUrl/addUser"),
-            headers: BasicAuthConfig().getBaseHeader(),
+            headers: BasicAuthConfig().getUserHeader(),
             body: json.encode({
               'mail': newUser.getMail(),
               'aperson': newUser.getIsAPerson(),
@@ -80,7 +80,7 @@ class AuthCredentialController {
   } 
   
   Future<String> updateUser(User newUser) async {
-    return (await http.post(Uri.encodeFull("$_baseUrl/updateUser"),
+    return (await http.put(Uri.encodeFull("$_baseUrl/updateUser"),
             headers: BasicAuthConfig().getBaseHeader(),
             body: json.encode({
               "mail": newUser.getMail(),
@@ -100,7 +100,7 @@ class AuthCredentialController {
   }
 
   Future<String> deleteCredential(AuthCredential authCredential) async {
-    return (await http.post(Uri.encodeFull("$_baseUrl/delete"),
+    return (await http.delete(Uri.encodeFull("$_baseUrl/delete"),
             headers: BasicAuthConfig().getUserHeader()))
         .body;
   }
