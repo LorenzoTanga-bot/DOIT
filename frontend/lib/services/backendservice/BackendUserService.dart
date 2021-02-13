@@ -83,8 +83,8 @@ class BackendUserService implements UserService {
   }
 
   @override
-  Future<List<User>> findByTags(List<String> tags) async {
-    return _createListUser(await _controller.getUsersByTags(tags));
+  Future<List<User>> findByTags(List<String> tags, String role) async {
+    return _createListUser(await _controller.getUsersByTags(tags, role));
   }
 
   @override

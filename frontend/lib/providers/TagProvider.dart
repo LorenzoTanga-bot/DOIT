@@ -5,10 +5,10 @@ import 'package:flutter/foundation.dart';
 class TagProvider with ChangeNotifier {
   TagService _service;
   List<Tag> _listTag = [];
-  List<String> _selectedTagForProject = List<String>();
-  List<String> _selectedTagForSearch = List<String>();
-  List<String> _selectedTagForSignin = List<String>();
-  List<String> _selectedTagForUser = List<String>();
+  List<String> _selectedTagForProject = [];
+  List<String> _selectedTagForSearch = [];
+  List<String> _selectedTagForSignin = [];
+  List<String> _selectedTagForUser = [];
   TagProvider(TagService service) {
     _service = service;
   }

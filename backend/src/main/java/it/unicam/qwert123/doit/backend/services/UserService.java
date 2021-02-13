@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import org.bson.codecs.pojo.IdGenerator;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
@@ -26,7 +26,7 @@ public class UserService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid user: it must have at least one tag");
         }
         if (user.getRoles().isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid user: it must have a role");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid user: it must have at least one role");
         }
         if (user.isAPerson()) {
             for (Role role : user.getRoles()) {

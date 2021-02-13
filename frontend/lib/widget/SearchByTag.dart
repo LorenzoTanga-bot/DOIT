@@ -1,6 +1,9 @@
 import 'package:doit/model/Project.dart';
 import 'package:doit/model/User.dart';
 import 'package:doit/providers/ProjectProvider.dart';
+import 'package:doit/providers/SearchProvider.dart';
+import 'package:doit/providers/TagProvider.dart';
+import 'package:doit/providers/UserProvider.dart';
 import 'package:doit/providers/ViewProvider.dart';
 import 'package:doit/view/ProfileOverView.dart';
 import 'package:flutter/material.dart';
@@ -24,13 +27,48 @@ class _SearchByTag extends State<SearchByTag> {
   bool searchDesigner = true;
   bool searchProjectProposer = true;
   bool searchProject = true;
+  void buildSuggestions(BuildContext context) async {
+    List<String> tags =
+        Provider.of<TagProvider>(context, listen: false).getSelectTag("SEARCH");
+    if (tags.isNotEmpty) {
+      await searchProjects(tags);
+      await searchUsers(tags, context);
+      setState(() {});
+    }
+  }
 
-  void searchProjectsByTags(List<String> tags) async {
-    List<Project> projectsTemp = [];
-    projectsTemp.addAll(
-        await Provider.of<ProjectProvider>(context, listen: false)
-            .findByTags(tags));
-    projectsFind = projectsTemp;
+  Future searchProjects(List<String> tags) async {
+    if (Provider.of<SearchProvider>(context, listen: false)
+        .getSearchProject()) {
+      List<Project> projectsTemp = [];
+      projectsTemp.addAll(
+          await Provider.of<ProjectProvider>(context, listen: false)
+              .findByTags(tags));
+      projectsFind = projectsTemp;
+    }
+  }
+
+  Future searchUsers(List<String> tags, BuildContext context) async {
+    if (Provider.of<SearchProvider>(context, listen: false).getSearchUser()) {
+      List<User> usersTemp = [];
+      usersTemp.addAll(await Provider.of<UserProvider>(context, listen: false)
+          .findByTags(tags, "null"));
+      usersFind = usersTemp;
+      if (Provider.of<SearchProvider>(context, listen: false)
+          .getSearchDesigner()) {
+        List<User> usersTemp = [];
+        usersTemp.addAll(await Provider.of<UserProvider>(context, listen: false)
+            .findByTags(tags, "DESIGNER"));
+        usersFind = usersTemp;
+      }
+      if (Provider.of<SearchProvider>(context, listen: false)
+          .getSearchProjectProposer()) {
+        List<User> usersTemp = [];
+        usersTemp.addAll(await Provider.of<UserProvider>(context, listen: false)
+            .findByTags(tags, "PROJECT_PROPOSER"));
+        usersFind = usersTemp;
+      }
+    }
   }
 
   @override
@@ -39,7 +77,18 @@ class _SearchByTag extends State<SearchByTag> {
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
         child: ListView(children: [
-          new SmartSelectTag(title: "Select Tags", index: "SEARCH"),
+          Row(
+            children: [
+              Expanded(
+                  child: new SmartSelectTag(
+                      title: "Select Tags", index: "SEARCH")),
+              Padding(
+                  padding: EdgeInsets.only(right: 10),
+                  child: IconButton(
+                      icon: Icon(Icons.search),
+                      onPressed: () => buildSuggestions(context)))
+            ],
+          ),
           if (projectsFind.isNotEmpty)
             Padding(
                 padding: const EdgeInsets.all(10.0),

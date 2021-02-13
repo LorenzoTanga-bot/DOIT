@@ -47,4 +47,9 @@ class UserProvider with ChangeNotifier {
     _listUsers.remove(oldUser);
     _listUsers.add(user);
   }
+
+  Future<List<User>> findByTags(List<String> tags, String role) async {
+    List<User> find = await _service.findByTags(tags, role);
+    return find;
+  }
 }

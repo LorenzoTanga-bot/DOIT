@@ -34,6 +34,8 @@ class _CreateModifyProfile extends State<CreateModifyProfile> {
   bool _visibilityLabelName = false;
   bool _visibilityLabelSurname = false;
   bool _visibilityLabelUsername = false;
+  bool _visibilityLabelRoles = false;
+  bool _visibilityLabelTags = false;
 
   Future _uploadData() async {
     if (!widget.isNewUser) {
@@ -53,6 +55,7 @@ class _CreateModifyProfile extends State<CreateModifyProfile> {
     _visibilityLabelSurname = false;
     _visibilityLabelName = false;
     _visibilityLabelUsername = false;
+    _visibilityLabelRoles = false;
     if (_name.text.isEmpty) {
       _visibilityLabelName = true;
       return false;
@@ -65,6 +68,20 @@ class _CreateModifyProfile extends State<CreateModifyProfile> {
       _visibilityLabelUsername = true;
       return false;
     }
+    if (_roles.isEmpty) {
+      _visibilityLabelRoles = true;
+      return false;
+    }
+    if (widget.isNewUser) {
+      if (context.read<TagProvider>().getSelectTag("SIGNIN").isEmpty) {
+        _visibilityLabelTags = true;
+        return false;
+      }
+    } else if (context.read<TagProvider>().getSelectTag("USER").isEmpty) {
+      _visibilityLabelTags = true;
+      return false;
+    }
+
     return true;
   }
 
@@ -294,7 +311,17 @@ class _CreateModifyProfile extends State<CreateModifyProfile> {
                               visible: _visibilityLabelUsername,
                             ),
                           _selectUserRole(),
+                          Visibility(
+                            child: Text("Select at least one role",
+                                style: TextStyle(color: Colors.red)),
+                            visible: _visibilityLabelRoles,
+                          ),
                           _insertTags(),
+                          Visibility(
+                            child: Text("Select at least one tag",
+                                style: TextStyle(color: Colors.red)),
+                            visible: _visibilityLabelTags,
+                          ),
                           RaisedButton.icon(
                             icon: Icon(Icons.create),
                             onPressed: () => {
