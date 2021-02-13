@@ -48,6 +48,12 @@ class AuthCredentialController {
         .body;
   }
 
+  Future<String> existByMail(String id) async {
+    return (await http.get(Uri.encodeFull("$_baseUrl/existsById/{id}"),
+            headers: BasicAuthConfig().getBaseHeader()))
+        .body;
+  }
+
   Future<String> updateCredential(AuthCredential authCredential) async {
     return (await http.put(Uri.encodeFull("$_baseUrl/updateCredential"),
             headers: BasicAuthConfig().getUserHeader(),
@@ -77,20 +83,20 @@ class AuthCredentialController {
               'candidacies': newUser.getCandidacies(),
             })))
         .body;
-  } 
-  
+  }
+
   Future<String> updateUser(User newUser) async {
     return (await http.put(Uri.encodeFull("$_baseUrl/updateUser"),
-            headers: BasicAuthConfig().getBaseHeader(),
+            headers: BasicAuthConfig().getUserHeader(),
             body: json.encode({
               "mail": newUser.getMail(),
-              "isAPerson": newUser.getIsAPerson(),
-              "username": newUser.getUsername(),
+              "aperson": newUser.getIsAPerson(),
+              "usernameToShow": newUser.getUsername(),
               "name": newUser.getName(),
               "surname": newUser.getUsername(),
               "roles": _rolesToString(newUser.getRoles()),
               "tags": newUser.getTags(),
-              "propodesProjects": newUser.getProposedProjects(),
+              "proposedProjects": newUser.getProposedProjects(),
               "partecipateInProjects": newUser.getPartecipateInProjects(),
               "evaluations": newUser.getEvaluations(),
               "invites": newUser.getInvites(),

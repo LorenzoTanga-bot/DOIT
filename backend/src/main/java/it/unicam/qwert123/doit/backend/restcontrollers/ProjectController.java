@@ -42,7 +42,7 @@ public class ProjectController {
     @PreAuthorize("hasAuthority('PROJECT_PROPOSER') and @accessCheckerComponent.sameUser(principal, #project.getProjectProposer())")
     public Project addProject(@RequestBody @Param("project") Project newProject) {
         Project returnProject = projectService.addProject(newProject);
-        User user = userService.findByMail(returnProject.getProjectProposer());
+        User user = userService.findById(returnProject.getProjectProposer());
         user.addPProposedProject(returnProject.getId());
         userService.updateUser(user);
         return returnProject;

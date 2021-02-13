@@ -8,4 +8,5 @@ abstract class AuthCredentialService {
   Future<User> addUser(User newUser);
   Future<User> updateUser(User newUser);
   Future<bool> deleteCredential(AuthCredential authCredential);
+  Future<bool> existsByMail(String mail);
 }

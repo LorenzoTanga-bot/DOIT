@@ -164,7 +164,7 @@ class _SearchByName extends State<SearchByName> {
                                     Provider.of<ViewProvider>(context,
                                             listen: false)
                                         .pushWidget(ProfileOverView(
-                                            user: usersFind[index]));
+                                            mail: usersFind[index].getMail()));
                                   });
                             })
                       ]))

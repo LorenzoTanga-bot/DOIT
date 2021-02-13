@@ -8,6 +8,7 @@ class TagProvider with ChangeNotifier {
   List<String> _selectedTagForProject = List<String>();
   List<String> _selectedTagForSearch = List<String>();
   List<String> _selectedTagForSignin = List<String>();
+  List<String> _selectedTagForUser = List<String>();
   TagProvider(TagService service) {
     _service = service;
   }
@@ -47,6 +48,10 @@ class TagProvider with ChangeNotifier {
         _selectedTagForSignin.add(newTag.getId());
         notifyListeners();
         return true;
+      case "USER":
+        _selectedTagForUser.add(newTag.getId());
+        notifyListeners();
+        return true;
       default:
         return null;
     }
@@ -60,6 +65,8 @@ class TagProvider with ChangeNotifier {
         return _selectedTagForSearch;
       case "SIGNIN":
         return _selectedTagForSignin;
+      case "USER":
+        return _selectedTagForUser;
       default:
         return null;
     }
@@ -75,6 +82,9 @@ class TagProvider with ChangeNotifier {
         return true;
       case "SIGNIN":
         _selectedTagForSignin.add(newTag);
+        return true;
+      case "USER":
+        _selectedTagForUser.add(newTag);
         return true;
       default:
         return false;
@@ -92,6 +102,9 @@ class TagProvider with ChangeNotifier {
       case "SIGNIN":
         _selectedTagForSignin = selectedTag;
         return true;
+      case "USER":
+        _selectedTagForUser = selectedTag;
+        return true;
       default:
         return false;
     }
@@ -107,6 +120,9 @@ class TagProvider with ChangeNotifier {
         return true;
       case "SIGNIN":
         _selectedTagForSignin.clear();
+        return true;
+      case "USER":
+        _selectedTagForUser.clear();
         return true;
       default:
         return false;

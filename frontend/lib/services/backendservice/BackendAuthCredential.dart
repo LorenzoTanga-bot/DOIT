@@ -91,4 +91,9 @@ class BackendAuthCredential implements AuthCredentialService {
         ? true
         : false;
   }
+
+  @override
+  Future<bool> existsByMail(String mail) async {
+    return (await _controller.existByMail(mail)) == "true" ? true : false;
+  }
 }

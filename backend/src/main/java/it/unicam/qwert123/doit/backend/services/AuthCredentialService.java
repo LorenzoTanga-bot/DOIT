@@ -81,4 +81,8 @@ public class AuthCredentialService implements UserDetailsService {
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		return getAuthCredentialsInstance(username);
 	}
+
+	public boolean existsById(String id) {
+		return repository.existsById(id);
+	}
 }

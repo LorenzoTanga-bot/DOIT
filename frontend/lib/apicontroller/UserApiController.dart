@@ -12,7 +12,7 @@ class UserApiController {
   }
 
   Future<String> getUserByMail(String mail) async {
-    return (await http.get(Uri.encodeFull("$_baseUrl/getByMail/$mail"),
+    return (await http.get(Uri.encodeFull("$_baseUrl/getById/$mail"),
             headers: BasicAuthConfig().getBaseHeader()))
         .body;
   }
@@ -30,10 +30,10 @@ class UserApiController {
         .body;
   }
 
-  Future<String> getUsersByMails(List<String> mails) async {
-    return (await http.put(Uri.encodeFull("$_baseUrl/getByMails"),
+  Future<String> getUsersByMails(List<String> ids) async {
+    return (await http.put(Uri.encodeFull("$_baseUrl/getByIds"),
             headers: BasicAuthConfig().getBaseHeader(),
-            body: json.encode(mails)))
+            body: json.encode(ids)))
         .body;
   }
 }

@@ -42,5 +42,11 @@ class AuthCredentialProvider with ChangeNotifier {
 
   Future updateUser(User newUser) async {
     _user = await _service.updateUser(newUser);
+    
+
+  }
+
+  Future<bool> existsByMail(String mail) async {
+    return _service.existsByMail(mail);
   }
 }

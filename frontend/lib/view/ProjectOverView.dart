@@ -8,6 +8,7 @@ import 'package:doit/providers/UserProvider.dart';
 import 'package:doit/providers/ViewProvider.dart';
 
 import 'package:doit/view/ProfileOverView.dart';
+import 'package:doit/view/projectproposer/CreateModifyProject.dart';
 
 import 'package:doit/widget/ListTags.dart';
 import 'package:doit/widget/LoadingScreen.dart';
@@ -38,15 +39,15 @@ class _ProjectOverView extends State<ProjectOverView> {
           .updateListTag(widget.project.getTag())
     ]);
     //TODO da sostiuire con [project.getProjectProposer()].addAll(project.getDesigner());
-    _projectProposer = Provider.of<UserProvider>(context, listen: false)
+    _projectProposer = await Provider.of<UserProvider>(context, listen: false)
         .findUserByMail(widget.project.getProjectProposer());
     _listTags = Provider.of<TagProvider>(context, listen: false)
         .getTagsByIds(widget.project.getTag());
     _state = (DateTime.parse(widget.project.getDateOfEnd())
                 .compareTo(DateTime.now()) ==
             1)
-        ? (widget.project.getCandidacyMode() ? " Candidacy Mode" : "In corso")
-        : "Completato";
+        ? (widget.project.getCandidacyMode() ? "Candidacy Mode" : "In corso")
+        : "Completed";
   }
 
   String _getDate(String type) {
@@ -68,112 +69,135 @@ class _ProjectOverView extends State<ProjectOverView> {
   }
 
   Widget _firstCard() {
-    return Card(
-        margin: EdgeInsets.all(15),
-        elevation: 4,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15.0),
-        ),
-        child: Padding(
-            padding: EdgeInsets.all(10),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  widget.project.getName(),
-                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-                ),
-                Divider(
-                  color: Colors.white,
-                  height: 5,
-                  thickness: 1,
-                  indent: 2,
-                  endIndent: 2,
-                ),
-                Row(children: [
-                  Text("Project proposer : "),
-                  RichText(
-                      text: TextSpan(
-                          text: (_projectProposer.getUsername()),
-                          style: TextStyle(color: Colors.black),
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = () {
-                              Provider.of<ViewProvider>(context, listen: false)
-                                  .pushWidget(
-                                      ProfileOverView(user: _projectProposer));
-                            }))
-                ]),
-                Divider(
-                  color: Colors.white,
-                  height: 5,
-                  thickness: 1,
-                  indent: 2,
-                  endIndent: 2,
-                ),
-                Text("State : $_state"),
-                Divider(
-                  color: Colors.white,
-                  height: 5,
-                  thickness: 1,
-                  indent: 2,
-                  endIndent: 2,
-                ),
-                Text("Date : ${_getDate("dStart")} - ${_getDate("dEnd")}"),
-                Divider(
-                  color: Colors.white,
-                  height: 5,
-                  thickness: 1,
-                  indent: 2,
-                  endIndent: 2,
-                ),
-                Text(
-                    "Date of candidacy: ${_getDate("cStart")} - ${_getDate("cEnd")}"),
-                Divider(
-                  color: Colors.white,
-                  height: 5,
-                  thickness: 1,
-                  indent: 2,
-                  endIndent: 2,
-                ),
-                Divider(
-                  color: Colors.grey,
-                  height: 5,
-                  thickness: 1,
-                  indent: 2,
-                  endIndent: 2,
-                ),
-                Divider(
-                  color: Colors.white,
-                  height: 5,
-                  thickness: 1,
-                  indent: 2,
-                  endIndent: 2,
-                ),
-                Text(widget.project.getShortDescription()),
-                Align(
-                    alignment: Alignment.centerRight,
-                    child: FlatButton.icon(
-                      icon: Icon(Icons.info),
-                      label: Text('More Info'),
-                      onPressed: () {
-                        showDialog(
-                            context: context,
-                            builder: (context) {
-                              return AlertDialog(
-                                  scrollable: true,
-                                  title: Text(
-                                      "Descrizione", //non funziona troppo bene
-                                      style: TextStyle(
-                                          fontSize: 24,
-                                          fontStyle: FontStyle.italic)),
-                                  content:
-                                      Text(widget.project.getDescription()));
-                            });
-                      },
-                    ))
-              ],
-            )));
+    return Column(
+      children: [
+        if (isTheProjectProposer())
+          Padding(
+              padding: EdgeInsets.only(right: 15, top: 10),
+              child: Align(
+                  alignment: Alignment.bottomRight,
+                  child: RaisedButton(
+                    elevation: 4,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10)),
+                    onPressed: () => {
+                      Provider.of<ViewProvider>(context, listen: false)
+                          .pushWidget(CreateModifyProject(
+                        id: widget.project.getId(),
+                      ))
+                    },
+                    child: Text("Modifica"),
+                  ))),
+        Card(
+            margin: EdgeInsets.all(15),
+            elevation: 4,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15.0),
+            ),
+            child: Padding(
+                padding: EdgeInsets.all(10),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      widget.project.getName(),
+                      style:
+                          TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                    ),
+                    Divider(
+                      color: Colors.white,
+                      height: 5,
+                      thickness: 1,
+                      indent: 2,
+                      endIndent: 2,
+                    ),
+                    Row(children: [
+                      Text("Project proposer : "),
+                      RichText(
+                          text: TextSpan(
+                              text: (_projectProposer.getUsername()),
+                              style: TextStyle(color: Colors.black),
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () {
+                                  Provider.of<ViewProvider>(context,
+                                          listen: false)
+                                      .pushWidget(ProfileOverView(
+                                          mail: _projectProposer.getMail()));
+                                }))
+                    ]),
+                    Divider(
+                      color: Colors.white,
+                      height: 5,
+                      thickness: 1,
+                      indent: 2,
+                      endIndent: 2,
+                    ),
+                    Text("State : $_state"),
+                    Divider(
+                      color: Colors.white,
+                      height: 5,
+                      thickness: 1,
+                      indent: 2,
+                      endIndent: 2,
+                    ),
+                    Text("Date : ${_getDate("dStart")} - ${_getDate("dEnd")}"),
+                    Divider(
+                      color: Colors.white,
+                      height: 5,
+                      thickness: 1,
+                      indent: 2,
+                      endIndent: 2,
+                    ),
+                    Text(
+                        "Date of candidacy: ${_getDate("cStart")} - ${_getDate("cEnd")}"),
+                    Divider(
+                      color: Colors.white,
+                      height: 5,
+                      thickness: 1,
+                      indent: 2,
+                      endIndent: 2,
+                    ),
+                    Divider(
+                      color: Colors.grey,
+                      height: 5,
+                      thickness: 1,
+                      indent: 2,
+                      endIndent: 2,
+                    ),
+                    Divider(
+                      color: Colors.white,
+                      height: 5,
+                      thickness: 1,
+                      indent: 2,
+                      endIndent: 2,
+                    ),
+                    Text(widget.project.getShortDescription()),
+                    Align(
+                        alignment: Alignment.centerRight,
+                        child: FlatButton.icon(
+                          icon: Icon(Icons.info),
+                          label: Text('More Info'),
+                          onPressed: () {
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                      scrollable: true,
+                                      title: Text(
+                                          "Descrizione", //non funziona troppo bene
+                                          style: TextStyle(
+                                              fontSize: 24,
+                                              fontStyle: FontStyle.italic)),
+                                      content: Text(
+                                          widget.project.getDescription()));
+                                });
+                          },
+                        ))
+                  ],
+                ))),
+      ],
+    );
   }
 
   Widget _secondCard() {
@@ -225,11 +249,42 @@ class _ProjectOverView extends State<ProjectOverView> {
         ]));
   }
 
+  bool isADesigner() {
+    User user = context.read<AuthCredentialProvider>().getUser();
+    if (user == null) return false;
+    return (user.getRoles().contains(UserRole.DESIGNER));
+  }
+
+  bool isAnExpert() {
+    User user = context.read<AuthCredentialProvider>().getUser();
+    if (user == null) return false;
+    return (user.getRoles().contains(UserRole.EXPERT));
+  }
+
+  bool isTheProjectProposerOrCompanyDesigner() {
+    User user = context.read<AuthCredentialProvider>().getUser();
+    if (user == null)
+      return false;
+    else {
+      if (isADesigner()) {
+        return (!user.getIsAPerson());
+      } else {
+        return (isTheProjectProposer());
+      }
+    }
+  }
+
+  bool isTheProjectProposer() {
+    User user = context.read<AuthCredentialProvider>().getUser();
+    if (user == null) return false;
+    return widget.project.getProjectProposer() == user.getMail();
+  }
+
   Widget _userCustomization() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        if (_profile != null && _profile.getRoles().contains(UserRole.EXPERT))
+        if (isAnExpert())
           Padding(
               padding: EdgeInsets.only(right: 15),
               child: Align(
@@ -240,7 +295,7 @@ class _ProjectOverView extends State<ProjectOverView> {
                     onPressed: () => {},
                     child: Text("Valuta"),
                   ))),
-        if (_profile != null && _profile.getRoles().contains(UserRole.DESIGNER))
+        if (isADesigner())
           Padding(
               padding: EdgeInsets.only(right: 15),
               child: Align(
@@ -251,8 +306,7 @@ class _ProjectOverView extends State<ProjectOverView> {
                     onPressed: () => {},
                     child: Text("Candidati"),
                   ))),
-        if (_profile != null &&
-            _profile.getMail() == widget.project.getProjectProposer())
+        if (isTheProjectProposerOrCompanyDesigner())
           Padding(
               padding: EdgeInsets.only(right: 15),
               child: Align(

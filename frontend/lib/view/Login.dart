@@ -2,8 +2,9 @@ import 'package:doit/model/AuthCredential.dart';
 import 'package:doit/providers/AuthCredentialProvider.dart';
 import 'package:doit/providers/UserProvider.dart';
 import 'package:doit/providers/ViewProvider.dart';
-import 'package:doit/view/InitialSelection.dart';
+
 import 'package:doit/view/ThirdView.dart';
+import 'package:doit/view/CreateModifyProfile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
 import 'package:provider/provider.dart';
@@ -111,7 +112,7 @@ class _Login extends State<Login> {
         onSubmitAnimationCompleted: () {
           if (_isFirstAccess)
             Provider.of<ViewProvider>(context, listen: false)
-                .setProfileDefault(InitialSelection(mail: mail));
+                .setProfileDefault(CreateModifyProfile(mail: mail,isNewUser: true,));
           else
             Provider.of<ViewProvider>(context, listen: false)
                 .setProfileDefault(ThirdView());

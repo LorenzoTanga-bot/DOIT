@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -35,7 +36,7 @@ public class AuthCredentialController {
 	@PostMapping("/login")
 	@PreAuthorize("permitAll")
 	public User loginWithCredentials(@RequestBody AuthCredential credentials) {
-		return authService.loginWithCredentials(credentials) ? userService.findByMail(credentials.getMail()) : null;
+		return authService.loginWithCredentials(credentials) ? userService.findById(credentials.getMail()) : null;
 	}
 
 	@PostMapping("/addCredential")
@@ -78,4 +79,11 @@ public class AuthCredentialController {
 	public Set<AuthCredential> getAuthCredential() {
 		return authService.getAuthCredentials();
 	}
+
+	@GetMapping("/existsById/{id}")
+	@PreAuthorize("permitAll")
+	public boolean existsByMail(@PathVariable("id") String id ) {
+		return authService.existsById(id);
+	}
+
 }

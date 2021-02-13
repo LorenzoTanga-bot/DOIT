@@ -1,8 +1,13 @@
 import 'package:doit/model/Project.dart';
 import 'package:doit/model/Tag.dart';
 import 'package:doit/model/User.dart';
+import 'package:doit/providers/AuthCredentialProvider.dart';
 import 'package:doit/providers/ProjectProvider.dart';
 import 'package:doit/providers/TagProvider.dart';
+import 'package:doit/providers/UserProvider.dart';
+import 'package:doit/providers/ViewProvider.dart';
+import 'package:doit/view/CreateModifyProfile.dart';
+
 import 'package:doit/widget/ListProjects.dart';
 import 'package:doit/widget/LoadingScreen.dart';
 import 'package:doit/widget/PrincipalInformationUser.dart';
@@ -10,9 +15,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class ProfileOverView extends StatefulWidget {
-  final User user;
+  final String mail;
 
-  const ProfileOverView({Key key, @required this.user}) : super(key: key);
+  const ProfileOverView({Key key, @required this.mail}) : super(key: key);
 
   @override
   _ProfileOverView createState() => _ProfileOverView();
@@ -22,28 +27,37 @@ class _ProfileOverView extends State<ProfileOverView> {
   List<Project> _proposedProjects = [];
   List<Project> _parteciateInProjects = [];
   List<Tag> _tags;
+  User _user;
 
   Future _uploadData() async {
+    _user = await Provider.of<UserProvider>(context, listen: false).findUserByMail(widget.mail);
     await Future.wait([
       Provider.of<ProjectProvider>(context, listen: false)
-          .updateListProject(widget.user.getProposedProjects()),
+          .updateListProject(_user.getProposedProjects()),
       Provider.of<ProjectProvider>(context, listen: false)
-          .updateListProject(widget.user.getPartecipateInProjects()),
+          .updateListProject(_user.getPartecipateInProjects()),
       Provider.of<TagProvider>(context, listen: false)
-          .updateListTag(widget.user.getTags())
+          .updateListTag(_user.getTags())
     ]);
     _proposedProjects = Provider.of<ProjectProvider>(context, listen: false)
-        .findByIds(widget.user.getProposedProjects());
+        .findByIds(_user.getProposedProjects());
     _parteciateInProjects = Provider.of<ProjectProvider>(context, listen: false)
-        .findByIds(widget.user.getPartecipateInProjects());
+        .findByIds(_user.getPartecipateInProjects());
     _tags = Provider.of<TagProvider>(context, listen: false)
-        .getTagsByIds(widget.user.getTags());
+        .getTagsByIds(_user.getTags());
+  }
+
+  bool isTheOwner() {
+    User user = context.read<AuthCredentialProvider>().getUser();
+    if (user == null) return false;
+    return user.getMail() == _user.getMail();
   }
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
         future: _uploadData(),
+        // ignore: missing_return
         builder: (context, data) {
           switch (data.connectionState) {
             case ConnectionState.none:
@@ -55,7 +69,25 @@ class _ProfileOverView extends State<ProfileOverView> {
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height,
                 child: ListView(children: [
-                  PrincipalInformationUser(user: widget.user, tags: _tags),
+                  if (isTheOwner())
+                    Padding(
+                        padding: EdgeInsets.only(right: 15, top: 10),
+                        child: Align(
+                            alignment: Alignment.bottomRight,
+                            child: RaisedButton(
+                              elevation: 4,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10)),
+                              onPressed: () => {
+                                Provider.of<ViewProvider>(context,
+                                        listen: false)
+                                    .pushWidget(CreateModifyProfile(
+                                        mail: _user.getMail(),
+                                        isNewUser: false))
+                              },
+                              child: Text("Modifica"),
+                            ))),
+                  PrincipalInformationUser(user: _user, tags: _tags),
                   if (_proposedProjects.isNotEmpty)
                     Padding(
                         padding: EdgeInsets.all(15),
@@ -94,7 +126,6 @@ class _ProfileOverView extends State<ProfileOverView> {
                 ]),
               );
           }
-          return null;
         });
   }
 }

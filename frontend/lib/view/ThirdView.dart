@@ -2,6 +2,7 @@ import 'package:doit/model/AuthCredential.dart';
 import 'package:doit/model/User.dart';
 import 'package:doit/providers/AuthCredentialProvider.dart';
 import 'package:doit/providers/ViewProvider.dart';
+import 'package:doit/view/ProfileOverView.dart';
 import 'package:doit/view/projectproposer/CreateModifyProject.dart';
 import 'package:doit/widget/CardList.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +21,7 @@ class _ThirdView extends State<ThirdView> {
     _listView.addAll([
       Divider(
         color: Colors.white,
-        height: 5,
+        height: 20,
         thickness: 1,
         indent: 2,
         endIndent: 2,
@@ -36,9 +37,18 @@ class _ThirdView extends State<ThirdView> {
         padding: EdgeInsets.all(15.0),
         shape: CircleBorder(),
       ),
+      Divider(
+        color: Colors.white,
+        height: 20,
+        thickness: 1,
+        indent: 2,
+        endIndent: 2,
+      ),
       GestureDetector(
         child: CardList(name: "Profile", sDescription: "Settings"),
-        onTap: () => context.read<ViewProvider>().pushWidget(Text("abc")),
+        onTap: () => context
+            .read<ViewProvider>()
+            .pushWidget(ProfileOverView(mail: _user.getMail())),
       ),
     ]);
   }
@@ -53,22 +63,11 @@ class _ThirdView extends State<ThirdView> {
                   id: "",
                 )),
       ),
-      GestureDetector(
-        child: CardList(
-            name: "Proposed projects", sDescription: "All loaded projects"),
-        onTap: () => context.read<ViewProvider>().pushWidget(Text("abc")),
-      ),
     ]);
   }
 
   _designer() {
     _listView.addAll([
-      GestureDetector(
-        child: CardList(
-            name: "Projects supported",
-            sDescription: "Active and completed projects"),
-        onTap: () => context.read<ViewProvider>().pushWidget(null),
-      ),
       GestureDetector(
         child: CardList(
             name: "Candidature", sDescription: "all applications pending"),
@@ -83,11 +82,6 @@ class _ThirdView extends State<ThirdView> {
         child: CardList(
             name: "Projects evaluated",
             sDescription: "Active and completed projects"),
-        onTap: () => context.read<ViewProvider>().pushWidget(null),
-      ),
-      GestureDetector(
-        child: CardList(
-            name: "Candidature", sDescription: "all applications pending"),
         onTap: () => context.read<ViewProvider>().pushWidget(null),
       ),
     ]);

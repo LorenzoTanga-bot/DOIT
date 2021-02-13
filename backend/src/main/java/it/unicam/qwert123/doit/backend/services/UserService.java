@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import org.bson.codecs.pojo.IdGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
@@ -46,8 +47,8 @@ public class UserService {
         return true;
     }
 
-    private boolean existByMail(String mail) throws ResponseStatusException {
-        if (repository.existsById(mail))
+    private boolean existById(String id) throws ResponseStatusException {
+        if (repository.existsById(id))
             return true;
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
     }
@@ -64,7 +65,7 @@ public class UserService {
 
     public User updateUser(User modifiedUser) throws ResponseStatusException {
         modifiedUser.setUsername(modifiedUser.getUsernameToShow().toUpperCase().trim());
-        if (existByMail(modifiedUser.getMail())) {
+        if (existById(modifiedUser.getMail())) {
             if (repository.findById(modifiedUser.getMail()).get().getUsername().equals(modifiedUser.getUsername())) {
                 if (checkUser(modifiedUser)) {
                     return repository.save(modifiedUser);
@@ -76,21 +77,21 @@ public class UserService {
 
     }
 
-    public boolean deleteUser(@NonNull String mail) throws ResponseStatusException {
-        if (existByMail(mail)) {
-            repository.deleteById(mail);
+    public boolean deleteUser(@NonNull String id) throws ResponseStatusException {
+        if (existById(id)) {
+            repository.deleteById(id);
             return true;
         }
         return false;
     }
 
-    public User findByMail(@NonNull String mail) throws ResponseStatusException {
-        return repository.findById(mail)
+    public User findById(@NonNull String id) throws ResponseStatusException {
+        return repository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
     }
 
-    public List<User> findByMails(@NonNull List<String> mails) {
-        return repository.findByIds(mails);
+    public List<User> findByIds(@NonNull List<String> ids) {
+        return repository.findByIds(ids);
     }
 
     public List<User> findByUsername(@NonNull String username) throws ResponseStatusException {

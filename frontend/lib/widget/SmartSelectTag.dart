@@ -16,6 +16,7 @@ class _SmartSelectTag extends State<SmartSelectTag> {
   @override
   Widget build(BuildContext context) {
     return Consumer<TagProvider>(builder: (context, tag, child) {
+      tag.updateListAllTag();
       return SmartSelect<String>.multiple(
         title: widget.title,
         value: tag.getSelectTag(widget.index),

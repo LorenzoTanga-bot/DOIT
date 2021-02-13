@@ -338,6 +338,12 @@
       "languageVersion": "2.10"
     },
     {
+      "name": "swipedetector",
+      "rootUri": "file:///Users/ale/Documenti/Code/flutter/.pub-cache/hosted/pub.dartlang.org/swipedetector-1.2.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.0"
+    },
+    {
       "name": "term_glyph",
       "rootUri": "file:///Users/ale/Documenti/Code/flutter/.pub-cache/hosted/pub.dartlang.org/term_glyph-1.2.0-nullsafety.1",
       "packageUri": "lib/",
@@ -392,7 +398,7 @@
       "languageVersion": "2.7"
     }
   ],
-  "generated": "2021-02-10T09:13:35.813569Z",
+  "generated": "2021-02-13T09:20:56.387257Z",
   "generator": "pub",
   "generatorVersion": "2.10.5"
 }
