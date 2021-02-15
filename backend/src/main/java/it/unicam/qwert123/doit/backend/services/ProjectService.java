@@ -69,12 +69,10 @@ public class ProjectService {
     }
 
     public Project updateProject(@NonNull Project modifiedProject) throws ResponseStatusException {
-        if (existsById(modifiedProject.getId())) {
-            if (modifiedProject.getProjectProposer() == findById(modifiedProject.getId()).getProjectProposer()) {
+        if (existsById(modifiedProject.getId())) { 
                 if (checkProject(modifiedProject)) {
                     return repository.save(modifiedProject);
                 }
-           }
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The projectProposer must be immutable");
         }
         return null;

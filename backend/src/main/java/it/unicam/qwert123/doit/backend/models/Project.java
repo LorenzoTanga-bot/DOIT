@@ -33,19 +33,24 @@ public class Project {
     private boolean evaluationMode; // if it's true, the project has evaluation mode.
     private Date startCandidacy;
     private Date endCandidacy;
+    private List<UUID> candidacies;
 
     boolean getCandidacyMode() {
         Date now = new Date();
-        if (now.before(endCandidacy) && now.after(startCandidacy)) {
-            return true;
-        } else
-            return false;
+        return (now.before(endCandidacy) && now.after(startCandidacy));
     }
 
     boolean getEvaluationMode() {
-        if (evaluationMode == false)
-            return false;
+        if (!evaluationMode) return evaluationMode;
         else
             return !getCandidacyMode();
+    }
+
+    public boolean addCandidacy(UUID idCandidacy) {
+        return candidacies.add(idCandidacy);
+    }
+
+    public boolean removeCandidacy(UUID idCandidacy) {
+        return candidacies.remove(idCandidacy);
     }
 }
