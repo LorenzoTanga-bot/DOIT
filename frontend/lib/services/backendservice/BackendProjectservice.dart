@@ -4,10 +4,10 @@ import 'package:doit/apicontroller/ProjectApiController.dart';
 import 'package:doit/model/Project.dart';
 import 'package:doit/services/ProjectService.dart';
 
-class BackEndProjectService implements ProjectService {
+class BackendProjectService implements ProjectService {
   ProjectApiController _controller;
 
-  BackEndProjectService(String ip) {
+  BackendProjectService(String ip) {
     _controller = new ProjectApiController(ip);
   }
 

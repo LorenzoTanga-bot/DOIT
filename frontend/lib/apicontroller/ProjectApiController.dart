@@ -16,7 +16,7 @@ class ProjectApiController {
   Future<String> addProject(Project newProject) async {
     return (await http.post(Uri.encodeFull("$_baseUrl/new"),
             headers: BasicAuthConfig()
-                .getSudoHeader(), //TODO togliere .getSudoHeader() mettere .getuserHeader()
+                .getUserHeader(), 
             body: json.encode({
               "id": newProject.getId(),
               "name": newProject.getName(),

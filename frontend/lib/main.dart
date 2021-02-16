@@ -1,10 +1,12 @@
 import 'package:doit/providers/AuthCredentialProvider.dart';
+import 'package:doit/providers/CandidacyProvider.dart';
 import 'package:doit/providers/ProjectProvider.dart';
 import 'package:doit/providers/SearchProvider.dart';
 import 'package:doit/providers/TagProvider.dart';
 import 'package:doit/providers/UserProvider.dart';
 import 'package:doit/providers/ViewProvider.dart';
 import 'package:doit/services/backendservice/BackendAuthCredential.dart';
+import 'package:doit/services/backendservice/BackendCandidacyService.dart';
 import 'package:doit/services/backendservice/BackendProjectservice.dart';
 import 'package:doit/services/backendservice/BackendTagService.dart';
 import 'package:doit/services/backendservice/BackendUserService.dart';
@@ -29,9 +31,12 @@ void main() {
             create: (context) => TagProvider(new BackendTagService(_ip))),
         ChangeNotifierProvider(
             create: (context) =>
-                ProjectProvider(new BackEndProjectService(_ip))),
+                ProjectProvider(new BackendProjectService(_ip))),
         ChangeNotifierProvider(
-            create: (context) => UserProvider(new BackendUserService(_ip)))
+            create: (context) => UserProvider(new BackendUserService(_ip))),
+             ChangeNotifierProvider(
+            create: (context) => CandidacyProvider(new BackendCandidacyService(_ip))),
+            
       ],
       child: Doit(),
     ),

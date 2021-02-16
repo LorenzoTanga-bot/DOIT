@@ -55,7 +55,7 @@ public class CandidacyController {
         return returnCandidacy;
     }
 
-    @PutMapping("/update/candidacy")
+    @PutMapping("/update")
     @PreAuthorize("(hasAuthority('DESIGNER') and @accessCheckerComponent.sameUser(principal, #candidacy.getDesigner())) or (hasAuthority('PROJECT_PROPOSER') and @accessCheckerComponent.sameUser(principal, #candidacy.getProjectProposer()))")
     public Candidacy updateCandidacy(@RequestBody @Param("candidacy") Candidacy candidacy) {
         return candidacyService.updateCandidacy(candidacy);
@@ -71,7 +71,7 @@ public class CandidacyController {
     }
 
     @PutMapping("/getByIds")
-    public List<Project> getCandidacyByIds(@RequestBody List<String> ids) {
+    public List<Candidacy> getCandidaciesByIds(@RequestBody List<String> ids) {
         List<UUID> candidacyUuids = new ArrayList<>();
         for (String id : ids) 
             try {
@@ -79,22 +79,28 @@ public class CandidacyController {
             } catch (IllegalArgumentException e) {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
             }
-        return projectService.findByIds(candidacyUuids);
+        return candidacyService.findByIds(candidacyUuids);
     }
 
     @GetMapping("/getByDesigner/{user}")
-    public List<Candidacy> getByDesigner(@PathVariable("user") String user){
+    public List<Candidacy> getCandidaciesByDesigner(@PathVariable("user") String user){
         return candidacyService.findByDesigner(user);
     }
 
     @GetMapping("/getByProjectProposer/{user}")
-    public List<Candidacy> getByProjectProposer(@PathVariable("user") String user){
+    public List<Candidacy> getCandidaciesByProjectProposer(@PathVariable("user") String user){
         return candidacyService.findByProjectProposer(user);
     }
 
     @GetMapping("/getByProject/{id}")
-    public List<Candidacy> getByProject(@PathVariable("id") UUID project){
-        return candidacyService.findByProject(project);
+    public List<Candidacy> getCandidaciesByProject(@PathVariable("id") String project){
+        UUID projectId;
+        try {
+            projectId=  UUID.fromString(project);
+        } catch (IllegalArgumentException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
+        return candidacyService.findByProject(projectId);
     }
 
 }
