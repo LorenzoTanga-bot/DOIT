@@ -34,7 +34,7 @@ class UserProvider with ChangeNotifier {
       if (!_listUsers.contains(mail)) mailsNotFount.add(mail);
     }
     _listUsers.addAll(await _service.findByMails(mailsNotFount));
-    //notifyListeners();
+    notifyListeners();
   }
 
   Future<List<User>> findByUsername(String username, String role) async {

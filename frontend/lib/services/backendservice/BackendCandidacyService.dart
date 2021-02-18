@@ -22,15 +22,15 @@ class BackendCandidacyService implements CandidacyService {
   }
 
   Candidacy _newCandidacy(var candidacy) {
-    return new Candidacy(
-      candidacy["id"],
-      candidacy["designer"],
-      candidacy["projectProposer"],
-      candidacy["project"],
-      candidacy["dateOfCandidacy"],
-      candidacy["state"],
-      candidacy["dateOfOutcome"],
-    );
+    return new Candidacy.complete(
+        candidacy["id"],
+        candidacy["designer"],
+        candidacy["projectProposer"],
+        candidacy["project"],
+        candidacy["dateOfCandidacy"],
+        candidacy["state"],
+        candidacy["dateOfOutcome"],
+        candidacy["message"]);
   }
 
   Candidacy _createCandiacy(String controllerJson) {

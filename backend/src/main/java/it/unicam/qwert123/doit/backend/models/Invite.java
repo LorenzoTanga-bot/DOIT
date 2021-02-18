@@ -15,19 +15,19 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@Document(collection = "candidacy")
-public class Candidacy {
+@Document(collection = "invite")
+public class Invite {
     @Id
     private UUID id;
     private String designer;
     private String projectProposer;
     private UUID project;
-    private Date dateOfCandidacy;
-    private StateCandidacy state;
+    private Date dateOfInvite;
+    private StateInvite state;
     private Date dateOfOutcome;
     private String message;
 
-    public enum StateCandidacy  {
+    public enum StateInvite  {
         WAITING, POSITIVE, NEGATIVE
     } 
     

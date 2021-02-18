@@ -12,6 +12,7 @@ import 'package:doit/view/projectproposer/CreateModifyProject.dart';
 
 import 'package:doit/widget/ListTags.dart';
 import 'package:doit/widget/LoadingScreen.dart';
+import 'package:doit/widget/SendCandidacy.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -303,7 +304,13 @@ class _ProjectOverView extends State<ProjectOverView> {
                   child: RaisedButton(
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10)),
-                    onPressed: () => {},
+                    onPressed: () => {
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            return SendCandidacy(id: widget.project.getId());
+                          })
+                    },
                     child: Text("Candidati"),
                   ))),
         if (isTheProjectProposerOrCompanyDesigner())

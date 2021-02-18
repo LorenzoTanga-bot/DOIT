@@ -45,7 +45,8 @@ class _ThirdView extends State<ThirdView> {
         endIndent: 2,
       ),
       GestureDetector(
-        child: CardList(name: "Profile", sDescription: "Settings"),
+        child: CardList(
+            name: "Profile", sDescription: "View and modify your profile"),
         onTap: () => context
             .read<ViewProvider>()
             .pushWidget(ProfileOverView(mail: _user.getMail())),
@@ -55,6 +56,7 @@ class _ThirdView extends State<ThirdView> {
 
   _projectProposer() {
     _listView.addAll([
+      Text("PROJECT PROPOSER"),
       GestureDetector(
         child:
             CardList(name: "New Project", sDescription: "Create New Project"),
@@ -63,14 +65,34 @@ class _ThirdView extends State<ThirdView> {
                   id: "",
                 )),
       ),
+      GestureDetector(
+          child: CardList(
+              name: "Candidacies",
+              sDescription: "View all candidacies received"),
+          onTap: () => {}),
+      GestureDetector(
+          child:
+              CardList(name: "Invites", sDescription: "View all invites sent"),
+          onTap: () => {}),
+      GestureDetector(
+          child: CardList(
+              name: "Proposed project",
+              sDescription: "View all proposed project"),
+          onTap: () => {}),
     ]);
   }
 
   _designer() {
     _listView.addAll([
+      Text("DESIGNER"),
       GestureDetector(
         child: CardList(
-            name: "Candidature", sDescription: "all applications pending"),
+            name: "Candidature", sDescription: "View all candidacy sent"),
+        onTap: () => context.read<ViewProvider>().pushWidget(null),
+      ),
+      GestureDetector(
+        child: CardList(
+            name: "Invites", sDescription: "View all invites recieved"),
         onTap: () => context.read<ViewProvider>().pushWidget(null),
       ),
     ]);
@@ -78,10 +100,11 @@ class _ThirdView extends State<ThirdView> {
 
   _expert() {
     _listView.addAll([
+      Text("EXPERT"),
       GestureDetector(
         child: CardList(
             name: "Projects evaluated",
-            sDescription: "Active and completed projects"),
+            sDescription: "Active and completed projects evaluated"),
         onTap: () => context.read<ViewProvider>().pushWidget(null),
       ),
     ]);

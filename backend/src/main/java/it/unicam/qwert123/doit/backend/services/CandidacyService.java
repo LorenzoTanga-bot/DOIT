@@ -22,7 +22,7 @@ public class CandidacyService {
 
     private boolean existsById(UUID id) throws ResponseStatusException {
         if (!repository.existsById(id))
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Project not found");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Candidacy not found");
         return true;
     }
 

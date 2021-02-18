@@ -1,23 +1,27 @@
-/Users/lorenzotanganelli/Documents/Development/DOIT/backend/src/main/java/it/unicam/qwert123/doit/backend/security/SecurityConfig.java
-/Users/lorenzotanganelli/Documents/Development/DOIT/backend/src/main/java/it/unicam/qwert123/doit/backend/restcontrollers/ProjectController.java
-/Users/lorenzotanganelli/Documents/Development/DOIT/backend/src/main/java/it/unicam/qwert123/doit/backend/services/CandidacyService.java
-/Users/lorenzotanganelli/Documents/Development/DOIT/backend/src/main/java/it/unicam/qwert123/doit/backend/models/Project.java
-/Users/lorenzotanganelli/Documents/Development/DOIT/backend/src/main/java/it/unicam/qwert123/doit/backend/restcontrollers/CandidacyController.java
-/Users/lorenzotanganelli/Documents/Development/DOIT/backend/src/main/java/it/unicam/qwert123/doit/backend/restcontrollers/UserController.java
-/Users/lorenzotanganelli/Documents/Development/DOIT/backend/src/main/java/it/unicam/qwert123/doit/backend/services/ProjectService.java
-/Users/lorenzotanganelli/Documents/Development/DOIT/backend/src/main/java/it/unicam/qwert123/doit/backend/restcontrollers/TagController.java
-/Users/lorenzotanganelli/Documents/Development/DOIT/backend/src/main/java/it/unicam/qwert123/doit/backend/repositories/UserRepository.java
-/Users/lorenzotanganelli/Documents/Development/DOIT/backend/src/main/java/it/unicam/qwert123/doit/backend/models/AuthCredential.java
-/Users/lorenzotanganelli/Documents/Development/DOIT/backend/src/main/java/it/unicam/qwert123/doit/backend/restcontrollers/AuthCredentialController.java
-/Users/lorenzotanganelli/Documents/Development/DOIT/backend/src/main/java/it/unicam/qwert123/doit/backend/models/Candidacy.java
-/Users/lorenzotanganelli/Documents/Development/DOIT/backend/src/main/java/it/unicam/qwert123/doit/backend/repositories/TagRepository.java
-/Users/lorenzotanganelli/Documents/Development/DOIT/backend/src/main/java/it/unicam/qwert123/doit/backend/services/AuthCredentialService.java
-/Users/lorenzotanganelli/Documents/Development/DOIT/backend/src/main/java/it/unicam/qwert123/doit/backend/models/User.java
-/Users/lorenzotanganelli/Documents/Development/DOIT/backend/src/main/java/it/unicam/qwert123/doit/backend/DoitApplication.java
-/Users/lorenzotanganelli/Documents/Development/DOIT/backend/src/main/java/it/unicam/qwert123/doit/backend/repositories/CandidacyRepository.java
-/Users/lorenzotanganelli/Documents/Development/DOIT/backend/src/main/java/it/unicam/qwert123/doit/backend/utility/AccessCheckerComponent.java
-/Users/lorenzotanganelli/Documents/Development/DOIT/backend/src/main/java/it/unicam/qwert123/doit/backend/repositories/AuthCredentialRepository.java
-/Users/lorenzotanganelli/Documents/Development/DOIT/backend/src/main/java/it/unicam/qwert123/doit/backend/repositories/ProjectRepository.java
-/Users/lorenzotanganelli/Documents/Development/DOIT/backend/src/main/java/it/unicam/qwert123/doit/backend/services/UserService.java
-/Users/lorenzotanganelli/Documents/Development/DOIT/backend/src/main/java/it/unicam/qwert123/doit/backend/models/Tag.java
-/Users/lorenzotanganelli/Documents/Development/DOIT/backend/src/main/java/it/unicam/qwert123/doit/backend/services/TagService.java
+/Users/louam/Documents/Develop/documentazione doit/backend/src/main/java/it/unicam/qwert123/doit/backend/restcontrollers/ProjectController.java
+/Users/louam/Documents/Develop/documentazione doit/backend/src/main/java/it/unicam/qwert123/doit/backend/security/SecurityConfig.java
+/Users/louam/Documents/Develop/documentazione doit/backend/src/main/java/it/unicam/qwert123/doit/backend/restcontrollers/UserController.java
+/Users/louam/Documents/Develop/documentazione doit/backend/src/main/java/it/unicam/qwert123/doit/backend/services/ProjectService.java
+/Users/louam/Documents/Develop/documentazione doit/backend/src/main/java/it/unicam/qwert123/doit/backend/repositories/AuthCredentialRepository.java
+/Users/louam/Documents/Develop/documentazione doit/backend/src/main/java/it/unicam/qwert123/doit/backend/services/CandidacyService.java
+/Users/louam/Documents/Develop/documentazione doit/backend/src/main/java/it/unicam/qwert123/doit/backend/models/Candidacy.java
+/Users/louam/Documents/Develop/documentazione doit/backend/src/main/java/it/unicam/qwert123/doit/backend/restcontrollers/AuthCredentialController.java
+/Users/louam/Documents/Develop/documentazione doit/backend/src/main/java/it/unicam/qwert123/doit/backend/restcontrollers/InviteController.java
+/Users/louam/Documents/Develop/documentazione doit/backend/src/main/java/it/unicam/qwert123/doit/backend/services/UserService.java
+/Users/louam/Documents/Develop/documentazione doit/backend/src/main/java/it/unicam/qwert123/doit/backend/services/InviteService.java
+/Users/louam/Documents/Develop/documentazione doit/backend/src/main/java/it/unicam/qwert123/doit/backend/repositories/ProjectRepository.java
+/Users/louam/Documents/Develop/documentazione doit/backend/src/main/java/it/unicam/qwert123/doit/backend/utility/AccessCheckerComponent.java
+/Users/louam/Documents/Develop/documentazione doit/backend/src/main/java/it/unicam/qwert123/doit/backend/models/Invite.java
+/Users/louam/Documents/Develop/documentazione doit/backend/src/main/java/it/unicam/qwert123/doit/backend/models/Tag.java
+/Users/louam/Documents/Develop/documentazione doit/backend/src/main/java/it/unicam/qwert123/doit/backend/models/Project.java
+/Users/louam/Documents/Develop/documentazione doit/backend/src/main/java/it/unicam/qwert123/doit/backend/services/AuthCredentialService.java
+/Users/louam/Documents/Develop/documentazione doit/backend/src/main/java/it/unicam/qwert123/doit/backend/repositories/InviteRepository.java
+/Users/louam/Documents/Develop/documentazione doit/backend/src/main/java/it/unicam/qwert123/doit/backend/DoitApplication.java
+/Users/louam/Documents/Develop/documentazione doit/backend/src/main/java/it/unicam/qwert123/doit/backend/services/TagService.java
+/Users/louam/Documents/Develop/documentazione doit/backend/src/main/java/it/unicam/qwert123/doit/backend/restcontrollers/CandidacyController.java
+/Users/louam/Documents/Develop/documentazione doit/backend/src/main/java/it/unicam/qwert123/doit/backend/repositories/CandidacyRepository.java
+/Users/louam/Documents/Develop/documentazione doit/backend/src/main/java/it/unicam/qwert123/doit/backend/models/User.java
+/Users/louam/Documents/Develop/documentazione doit/backend/src/main/java/it/unicam/qwert123/doit/backend/restcontrollers/TagController.java
+/Users/louam/Documents/Develop/documentazione doit/backend/src/main/java/it/unicam/qwert123/doit/backend/repositories/UserRepository.java
+/Users/louam/Documents/Develop/documentazione doit/backend/src/main/java/it/unicam/qwert123/doit/backend/models/AuthCredential.java
+/Users/louam/Documents/Develop/documentazione doit/backend/src/main/java/it/unicam/qwert123/doit/backend/repositories/TagRepository.java

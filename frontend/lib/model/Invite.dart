@@ -1,26 +1,26 @@
-enum StateCandidacy { WAITING, POSITIVE, NEGATIVE }
+enum StateInvite { WAITING, POSITIVE, NEGATIVE }
 
-class Candidacy {
+class Invite {
   String _id;
   String _designer;
   String _projectProposer;
   String _project;
-  String _dateOfCandidacy;
-  StateCandidacy _state;
+  String _dateOfInvite;
+  StateInvite _state;
   String _dateOfOutcome;
   String _message;
 
-  Candidacy.complete(
+  Invite.complete(
       this._id,
       this._designer,
       this._projectProposer,
       this._project,
-      this._dateOfCandidacy,
+      this._dateOfInvite,
       this._state,
       this._dateOfOutcome,
       this._message);
 
-  Candidacy();
+  Invite();
 
   String getId() {
     return this._id;
@@ -54,19 +54,19 @@ class Candidacy {
     _project = project;
   }
 
-  String getDateOfCandidacy() {
-    return this._dateOfCandidacy;
+  String getDateOfInvite() {
+    return this._dateOfInvite;
   }
 
-  void setDateOfCandidacy(String dateOfCandidacy) {
-    _dateOfCandidacy = dateOfCandidacy;
+  void setDateOfInvite(String dateOfInvite) {
+    _dateOfInvite = dateOfInvite;
   }
 
-  StateCandidacy getState() {
+  StateInvite getState() {
     return this._state;
   }
 
-  void setState(StateCandidacy state) {
+  void setState(StateInvite state) {
     _state = state;
   }
 

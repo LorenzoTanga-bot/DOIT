@@ -15,8 +15,7 @@ class ProjectApiController {
 
   Future<String> addProject(Project newProject) async {
     return (await http.post(Uri.encodeFull("$_baseUrl/new"),
-            headers: BasicAuthConfig()
-                .getUserHeader(), 
+            headers: BasicAuthConfig().getUserHeader(),
             body: json.encode({
               "id": newProject.getId(),
               "name": newProject.getName(),
@@ -80,8 +79,7 @@ class ProjectApiController {
 
   Future<String> getProjectsByIds(List<String> ids) async {
     return (await http.put(Uri.encodeFull("$_baseUrl/getByIds"),
-            headers: BasicAuthConfig().getBaseHeader(),
-            body: json.encode({ids})))
+            headers: BasicAuthConfig().getBaseHeader(), body: json.encode(ids)))
         .body;
   }
 
@@ -94,7 +92,7 @@ class ProjectApiController {
   Future<String> getProjectsByTags(List<String> tags) async {
     return (await http.put(Uri.encodeFull("$_baseUrl/getByTags"),
             headers: BasicAuthConfig().getBaseHeader(),
-            body: json.encode({tags})))
+            body: json.encode(tags)))
         .body;
   }
 }
