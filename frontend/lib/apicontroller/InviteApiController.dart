@@ -25,7 +25,7 @@ class InviteApiController {
               'designer': invite.getDesigner(),
               'projectProposer': invite.getProjectProposer(),
               'project': invite.getProject(),
-              'dateOfCandidacy': invite.getDateOfInvite(),
+              'dateOfInvite': invite.getDateOfInvite(),
               'state': _stateToString(invite.getState()),
               'dateOfOutcome': invite.getDateOfOutcome(),
             })))
@@ -40,7 +40,7 @@ class InviteApiController {
               'designer': invite.getDesigner(),
               'projectProposer': invite.getProjectProposer(),
               'project': invite.getProject(),
-              'dateOfCandidacy': invite.getDateOfInvite(),
+              'dateOfInvite': invite.getDateOfInvite(),
               'state': _stateToString(invite.getState()),
               'dateOfOutcome': invite.getDateOfOutcome(),
             })))
