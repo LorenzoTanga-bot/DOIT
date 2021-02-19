@@ -63,8 +63,7 @@ class _ThirdView extends State<ThirdView> {
   }
 
   _projectProposer() {
-    List<Candidacy> candidacies = [];
-    List<Invite> invites = [];
+   
     _listView.addAll([
       Divider(
         color: Colors.white,

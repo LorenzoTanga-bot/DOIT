@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:doit/model/Project.dart';
 import 'package:doit/model/User.dart';
 import 'package:doit/providers/ProjectProvider.dart';
@@ -6,6 +8,8 @@ import 'package:doit/providers/TagProvider.dart';
 import 'package:doit/providers/UserProvider.dart';
 import 'package:doit/providers/ViewProvider.dart';
 import 'package:doit/view/ProfileOverView.dart';
+import 'package:doit/widget/SearchFilter.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -45,30 +49,32 @@ class _SearchByTag extends State<SearchByTag> {
           await Provider.of<ProjectProvider>(context, listen: false)
               .findByTags(tags));
       projectsFind = projectsTemp;
-    }
+    } else
+      projectsFind = [];
   }
 
   Future searchUsers(List<String> tags, BuildContext context) async {
     if (Provider.of<SearchProvider>(context, listen: false).getSearchUser()) {
-      List<User> usersTemp = [];
-      usersTemp.addAll(await Provider.of<UserProvider>(context, listen: false)
-          .findByTags(tags, "null"));
-      usersFind = usersTemp;
+      Set<User> usersTemp = new HashSet();
       if (Provider.of<SearchProvider>(context, listen: false)
+              .getSearchDesigner() &&
+          Provider.of<SearchProvider>(context, listen: false)
+              .getSearchProjectProposer()) {
+        usersTemp.addAll(await Provider.of<UserProvider>(context, listen: false)
+            .findByTags(tags, "null"));
+        usersFind = usersTemp.toList();
+      } else if (Provider.of<SearchProvider>(context, listen: false)
           .getSearchDesigner()) {
-        List<User> usersTemp = [];
         usersTemp.addAll(await Provider.of<UserProvider>(context, listen: false)
             .findByTags(tags, "DESIGNER"));
-        usersFind = usersTemp;
-      }
-      if (Provider.of<SearchProvider>(context, listen: false)
-          .getSearchProjectProposer()) {
-        List<User> usersTemp = [];
+        usersFind = usersTemp.toList();
+      } else {
         usersTemp.addAll(await Provider.of<UserProvider>(context, listen: false)
             .findByTags(tags, "PROJECT_PROPOSER"));
-        usersFind = usersTemp;
+        usersFind = usersTemp.toList();
       }
-    }
+    } else
+      usersFind = [];
   }
 
   @override
@@ -89,6 +95,27 @@ class _SearchByTag extends State<SearchByTag> {
                       onPressed: () => buildSuggestions(context)))
             ],
           ),
+          Padding(
+              padding: const EdgeInsets.only(right: 15),
+              child: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+                RichText(
+                  text: TextSpan(
+                      text: ("Filtra"),
+                      style: TextStyle(color: Colors.blue),
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          showDialog(
+                              context: context,
+                              builder: (context) {
+                                return SearchFilter();
+                              });
+                        }),
+                ),
+                Icon(
+                  Icons.filter_alt,
+                  color: Colors.blue,
+                )
+              ])),
           if (projectsFind.isNotEmpty)
             Padding(
                 padding: const EdgeInsets.all(10.0),

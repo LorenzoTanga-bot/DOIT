@@ -1,9 +1,8 @@
 import 'package:doit/model/Project.dart';
-import 'package:doit/providers/ViewProvider.dart';
-import 'package:doit/view/ProjectOverView.dart';
+
 import 'package:doit/widget/CardListProject.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+
 
 class ListProjects extends StatelessWidget {
   final List<Project> projects;
@@ -15,12 +14,7 @@ class ListProjects extends StatelessWidget {
         shrinkWrap: true,
         itemCount: projects.length,
         itemBuilder: (context, index) {
-          return GestureDetector(
-              child: CardListProject(project: projects[index]),
-              onTap: () {
-                Provider.of<ViewProvider>(context, listen: false)
-                    .pushWidget(ProjectOverView(project: projects[index]));
-              });
+          return CardListProject(project: projects[index]);
         });
   }
 }

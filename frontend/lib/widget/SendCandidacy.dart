@@ -30,7 +30,7 @@ class _SendCandidacy extends State<SendCandidacy> {
     newCandidacy.setDesigner(
         context.read<AuthCredentialProvider>().getUser().getMail());
     newCandidacy.setDateOfCandidacy(DateTime.now().toIso8601String());
-    newCandidacy.setDateOfExpire(DateTime.now().toIso8601String());
+    newCandidacy.setDateOfExpire(_project.getDateOfStart());
     if (_message.text.isNotEmpty) {
       newCandidacy.setMessage(_message.text);
     }
@@ -54,8 +54,7 @@ class _SendCandidacy extends State<SendCandidacy> {
                 controller: _message,
                 maxLines: 3,
                 decoration: InputDecoration(
-                  hintText:
-                      "Inser a messag for project proposed (optional)",
+                  hintText: "Inser a messag for project proposed (optional)",
                 )),
             Divider(
               color: Colors.white,

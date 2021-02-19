@@ -1,9 +1,11 @@
 import 'package:doit/model/Candidacy.dart';
 import 'package:doit/model/Project.dart';
+import 'package:doit/model/User.dart';
+import 'package:doit/providers/AuthCredentialProvider.dart';
 import 'package:doit/providers/CandidacyProvider.dart';
 import 'package:doit/providers/ProjectProvider.dart';
 import 'package:doit/providers/ViewProvider.dart';
-import 'package:doit/view/ProfileOverView.dart';
+
 import 'package:doit/view/ProjectOverView.dart';
 import 'package:doit/widget/LoadingScreen.dart';
 import 'package:flutter/gestures.dart';
@@ -30,13 +32,23 @@ class _CandidacyOverView extends State<CandidacyOverView> {
         .findById(widget.id);
     project = Provider.of<ProjectProvider>(context, listen: false)
         .findById(candidacy.getProject());
+    state = candidacy.getState().toString();
+    state = state.substring(state.indexOf(".") + 1);
     DateTime date = DateTime.parse(candidacy.getDateOfCandidacy());
     dateString = "${date.day}" + "/" + "${date.month}" + "/" + "${date.year}";
     DateTime dateOfExpire = DateTime.parse(candidacy.getDateOfExpire());
-    dateOfExpireString =
-        "${date.day}" + "/" + "${date.month}" + "/" + "${date.year}";
-    state = candidacy.getState().toString();
-    state = state.substring(state.indexOf(".") + 1);
+    dateOfExpireString = "${dateOfExpire.day}" +
+        "/" +
+        "${dateOfExpire.month}" +
+        "/" +
+        "${dateOfExpire.year}";
+  }
+
+  bool isTheProjectProposer() {
+    return true;
+    User user = context.read<AuthCredentialProvider>().getUser();
+    if (user == null) return false;
+    return candidacy.getProjectProposer() == user.getMail();
   }
 
   @override
@@ -57,10 +69,13 @@ class _CandidacyOverView extends State<CandidacyOverView> {
                   child: ListView(shrinkWrap: true, children: [
                     Padding(
                         padding: EdgeInsets.only(top: 15, left: 10),
-                        child: Text(
-                          "Candidacy",
-                          style: TextStyle(
-                              fontSize: 30, fontWeight: FontWeight.bold),
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: Text(
+                            "Candidacy",
+                            style: TextStyle(
+                                fontSize: 30, fontWeight: FontWeight.bold),
+                          ),
                         )),
                     Card(
                         margin: EdgeInsets.all(15),
@@ -115,9 +130,37 @@ class _CandidacyOverView extends State<CandidacyOverView> {
                                     Text("Message : "),
                                     Text(candidacy.getMessage())
                                   ]),
-                                Text("Date of Expire : $dateOfExpireString ")
+                                Text("Date of Expire : $dateOfExpireString "),
                               ],
-                            )))
+                            ))),
+                    if (isTheProjectProposer())
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Padding(
+                              padding: EdgeInsets.only(right: 15),
+                              child: Align(
+                                  alignment: Alignment.bottomRight,
+                                  child: RaisedButton(
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10)),
+                                    onPressed: () => {},
+                                    child: Text("Accetta"),
+                                  ))),
+                          Padding(
+                              padding: EdgeInsets.only(right: 15),
+                              child: Align(
+                                  alignment: Alignment.bottomRight,
+                                  child: RaisedButton(
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10)),
+                                    onPressed: () => {},
+                                    child: Text("Rifiuta"),
+                                  ))),
+                        ],
+                      ),
                   ]));
           }
         });

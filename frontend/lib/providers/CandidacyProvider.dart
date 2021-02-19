@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 class CandidacyProvider with ChangeNotifier {
   CandidacyService _service;
-  List<Candidacy> _listCandidacy = [];
+  List<Candidacy> _listCandidacies = [];
 
   CandidacyProvider(CandidacyService service) {
     _service = service;
@@ -31,6 +31,30 @@ class CandidacyProvider with ChangeNotifier {
   }
 
   Future<Candidacy> findById(String id) async {
+    for (Candidacy candidacy in _listCandidacies) {
+      if (candidacy.getId() == id) {
+        return candidacy;
+      }
+    }
     return await _service.findById(id);
+  }
+
+  Future<List<Candidacy>> findByIds(List<String> ids) async {}
+
+  Future updateListCandidacy(List<String> ids) async {
+    List<String> notFound = [];
+    bool found;
+    for (String id in ids) {
+      found = false;
+      for (Candidacy candidacy in _listCandidacies) {
+        if (candidacy.getId() == id) {
+          found = true;
+          break;
+        }
+      }
+      if (!found) notFound.add(id);
+    }
+    if (notFound.isNotEmpty)
+      _listCandidacies.addAll(await _service.findByIds(notFound));
   }
 }

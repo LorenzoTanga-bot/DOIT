@@ -33,8 +33,8 @@ class _ListOfProjects extends State<ListOfProjects> {
     try {
       ProjectsPage newItems =
           await context.read<ProjectProvider>().pageListUser(pageKey);
-      //_updateUserList(newItems.getListProject());
-      //_updateTagList(newItems.getListProject());
+      _updateUserList(newItems.getListProject());
+      _updateTagList(newItems.getListProject());
       if (newItems.isLast()) {
         _pagingController.appendLastPage(newItems.getListProject());
       } else {

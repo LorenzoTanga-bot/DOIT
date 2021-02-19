@@ -30,7 +30,7 @@ class BackendCandidacyService implements CandidacyService {
         candidacy["dateOfCandidacy"],
         StateCandidacy.values.firstWhere(
             (e) => e.toString() == 'StateCandidacy.' + candidacy["state"]),
-        candidacy["dateOfOutcome"],
+        candidacy["dateOfExpire"],
         candidacy["message"]);
   }
 

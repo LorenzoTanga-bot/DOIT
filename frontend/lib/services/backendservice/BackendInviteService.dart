@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:doit/apicontroller/InviteApiController.dart';
+import 'package:doit/model/Candidacy.dart';
 import 'package:doit/model/Invite.dart';
 import 'package:doit/services/InviteService.dart';
 
@@ -28,8 +29,9 @@ class BackendInviteService implements InviteService {
         invite["projectProposer"],
         invite["project"],
         invite["dateOfInvite"],
-        invite["state"],
-        invite["dateOfOutcome"],
+        StateInvite.values.firstWhere(
+            (e) => e.toString() == 'StateInvite.' + invite["state"]),
+        invite["dateOfExpire"],
         invite["message"]);
   }
 

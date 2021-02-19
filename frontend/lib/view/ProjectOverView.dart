@@ -13,6 +13,7 @@ import 'package:doit/view/projectproposer/CreateModifyProject.dart';
 import 'package:doit/widget/ListTags.dart';
 import 'package:doit/widget/LoadingScreen.dart';
 import 'package:doit/widget/SendCandidacy.dart';
+import 'package:doit/widget/SendInvite.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -250,9 +251,12 @@ class _ProjectOverView extends State<ProjectOverView> {
   }
 
   bool isADesigner() {
-    User user = context.read<AuthCredentialProvider>().getUser();
-    if (user == null) return false;
-    return (user.getRoles().contains(UserRole.DESIGNER));
+    if (widget.project.getCandidacyMode().toString() == "true") {
+      User user = context.read<AuthCredentialProvider>().getUser();
+      if (user == null) return false;
+      return (user.getRoles().contains(UserRole.DESIGNER));
+    }
+    return false;
   }
 
   bool isAnExpert() {
@@ -262,16 +266,19 @@ class _ProjectOverView extends State<ProjectOverView> {
   }
 
   bool isTheProjectProposerOrCompanyDesigner() {
-    User user = context.read<AuthCredentialProvider>().getUser();
-    if (user == null)
-      return false;
-    else {
-      if (isADesigner()) {
-        return (!user.getIsAPerson());
-      } else {
-        return (isTheProjectProposer());
+    if (widget.project.getCandidacyMode().toString() == "true") {
+      User user = context.read<AuthCredentialProvider>().getUser();
+      if (user == null)
+        return false;
+      else {
+        if (isADesigner()) {
+          return (!user.getIsAPerson());
+        } else {
+          return (isTheProjectProposer());
+        }
       }
     }
+    return false;
   }
 
   bool isTheProjectProposer() {
@@ -320,7 +327,10 @@ class _ProjectOverView extends State<ProjectOverView> {
                   child: RaisedButton(
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10)),
-                    onPressed: () => {},
+                    onPressed: () => {
+                      Provider.of<ViewProvider>(context, listen: false)
+                          .pushWidget(SendInvite(id: widget.project.getId()))
+                    },
                     child: Text("Invita"),
                   ))),
       ],

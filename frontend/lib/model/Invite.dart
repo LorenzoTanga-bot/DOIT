@@ -74,7 +74,7 @@ class Invite {
     return this._dateOfExpire;
   }
 
-  void setDateOfOutcome(String dateOfExpire) {
+  void setDateOfExpire(String dateOfExpire) {
     _dateOfExpire = dateOfExpire;
   }
 

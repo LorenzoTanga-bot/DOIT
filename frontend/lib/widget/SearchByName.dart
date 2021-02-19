@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:doit/model/Project.dart';
 import 'package:doit/model/User.dart';
 import 'package:doit/providers/ProjectProvider.dart';
@@ -43,30 +45,32 @@ class _SearchByName extends State<SearchByName> {
       projectsTemp.addAll(Provider.of<ProjectProvider>(context, listen: false)
           .findByName(query));
       projectsFind = projectsTemp;
-    }
+    } else
+      projectsFind = [];
   }
 
   Future searchUsers(String query, BuildContext context) async {
     if (Provider.of<SearchProvider>(context, listen: false).getSearchUser()) {
-      List<User> usersTemp = [];
-      usersTemp.addAll(await Provider.of<UserProvider>(context, listen: false)
-          .findByUsername(query, "null"));
-      usersFind = usersTemp;
+      Set<User> usersTemp = new HashSet();
       if (Provider.of<SearchProvider>(context, listen: false)
+              .getSearchDesigner() &&
+          Provider.of<SearchProvider>(context, listen: false)
+              .getSearchProjectProposer()) {
+        usersTemp.addAll(await Provider.of<UserProvider>(context, listen: false)
+            .findByUsername(query, "null"));
+        usersFind = usersTemp.toList();
+      } else if (Provider.of<SearchProvider>(context, listen: false)
           .getSearchDesigner()) {
-        List<User> usersTemp = [];
         usersTemp.addAll(await Provider.of<UserProvider>(context, listen: false)
             .findByUsername(query, "DESIGNER"));
-        usersFind = usersTemp;
-      }
-      if (Provider.of<SearchProvider>(context, listen: false)
-          .getSearchProjectProposer()) {
-        List<User> usersTemp = [];
+        usersFind = usersTemp.toList();
+      } else {
         usersTemp.addAll(await Provider.of<UserProvider>(context, listen: false)
             .findByUsername(query, "PROJECT_PROPOSER"));
-        usersFind = usersTemp;
+        usersFind = usersTemp.toList();
       }
-    }
+    } else
+      usersFind = [];
   }
 
   @override
