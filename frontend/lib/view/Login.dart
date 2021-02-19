@@ -36,7 +36,7 @@ class _Login extends State<Login> {
 
   Future<String> _authUser(LoginData login) async {
     try {
-      Provider.of<AuthCredentialProvider>(context, listen: false)
+      await Provider.of<AuthCredentialProvider>(context, listen: false)
           .loginWithCredentials(new AuthCredential(login.name, login.password));
 
       _isFirstAccess = false;
@@ -112,7 +112,10 @@ class _Login extends State<Login> {
         onSubmitAnimationCompleted: () {
           if (_isFirstAccess)
             Provider.of<ViewProvider>(context, listen: false)
-                .setProfileDefault(CreateModifyProfile(mail: mail,isNewUser: true,));
+                .setProfileDefault(CreateModifyProfile(
+              mail: mail,
+              isNewUser: true,
+            ));
           else
             Provider.of<ViewProvider>(context, listen: false)
                 .setProfileDefault(ThirdView());

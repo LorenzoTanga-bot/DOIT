@@ -24,7 +24,7 @@ public class Invite {
     private UUID project;
     private Date dateOfInvite;
     private StateInvite state;
-    private Date dateOfOutcome;
+    private Date dateOfExpire;
     private String message;
 
     public enum StateInvite  {

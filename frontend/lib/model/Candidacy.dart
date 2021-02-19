@@ -7,7 +7,7 @@ class Candidacy {
   String _project;
   String _dateOfCandidacy;
   StateCandidacy _state;
-  String _dateOfOutcome;
+  String _dateOfExpire;
   String _message;
 
   Candidacy.complete(
@@ -17,7 +17,7 @@ class Candidacy {
       this._project,
       this._dateOfCandidacy,
       this._state,
-      this._dateOfOutcome,
+      this._dateOfExpire,
       this._message);
 
   Candidacy();
@@ -70,12 +70,12 @@ class Candidacy {
     _state = state;
   }
 
-  String getDateOfOutcome() {
-    return this._dateOfOutcome;
+  String getDateOfExpire() {
+    return this._dateOfExpire;
   }
 
-  void setDateOfOutcome(String dateOfOutcome) {
-    _dateOfOutcome = dateOfOutcome;
+  void setDateOfExpire(String dateOfExpire) {
+    _dateOfExpire = dateOfExpire;
   }
 
   String getMessage() {

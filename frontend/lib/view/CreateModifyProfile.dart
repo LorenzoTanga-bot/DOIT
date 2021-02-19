@@ -109,18 +109,19 @@ class _CreateModifyProfile extends State<CreateModifyProfile> {
   }
 
   Widget _selectUserRole() {
+    List<S2Choice<UserRole>> choice = [
+      if (!isAPerson)
+        S2Choice<UserRole>(
+            value: UserRole.PROJECT_PROPOSER, title: 'PROJECT PROPOSER'),
+      if (isAPerson)
+        S2Choice<UserRole>(value: UserRole.EXPERT, title: 'EXPERT'),
+      S2Choice<UserRole>(value: UserRole.DESIGNER, title: 'DESIGNER'),
+    ];
     return SmartSelect<UserRole>.multiple(
       title: 'Role',
       value: _roles,
       onChange: (state) => setState(() => _roles = state.value),
-      choiceItems: <S2Choice<UserRole>>[
-        if (!isAPerson)
-          S2Choice<UserRole>(
-              value: UserRole.PROJECT_PROPOSER, title: 'PROJECT PROPOSER'),
-        S2Choice<UserRole>(value: UserRole.DESIGNER, title: 'DESIGNER'),
-        if (isAPerson)
-          S2Choice<UserRole>(value: UserRole.EXPERT, title: 'EXPERT'),
-      ],
+      choiceItems: choice,
       choiceType: S2ChoiceType.switches,
       modalType: S2ModalType.bottomSheet,
       tileBuilder: (context, state) {

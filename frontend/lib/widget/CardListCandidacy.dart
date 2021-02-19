@@ -3,6 +3,7 @@ import 'package:doit/model/Project.dart';
 import 'package:doit/providers/ProjectProvider.dart';
 import 'package:doit/providers/ViewProvider.dart';
 import 'package:doit/view/ProjectOverView.dart';
+import 'package:doit/widget/CandidacyOverView.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -39,7 +40,7 @@ class CardListCandidacy extends StatelessWidget {
       ),
       onTap: () {
         Provider.of<ViewProvider>(context, listen: false)
-            .pushWidget(ProjectOverView(project: project));
+            .pushWidget(CandidacyOverView(id: candidacy.getId()));
       },
     );
   }

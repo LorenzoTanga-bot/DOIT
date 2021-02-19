@@ -7,7 +7,7 @@ class Invite {
   String _project;
   String _dateOfInvite;
   StateInvite _state;
-  String _dateOfOutcome;
+  String _dateOfExpire;
   String _message;
 
   Invite.complete(
@@ -17,7 +17,7 @@ class Invite {
       this._project,
       this._dateOfInvite,
       this._state,
-      this._dateOfOutcome,
+      this._dateOfExpire,
       this._message);
 
   Invite();
@@ -70,12 +70,12 @@ class Invite {
     _state = state;
   }
 
-  String getDateOfOutcome() {
-    return this._dateOfOutcome;
+  String getDateOfExpire() {
+    return this._dateOfExpire;
   }
 
-  void setDateOfOutcome(String dateOfOutcome) {
-    _dateOfOutcome = dateOfOutcome;
+  void setDateOfOutcome(String dateOfExpire) {
+    _dateOfExpire = dateOfExpire;
   }
 
   String getMessage() {

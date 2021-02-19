@@ -59,6 +59,7 @@ public class CandidacyService {
 
     public Candidacy addCandidacy(@NonNull Candidacy candidacy) throws ResponseStatusException {
         if (checkCandidacy(candidacy)) {
+            candidacy.setDateOfExpire(projectService.findById(candidacy.getProject()).getDateOfStart());
             candidacy.setId(UUID.randomUUID());
             return repository.insert(candidacy);
         }

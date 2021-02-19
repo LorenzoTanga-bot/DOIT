@@ -29,4 +29,8 @@ class CandidacyProvider with ChangeNotifier {
   Future<List<Candidacy>> findByProject(String project) async {
     return await _service.findByProject(project);
   }
+
+  Future<Candidacy> findById(String id) async {
+    return await _service.findById(id);
+  }
 }

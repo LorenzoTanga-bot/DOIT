@@ -27,7 +27,7 @@ class InviteApiController {
               'project': invite.getProject(),
               'dateOfInvite': invite.getDateOfInvite(),
               'state': _stateToString(invite.getState()),
-              'dateOfOutcome': invite.getDateOfOutcome(),
+              'dateOfExpire': invite.getDateOfExpire(),
             })))
         .body;
   }
@@ -42,7 +42,7 @@ class InviteApiController {
               'project': invite.getProject(),
               'dateOfInvite': invite.getDateOfInvite(),
               'state': _stateToString(invite.getState()),
-              'dateOfOutcome': invite.getDateOfOutcome(),
+              'dateOfExpire': invite.getDateOfExpire(),
             })))
         .body;
   }

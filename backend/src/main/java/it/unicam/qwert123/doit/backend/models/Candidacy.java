@@ -24,7 +24,7 @@ public class Candidacy {
     private UUID project;
     private Date dateOfCandidacy;
     private StateCandidacy state;
-    private Date dateOfOutcome;
+    private Date dateOfExpire;
     private String message;
 
     public enum StateCandidacy  {
