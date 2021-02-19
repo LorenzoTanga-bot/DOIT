@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:doit/model/Candidacy.dart';
 import 'package:doit/model/Project.dart';
 import 'package:doit/providers/AuthCredentialProvider.dart';
@@ -45,9 +43,9 @@ class _SendCandidacy extends State<SendCandidacy> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-        title: Text("Invia Candidatura a " +
+        title: Text("Send candidacy to " +
             _project.getProjectProposer() +
-            " per il progetto " +
+            " for the project" +
             _project.getName()),
         content: Column(
           mainAxisSize: MainAxisSize.min,
@@ -57,7 +55,7 @@ class _SendCandidacy extends State<SendCandidacy> {
                 maxLines: 3,
                 decoration: InputDecoration(
                   hintText:
-                      "inserisci un messaggio per il proponente (facoltativo)",
+                      "Inser a messag for project proposed (optional)",
                 )),
             Divider(
               color: Colors.white,
@@ -81,13 +79,13 @@ class _SendCandidacy extends State<SendCandidacy> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10)),
                 onPressed: () => {Navigator.pop(context)},
-                child: Text("Annulla"),
+                child: Text("Back"),
               ),
               RaisedButton(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10)),
                 onPressed: () => {createCandidacy(), Navigator.pop(context)},
-                child: Text("Candidati"),
+                child: Text("Candidate"),
               )
             ])
           ],

@@ -28,6 +28,7 @@ class CandidacyApiController {
               'dateOfCandidacy': candidacy.getDateOfCandidacy(),
               'state': _stateToString(candidacy.getState()),
               'dateOfOutcome': candidacy.getDateOfOutcome(),
+              'message': candidacy.getMessage()
             })))
         .body;
   }
@@ -43,6 +44,7 @@ class CandidacyApiController {
               'dateOfCandidacy': candidacy.getDateOfCandidacy(),
               'state': _stateToString(candidacy.getState()),
               'dateOfOutcome': candidacy.getDateOfOutcome(),
+              'message': candidacy.getMessage()
             })))
         .body;
   }

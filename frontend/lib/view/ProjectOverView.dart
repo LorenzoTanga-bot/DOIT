@@ -27,7 +27,6 @@ class ProjectOverView extends StatefulWidget {
 }
 
 class _ProjectOverView extends State<ProjectOverView> {
-  User _profile;
   User _projectProposer;
   List<Tag> _listTags;
   String _state;
@@ -330,7 +329,6 @@ class _ProjectOverView extends State<ProjectOverView> {
 
   @override
   Widget build(BuildContext context) {
-    _profile = context.watch<AuthCredentialProvider>().getUser();
     return FutureBuilder(
       future: _uploadData(),
       builder: (context, data) {
