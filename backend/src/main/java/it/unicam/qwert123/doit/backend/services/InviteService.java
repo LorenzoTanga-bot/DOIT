@@ -15,10 +15,12 @@ import org.springframework.web.server.ResponseStatusException;
 import it.unicam.qwert123.doit.backend.models.Invite;
 import it.unicam.qwert123.doit.backend.models.Project;
 import it.unicam.qwert123.doit.backend.models.User;
+import it.unicam.qwert123.doit.backend.models.Invite.StateInvite;
 import it.unicam.qwert123.doit.backend.repositories.InviteRepository;
 
 @Service
 public class InviteService {
+    
     @Autowired
     private InviteRepository repository;
 
@@ -35,6 +37,12 @@ public class InviteService {
     }
 
     private boolean checkInvite(Invite invite) {
+        if(invite.getStateDesigner() == null)
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid invite: StateDesigner is null");
+        if(invite.getStateProjectProposer() == null)
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid invite: StateProject is null");
+        if(invite.getSender() == null)
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid invite: Sender is null");
         if (invite.getProject() == null)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid invite: Project is null");
         if (invite.getDesigner() == null)
@@ -70,6 +78,15 @@ public class InviteService {
             return false;
         repository.deleteById(id);
         return true;
+    }
+
+    public Invite updateInvite(@NonNull UUID id, @NonNull boolean isTheProjectProposer, @NonNull StateInvite state){
+        Invite returnInvite = findById(id);
+        if(isTheProjectProposer)
+            returnInvite.setStateProjectProposer(state);
+        else
+            returnInvite.setStateDesigner(state);
+        return returnInvite;
     }
 
     public Invite updateInvite(@NonNull Invite invite) throws ResponseStatusException {

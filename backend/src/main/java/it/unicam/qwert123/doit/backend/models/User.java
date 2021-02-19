@@ -22,7 +22,6 @@ public class User {
     @EqualsAndHashCode.Include
     @Id
     private String mail;
-    private boolean isAPerson;
     private String username;
     private String usernameToShow;
     private String name;

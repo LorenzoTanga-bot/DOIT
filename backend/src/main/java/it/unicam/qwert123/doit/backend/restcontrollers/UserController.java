@@ -39,7 +39,9 @@ public class UserController {
     public List<User> getUsersByUsername(@PathVariable("username") String username, @PathVariable("role") String role) {
         switch (role) {
             case "DESIGNER":
-                return service.findByUsername(username, Role.DESIGNER);
+                List<User> returnUser = service.findByUsername(username, Role.DESIGNER_PERSON);
+                returnUser.addAll(service.findByUsername(username, Role.DESIGNER_ENTITY));
+                return  returnUser;
             case "PROJECT_PROPOSER":
                 return service.findByUsername(username, Role.PROJECT_PROPOSER);
             case "null":
@@ -70,7 +72,9 @@ public class UserController {
         }
         switch (role) {
             case "DESIGNER":
-                return service.findByTags(idTag, Role.DESIGNER);
+            List<User> returnUser = service.findByTags(idTag, Role.DESIGNER_PERSON);
+                returnUser.addAll(service.findByTags(idTag, Role.DESIGNER_ENTITY));
+                return  returnUser;
             case "PROJECT_PROPOSER":
                 return service.findByTags(idTag, Role.PROJECT_PROPOSER);
             case "null":

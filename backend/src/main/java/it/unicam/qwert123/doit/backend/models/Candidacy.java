@@ -20,7 +20,6 @@ public class Candidacy {
     @Id
     private UUID id;
     private String designer;
-    private String projectProposer;
     private UUID project;
     private Date dateOfCandidacy;
     private StateCandidacy state;

@@ -19,11 +19,13 @@ import lombok.Setter;
 public class Invite {
     @Id
     private UUID id;
+    private String sender; 
     private String designer;
     private String projectProposer;
     private UUID project;
+    private StateInvite stateProjectProposer;
+    private StateInvite stateDesigner;
     private Date dateOfInvite;
-    private StateInvite state;
     private Date dateOfExpire;
     private String message;
 

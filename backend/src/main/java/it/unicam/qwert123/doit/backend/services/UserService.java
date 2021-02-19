@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
@@ -28,22 +27,14 @@ public class UserService {
         if (user.getRoles().isEmpty()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid user: it must have at least one role");
         }
-        if (user.isAPerson()) {
-            for (Role role : user.getRoles()) {
-                if (role == Role.PROJECT_PROPOSER) {
-                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                            "Invalid user: a person cannot be a project proposer");
-                }
-            }
-        } else {
-            for (Role role : user.getRoles()) {
-                if (role == Role.EXPERT) {
-                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                            "Invalid user: a company cannot be an expert");
-                }
-            }
-        }
-        
+        if (user.getRoles().contains(Role.DESIGNER_PERSON)
+                && (user.getRoles().contains(Role.DESIGNER_ENTITY) || user.getRoles().contains(Role.PROJECT_PROPOSER)))
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid user: invalid roles");
+
+        if (user.getRoles().contains(Role.DESIGNER_ENTITY)
+                && (user.getRoles().contains(Role.DESIGNER_PERSON) || user.getRoles().contains(Role.EXPERT)))
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid user: invalid roles");
+
         return true;
     }
 

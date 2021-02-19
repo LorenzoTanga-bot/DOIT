@@ -20,6 +20,7 @@ import org.springframework.web.server.ResponseStatusException;
 import it.unicam.qwert123.doit.backend.models.Candidacy;
 import it.unicam.qwert123.doit.backend.models.Project;
 import it.unicam.qwert123.doit.backend.models.User;
+import it.unicam.qwert123.doit.backend.models.Candidacy.StateCandidacy;
 import it.unicam.qwert123.doit.backend.services.CandidacyService;
 import it.unicam.qwert123.doit.backend.services.ProjectService;
 import it.unicam.qwert123.doit.backend.services.UserService;
@@ -46,9 +47,11 @@ public class CandidacyController {
     @PreAuthorize("hasAuthority('DESIGNER')")
     public Candidacy addCandidacy(@RequestBody @Param("candidacy") Candidacy candidacy) {
         Candidacy returnCandidacy = candidacyService.addCandidacy(candidacy);
+        //update designer
         User designer = userService.findById(returnCandidacy.getDesigner());
         designer.addCandidacy(returnCandidacy.getId());
         userService.updateUser(designer);
+        //update project
         Project project = projectService.findById(returnCandidacy.getProject());
         project.addCandidacy(returnCandidacy.getId());
         projectService.updateProject(project);
@@ -57,8 +60,17 @@ public class CandidacyController {
 
     @PutMapping("/update")
     @PreAuthorize("hasAuthority('PROJECT_PROPOSER') and @accessCheckerComponent.sameUser(principal, #candidacy.getProjectProposer())")
-    public Candidacy updateCandidacy(@RequestBody @Param("candidacy") Candidacy candidacy) {
-        return candidacyService.updateCandidacy(candidacy);
+    public Candidacy updateStateCandidacy(@RequestBody @Param("candidacy") Candidacy candidacy) {
+        Candidacy returnCandidacy = candidacyService.updateCandidacy(candidacy);
+        if(returnCandidacy.getState().compareTo(StateCandidacy.POSITIVE) == 0){
+            User user = userService.findById(returnCandidacy.getDesigner());
+            user.addPartecipateInProject(returnCandidacy.getProject());
+            userService.updateUser(user);
+            Project project = projectService.findById(returnCandidacy.getProject());
+            project.addDesigner(returnCandidacy.getDesigner());
+            projectService.updateProject(project);
+        }
+        return returnCandidacy;
     }
 
     @GetMapping("/getById/{id}")
@@ -85,11 +97,6 @@ public class CandidacyController {
     @GetMapping("/getByDesigner/{user}")
     public List<Candidacy> getCandidaciesByDesigner(@PathVariable("user") String user){
         return candidacyService.findByDesigner(user);
-    }
-
-    @GetMapping("/getByProjectProposer/{user}")
-    public List<Candidacy> getCandidaciesByProjectProposer(@PathVariable("user") String user){
-        return candidacyService.findByProjectProposer(user);
     }
 
     @GetMapping("/getByProject/{id}")

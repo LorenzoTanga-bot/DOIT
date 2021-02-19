@@ -34,6 +34,8 @@ public class Project {
     private Date startCandidacy;
     private Date endCandidacy;
     private List<UUID> candidacies;
+    private List<UUID> invites;
+    private List<String> designers;
 
     boolean getCandidacyMode() {
         Date now = new Date();
@@ -52,5 +54,21 @@ public class Project {
 
     public boolean removeCandidacy(UUID idCandidacy) {
         return candidacies.remove(idCandidacy);
+    }
+
+    public boolean addInvite(UUID idInvite) {
+        return invites.add(idInvite);
+    }
+
+    public boolean removeInvite(UUID idInvite) {
+        return invites.remove(idInvite);
+    }
+
+    public boolean addDesigner(String idDesigner) {
+        return designers.add(idDesigner);
+    }
+
+    public boolean removeDesigner(String idDesigner) {
+        return designers.remove(idDesigner);
     }
 }

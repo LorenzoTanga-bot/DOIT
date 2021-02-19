@@ -32,7 +32,7 @@ public class AuthCredential implements UserDetails {
     private List<Role> roles;
 
     public enum Role  {
-        ADMIN, DESIGNER, EXPERT, NOT_COMPLETED, PROJECT_PROPOSER
+        ADMIN, DESIGNER_PERSON, DESIGNER_ENTITY, EXPERT, NOT_COMPLETED, PROJECT_PROPOSER
     }
 
     @Override

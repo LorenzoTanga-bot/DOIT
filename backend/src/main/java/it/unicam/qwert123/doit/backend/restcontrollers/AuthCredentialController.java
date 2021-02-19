@@ -66,8 +66,6 @@ public class AuthCredentialController {
 	public User updateUser(@RequestBody @Param("user") User user) {
 		return userService.updateUser(user);
 	}
-
-	// TODO da testare l'authentication
 	@DeleteMapping("/deleteCredential")
 	@PreAuthorize("@accessCheckerComponent.sameUser(principal, #authCredential.getUsername()) or hasAuthority('ADMIN')")
 	public boolean removeCredentials(@RequestBody @Param("authCredential") AuthCredential authentication) {
