@@ -1,22 +1,26 @@
-enum StateInvite { WAITING, POSITIVE, NEGATIVE }
+enum StateInvite { WAITING, POSITIVE, NEGATIVE, EXPIRED }
 
 class Invite {
   String _id;
+  String _sender;
   String _designer;
   String _projectProposer;
   String _project;
+  StateInvite _stateProjectProposer;
+  StateInvite _stateDesigner;
   String _dateOfInvite;
-  StateInvite _state;
   String _dateOfExpire;
   String _message;
 
   Invite.complete(
       this._id,
+      this._sender,
       this._designer,
       this._projectProposer,
       this._project,
+      this._stateProjectProposer,
+      this._stateDesigner,
       this._dateOfInvite,
-      this._state,
       this._dateOfExpire,
       this._message);
 
@@ -28,6 +32,14 @@ class Invite {
 
   void setId(String id) {
     _id = id;
+  }
+
+  String getSender() {
+    return this._sender;
+  }
+
+  void setSender(String sender) {
+    this._sender = sender;
   }
 
   String getDesigner() {
@@ -63,11 +75,32 @@ class Invite {
   }
 
   StateInvite getState() {
-    return this._state;
+    if (this._stateDesigner == StateInvite.POSITIVE &&
+        this._stateProjectProposer == StateInvite.POSITIVE)
+      return StateInvite.POSITIVE;
+    if (this._stateDesigner == StateInvite.NEGATIVE ||
+        this._stateProjectProposer == StateInvite.NEGATIVE)
+      return StateInvite.NEGATIVE;
+    if (DateTime.parse(this._dateOfExpire).isBefore(DateTime.now()))
+      return StateInvite.EXPIRED;
+    else
+      return StateInvite.WAITING;
   }
 
-  void setState(StateInvite state) {
-    _state = state;
+  StateInvite getStateDesigner() {
+    return this._stateDesigner;
+  }
+
+  void setStateDesigner(StateInvite stateDesigner) {
+    _stateDesigner = stateDesigner;
+  }
+
+  StateInvite getStateProjectProposer() {
+    return this._stateProjectProposer;
+  }
+
+  void setStateProjectProposer(StateInvite stateProjectProposer) {
+    _stateProjectProposer = stateProjectProposer;
   }
 
   String getDateOfExpire() {

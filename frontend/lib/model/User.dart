@@ -2,7 +2,6 @@ import 'package:doit/model/AuthCredential.dart';
 
 class User {
   String _mail;
-  bool _isAPerson;
   String _username;
   String _name;
   String _surname; //se è una azienda qui viene salvata la Paritta iva
@@ -10,9 +9,10 @@ class User {
   List<String> _tags = [];
   List<String> _proposedProjects = [];
   List<String> _partecipateInProjects = [];
-  List<String> _evaluations = [];
+
   List<String> _invites = [];
   List<String> _candidacies = [];
+  List<String> _evaluations = [];
 
   User();
 
@@ -22,18 +22,19 @@ class User {
   }
 
   User.complete(
-      this._mail,
-      this._isAPerson,
-      this._username,
-      this._name,
-      this._surname,
-      this._tags,
-      this._roles,
-      this._proposedProjects,
-      this._partecipateInProjects,
-      this._evaluations,
-      this._invites,
-      this._candidacies);
+    this._mail,
+    this._username,
+    this._name,
+    this._surname,
+    
+    this._roles,
+    this._tags,
+    this._proposedProjects,
+    this._partecipateInProjects,
+    this._invites,
+    this._candidacies,
+    this._evaluations,
+  );
 
   bool setMail(String mail) {
     _mail = mail;
@@ -45,12 +46,11 @@ class User {
   }
 
   bool getIsAPerson() {
-    return _isAPerson;
-  }
-
-  bool setIsAPerson(bool isAPerson) {
-    _isAPerson = isAPerson;
-    return true;
+    if (_roles.contains(UserRole.DESIGNER_ENTITY) ||
+        _roles.contains(UserRole.PROJECT_PROPOSER))
+      return false;
+    else
+      return true;
   }
 
   bool setUsername(String username) {

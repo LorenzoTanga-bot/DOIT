@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:doit/apicontroller/InviteApiController.dart';
-import 'package:doit/model/Candidacy.dart';
 import 'package:doit/model/Invite.dart';
 import 'package:doit/services/InviteService.dart';
 
@@ -25,12 +24,15 @@ class BackendInviteService implements InviteService {
   Invite _newInvite(var invite) {
     return new Invite.complete(
         invite["id"],
+        invite["sender"],
         invite["designer"],
         invite["projectProposer"],
         invite["project"],
-        invite["dateOfInvite"],
+        StateInvite.values.firstWhere((e) =>
+            e.toString() == 'StateInvite.' + invite["stateProjectProposer"]),
         StateInvite.values.firstWhere(
-            (e) => e.toString() == 'StateInvite.' + invite["state"]),
+            (e) => e.toString() == 'StateInvite.' + invite["stateDesigner"]),
+        invite["dateOfInvite"],
         invite["dateOfExpire"],
         invite["message"]);
   }
@@ -72,7 +74,12 @@ class BackendInviteService implements InviteService {
   }
 
   @override
-  Future<Invite> updateInvite(Invite invite) async {
-    return _createInvite(await _controller.updateInvite(invite));
+  Future<Invite> updateStateDesigner(Invite invite) async {
+    return _createInvite(await _controller.updateStateDesigner(invite));
+  }
+
+  @override
+  Future<Invite> updateStateProjectProposer(Invite invite) async {
+    return _createInvite(await _controller.updateStateProjectProposer(invite));
   }
 }

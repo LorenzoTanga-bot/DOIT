@@ -22,27 +22,55 @@ class InviteApiController {
             headers: BasicAuthConfig().getUserHeader(),
             body: json.encode({
               'id': invite.getId(),
+              'sender': invite.getSender(),
               'designer': invite.getDesigner(),
               'projectProposer': invite.getProjectProposer(),
               'project': invite.getProject(),
               'dateOfInvite': invite.getDateOfInvite(),
-              'state': _stateToString(invite.getState()),
+              'stateProjectProposer':
+                  _stateToString(invite.getStateProjectProposer()),
+              'stateDesigner': _stateToString(invite.getStateDesigner()),
               'dateOfExpire': invite.getDateOfExpire(),
+              'message': invite.getMessage()
             })))
         .body;
   }
 
-  Future<String> updateInvite(Invite invite) async {
-    return (await http.put(Uri.encodeFull("$_baseUrl/update"),
+  Future<String> updateStateDesigner(Invite invite) async {
+    return (await http.put(Uri.encodeFull("$_baseUrl/updateStateDesigner"),
             headers: BasicAuthConfig().getUserHeader(),
             body: json.encode({
               'id': invite.getId(),
+              'sender': invite.getSender(),
               'designer': invite.getDesigner(),
               'projectProposer': invite.getProjectProposer(),
               'project': invite.getProject(),
               'dateOfInvite': invite.getDateOfInvite(),
-              'state': _stateToString(invite.getState()),
+              'stateProjectProposer':
+                  _stateToString(invite.getStateProjectProposer()),
+              'stateDesigner': _stateToString(invite.getStateDesigner()),
               'dateOfExpire': invite.getDateOfExpire(),
+              'message': invite.getMessage()
+            })))
+        .body;
+  }
+
+  Future<String> updateStateProjectProposer(Invite invite) async {
+    return (await http.put(
+            Uri.encodeFull("$_baseUrl/updateStateProjectProposer"),
+            headers: BasicAuthConfig().getUserHeader(),
+            body: json.encode({
+              'id': invite.getId(),
+              'sender': invite.getSender(),
+              'designer': invite.getDesigner(),
+              'projectProposer': invite.getProjectProposer(),
+              'project': invite.getProject(),
+              'dateOfInvite': invite.getDateOfInvite(),
+              'stateProjectProposer':
+                  _stateToString(invite.getStateProjectProposer()),
+              'stateDesigner': _stateToString(invite.getStateDesigner()),
+              'dateOfExpire': invite.getDateOfExpire(),
+              'message': invite.getMessage()
             })))
         .body;
   }

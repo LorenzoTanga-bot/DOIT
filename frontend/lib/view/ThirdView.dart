@@ -63,7 +63,6 @@ class _ThirdView extends State<ThirdView> {
   }
 
   _projectProposer() {
-   
     _listView.addAll([
       Divider(
         color: Colors.white,
@@ -72,7 +71,10 @@ class _ThirdView extends State<ThirdView> {
         indent: 2,
         endIndent: 2,
       ),
-      Text("PROJECT PROPOSER"),
+      Padding(
+          padding: EdgeInsets.only(left: 15),
+          child: Text("PROJECT PROPOSER",
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold))),
       Divider(
         color: Colors.white,
         height: 15,
@@ -114,7 +116,10 @@ class _ThirdView extends State<ThirdView> {
         indent: 2,
         endIndent: 2,
       ),
-      Text("DESIGNER"),
+      Padding(
+          padding: EdgeInsets.only(left: 15),
+          child: Text("DESIGNER",
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold))),
       Divider(
         color: Colors.white,
         height: 15,
@@ -130,6 +135,12 @@ class _ThirdView extends State<ThirdView> {
           child: CardList(
               name: "Invites", sDescription: "View all invites recieved"),
           onTap: () => getListInvite("DESIGNER")),
+      if (_user.getRoles().contains(UserRole.DESIGNER_ENTITY))
+        GestureDetector(
+            child: CardList(
+                name: "Invites to designer",
+                sDescription: "View all invites sent"),
+            onTap: () => {}),
     ]);
   }
 
@@ -142,7 +153,10 @@ class _ThirdView extends State<ThirdView> {
         indent: 2,
         endIndent: 2,
       ),
-      Text("EXPERT"),
+      Padding(
+          padding: EdgeInsets.only(left: 15),
+          child: Text("EXPERT",
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold))),
       Divider(
         color: Colors.white,
         height: 15,
@@ -166,7 +180,8 @@ class _ThirdView extends State<ThirdView> {
     _default();
     if (_user.getRoles().contains(UserRole.PROJECT_PROPOSER))
       _projectProposer();
-    if (_user.getRoles().contains(UserRole.DESIGNER)) _designer();
+    if (_user.getRoles().contains(UserRole.DESIGNER_PERSON) ||
+        _user.getRoles().contains(UserRole.DESIGNER_ENTITY)) _designer();
     if (_user.getRoles().contains(UserRole.EXPERT)) _expert();
   }
 

@@ -13,4 +13,5 @@ public interface CandidacyRepository extends MongoRepository<Candidacy, UUID>{
 
     List<Candidacy> findByDesigner(String user);
     List<Candidacy> findByProject(UUID project);
+    List<Candidacy> findByProjectProposer(String user);
 }

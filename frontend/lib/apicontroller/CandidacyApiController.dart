@@ -22,9 +22,9 @@ class CandidacyApiController {
             headers: BasicAuthConfig().getUserHeader(),
             body: json.encode({
               'id': candidacy.getId(),
+              'project': candidacy.getProject(),
               'designer': candidacy.getDesigner(),
               'projectProposer': candidacy.getProjectProposer(),
-              'project': candidacy.getProject(),
               'dateOfCandidacy': candidacy.getDateOfCandidacy(),
               'state': _stateToString(candidacy.getState()),
               'dateOfExpire': candidacy.getDateOfExpire(),
@@ -38,9 +38,9 @@ class CandidacyApiController {
             headers: BasicAuthConfig().getUserHeader(),
             body: json.encode({
               'id': candidacy.getId(),
+              'project': candidacy.getProject(),
               'designer': candidacy.getDesigner(),
               'projectProposer': candidacy.getProjectProposer(),
-              'project': candidacy.getProject(),
               'dateOfCandidacy': candidacy.getDateOfCandidacy(),
               'state': _stateToString(candidacy.getState()),
               'dateOfExpire': candidacy.getDateOfExpire(),
@@ -79,4 +79,5 @@ class CandidacyApiController {
             headers: BasicAuthConfig().getBaseHeader()))
         .body;
   }
+  
 }

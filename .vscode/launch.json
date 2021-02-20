@@ -5,6 +5,13 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "type": "java",
+            "name": "Launch DoitApplication",
+            "request": "launch",
+            "mainClass": "it.unicam.qwert123.doit.backend.DoitApplication",
+            "projectName": "backend"
+        },
+        {
             "name": "frontend",
             "cwd": "frontend",
             "request": "launch",

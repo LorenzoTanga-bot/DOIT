@@ -44,7 +44,7 @@ class _SendInvite extends State<SendInvite> {
     if (_message.text.isNotEmpty) {
       newInvite.setMessage(_message.text);
     }
-    newInvite.setState(StateInvite.WAITING);
+    //newInvite.setState(StateInvite.WAITING);
     newInvite.setProjectProposer(
         context.read<AuthCredentialProvider>().getUser().getMail());
     newInvite.setProject(_project.getId());

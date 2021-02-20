@@ -39,7 +39,7 @@ class CandidacyProvider with ChangeNotifier {
     return await _service.findById(id);
   }
 
-  Future<List<Candidacy>> findByIds(List<String> ids) async {}
+
 
   Future updateListCandidacy(List<String> ids) async {
     List<String> notFound = [];

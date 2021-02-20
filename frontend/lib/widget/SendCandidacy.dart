@@ -37,12 +37,15 @@ class _SendCandidacy extends State<SendCandidacy> {
     newCandidacy.setState(StateCandidacy.WAITING);
     newCandidacy.setProjectProposer(_project.getProjectProposer());
     newCandidacy.setProject(_project.getId());
-    context.read<CandidacyProvider>().addCandidacy(newCandidacy);
+   await context.read<CandidacyProvider>().addCandidacy(newCandidacy);
   }
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15.0),
+        ),
         title: Text("Send candidacy to " +
             _project.getProjectProposer() +
             " for the project" +

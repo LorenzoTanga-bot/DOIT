@@ -44,7 +44,7 @@ public class CandidacyController {
     private AccessCheckerComponent accessCheckerComponent;
 
     @PostMapping("/new")
-    @PreAuthorize("hasAuthority('DESIGNER')")
+    @PreAuthorize("hasAuthority('DESIGNER_ENTITY') or hasAuthority('DESIGNER_PERSON')")
     public Candidacy addCandidacy(@RequestBody @Param("candidacy") Candidacy candidacy) {
         Candidacy returnCandidacy = candidacyService.addCandidacy(candidacy);
         //update designer
@@ -97,6 +97,10 @@ public class CandidacyController {
     @GetMapping("/getByDesigner/{user}")
     public List<Candidacy> getCandidaciesByDesigner(@PathVariable("user") String user){
         return candidacyService.findByDesigner(user);
+    }
+    @GetMapping("/getByProjectProposer/{user}")
+    public List<Candidacy> getCandidaciesByProjectProposer(@PathVariable("user") String user){
+        return candidacyService.findByProjectProposer(user);
     }
 
     @GetMapping("/getByProject/{id}")

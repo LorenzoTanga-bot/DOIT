@@ -70,7 +70,6 @@ class AuthCredentialController {
             headers: BasicAuthConfig().getUserHeader(),
             body: json.encode({
               'mail': newUser.getMail(),
-              'aperson': newUser.getIsAPerson(),
               'usernameToShow': newUser.getUsername(),
               'name': newUser.getName(),
               'surname': newUser.getSurname(),
@@ -78,8 +77,8 @@ class AuthCredentialController {
               'tags': newUser.getTags(),
               'proposedProjects': newUser.getProposedProjects(),
               'partecipateInProjects': newUser.getPartecipateInProjects(),
-              'evaluations': newUser.getEvaluations(),
               'invites': newUser.getInvites(),
+              'evaluations': newUser.getEvaluations(),
               'candidacies': newUser.getCandidacies(),
             })))
         .body;
@@ -89,18 +88,17 @@ class AuthCredentialController {
     return (await http.put(Uri.encodeFull("$_baseUrl/updateUser"),
             headers: BasicAuthConfig().getUserHeader(),
             body: json.encode({
-              "mail": newUser.getMail(),
-              "aperson": newUser.getIsAPerson(),
-              "usernameToShow": newUser.getUsername(),
-              "name": newUser.getName(),
-              "surname": newUser.getUsername(),
-              "roles": _rolesToString(newUser.getRoles()),
-              "tags": newUser.getTags(),
-              "proposedProjects": newUser.getProposedProjects(),
-              "partecipateInProjects": newUser.getPartecipateInProjects(),
-              "evaluations": newUser.getEvaluations(),
-              "invites": newUser.getInvites(),
-              "candidacies": newUser.getCandidacies(),
+              'mail': newUser.getMail(),
+              'usernameToShow': newUser.getUsername(),
+              'name': newUser.getName(),
+              'surname': newUser.getSurname(),
+              'roles': _rolesToString(newUser.getRoles()),
+              'tags': newUser.getTags(),
+              'proposedProjects': newUser.getProposedProjects(),
+              'partecipateInProjects': newUser.getPartecipateInProjects(),
+              'invites': newUser.getInvites(),
+              'evaluations': newUser.getEvaluations(),
+              'candidacies': newUser.getCandidacies(),
             })))
         .body;
   }

@@ -13,21 +13,33 @@ class BackendProjectService implements ProjectService {
 
   Project _newProject(var project) {
     var parseJson = project["tag"];
+    var invitesJson = project["invites"];
+    var candidaciesJson = project["candidacies"];
+    var designersJson = project["designers"];
     List<String> tags = new List<String>();
+    List<String> invites = [];
+    List<String> candidacies = [];
+    List<String> designers = [];
     for (String tag in parseJson) tags.add(tag);
+    for (String invite in invitesJson) invites.add(invite);
+    for (String candidacy in candidaciesJson) candidacies.add(candidacy);
+    for (String designer in designersJson) designers.add(designer);
     return new Project.fromJson(
         project["id"],
-        project["name"],
         project["projectProposer"],
         tags,
         project["dateOfCreation"],
         project["dateOfStart"],
         project["dateOfEnd"],
+        project["name"],
         project["shortDescription"],
         project["description"],
         project["evaluationMode"],
         project["startCandidacy"],
-        project["endCandidacy"]);
+        project["endCandidacy"],
+        candidacies,
+        invites,
+        designers);
   }
 
   Project _createProject(String controllerJson) {

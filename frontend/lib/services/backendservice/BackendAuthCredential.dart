@@ -37,18 +37,18 @@ class BackendAuthCredential implements AuthCredentialService {
     for (String invite in invitesJson) invites.add(invite);
     for (String candidacy in candidaciesJson) candidacies.add(candidacy);
     return new User.complete(
-        user["mail"],
-        user["aperson"],
-        user["usernameToShow"],
-        user["name"],
-        user["surname"],
-        tags,
-        roles,
-        proposedProjects,
-        partecipateInProjects,
-        evaluations,
-        invites,
-        candidacies);
+      user["mail"],
+      user["usernameToShow"],
+      user["name"],
+      user["surname"],
+      roles,
+      tags,
+      proposedProjects,
+      partecipateInProjects,
+      invites,
+      candidacies,
+      evaluations,
+    );
   }
 
   User _createUser(String controllerJson) {

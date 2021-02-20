@@ -254,15 +254,21 @@ class _ProjectOverView extends State<ProjectOverView> {
     if (widget.project.getCandidacyMode().toString() == "true") {
       User user = context.read<AuthCredentialProvider>().getUser();
       if (user == null) return false;
-      return (user.getRoles().contains(UserRole.DESIGNER));
+      return (user.getRoles().contains(UserRole.DESIGNER_PERSON) ||
+          user.getRoles().contains(UserRole.DESIGNER_ENTITY));
     }
     return false;
   }
 
   bool isAnExpert() {
-    User user = context.read<AuthCredentialProvider>().getUser();
-    if (user == null) return false;
-    return (user.getRoles().contains(UserRole.EXPERT));
+    if (widget.project.getEvaluationMode()) {
+      User user = context.read<AuthCredentialProvider>().getUser();
+      if (user == null) return false;
+      if (isSuitable(user)) {
+        return (user.getRoles().contains(UserRole.EXPERT));
+      }
+    }
+    return false;
   }
 
   bool isTheProjectProposerOrCompanyDesigner() {
@@ -272,7 +278,7 @@ class _ProjectOverView extends State<ProjectOverView> {
         return false;
       else {
         if (isADesigner()) {
-          return (!user.getIsAPerson());
+          if (isSuitable(user)) return (!user.getIsAPerson());
         } else {
           return (isTheProjectProposer());
         }
@@ -285,6 +291,12 @@ class _ProjectOverView extends State<ProjectOverView> {
     User user = context.read<AuthCredentialProvider>().getUser();
     if (user == null) return false;
     return widget.project.getProjectProposer() == user.getMail();
+  }
+
+  bool isSuitable(User user) {
+    for (String tag in widget.project.getTag())
+      if (user.getTags().contains(tag)) return true;
+    return false;
   }
 
   Widget _userCustomization() {

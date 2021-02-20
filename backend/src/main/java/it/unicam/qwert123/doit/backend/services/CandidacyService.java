@@ -91,7 +91,9 @@ public class CandidacyService {
     public List<Candidacy> findByDesigner(String user) {
         return repository.findByDesigner(user);
     }
-
+    public List<Candidacy> findByProjectProposer(String user) {
+        return repository.findByProjectProposer(user);
+    }
     public List<Candidacy> findByProject(UUID project) {
         return repository.findByProject(project);
     }

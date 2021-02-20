@@ -14,8 +14,11 @@ class InviteProvider with ChangeNotifier {
     return await _service.addInvite(invite);
   }
 
-  Future<Invite> updateInvite(Invite invite) async {
-    return await _service.updateInvite(invite);
+  Future<Invite> updateStateDesigner(Invite invite) async {
+    return await _service.updateStateDesigner(invite);
+  }
+  Future<Invite> updateStateProjectProposer(Invite invite) async {
+    return await _service.updateStateProjectProposer(invite);
   }
 
   Future<List<Invite>> findByDesigner(String designer) async {

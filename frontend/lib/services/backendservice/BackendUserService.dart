@@ -54,12 +54,11 @@ class BackendUserService implements UserService {
     for (String candidacy in candidaciesJson) candidacies.add(candidacy);
     return new User.complete(
         user["mail"],
-        user["aperson"],
         user["usernameToShow"],
         user["name"],
         user["surname"],
-        tags,
-        roles,
+         roles,
+         tags,
         proposedProjects,
         partecipateInProjects,
         evaluations,

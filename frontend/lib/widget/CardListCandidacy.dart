@@ -38,9 +38,14 @@ class CardListCandidacy extends StatelessWidget {
           ],
         ),
       ),
-      onTap: () {
-        Provider.of<ViewProvider>(context, listen: false)
-            .pushWidget(CandidacyOverView(id: candidacy.getId()));
+      onTap: () => {
+        showDialog(
+            context: context,
+            builder: (context) {
+              return CandidacyOverView(
+                candidacy: candidacy,
+              );
+            })
       },
     );
   }

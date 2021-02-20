@@ -23,7 +23,8 @@ class PrincipalInformationUser extends StatelessWidget {
   // ignore: missing_return
   String getStringRole(UserRole role) {
     if (role == UserRole.EXPERT) return "Expert";
-    if (role == UserRole.DESIGNER) return "Designer";
+    if (role == UserRole.DESIGNER_ENTITY || role == UserRole.DESIGNER_PERSON)
+      return "Designer";
     if (role == UserRole.PROJECT_PROPOSER) return "ProjectProposer";
   }
 

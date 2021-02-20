@@ -1,4 +1,4 @@
-enum StateCandidacy { WAITING, POSITIVE, NEGATIVE }
+enum StateCandidacy { WAITING, POSITIVE, NEGATIVE, EXPIRED }
 
 class Candidacy {
   String _id;
@@ -63,6 +63,9 @@ class Candidacy {
   }
 
   StateCandidacy getState() {
+    if (this._state == StateCandidacy.WAITING &&
+        DateTime.parse(this._dateOfExpire).isBefore(DateTime.now()))
+      return StateCandidacy.EXPIRED;
     return this._state;
   }
 

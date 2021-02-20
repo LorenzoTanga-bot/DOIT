@@ -28,7 +28,10 @@ class ProjectApiController {
               "description": newProject.getDescription(),
               "evaluationMode": newProject.getEvaluationMode(),
               "startCandidacy": newProject.getStartCandidacy(),
-              "endCandidacy": newProject.getEndCandidacy()
+              "endCandidacy": newProject.getEndCandidacy(),
+              "candidacies": newProject.getCandidacies(),
+              "invites": newProject.getInvites(),
+              "designers": newProject.getDesigners()
             })))
         .body;
   }
@@ -37,7 +40,7 @@ class ProjectApiController {
     return (await http.put(Uri.encodeFull("$_baseUrl/update"),
             headers: BasicAuthConfig().getUserHeader(),
             body: json.encode({
-              "id": modifiedProject.getId(),
+               "id": modifiedProject.getId(),
               "name": modifiedProject.getName(),
               "projectProposer": modifiedProject.getProjectProposer(),
               "tag": modifiedProject.getTag(),
@@ -48,7 +51,10 @@ class ProjectApiController {
               "description": modifiedProject.getDescription(),
               "evaluationMode": modifiedProject.getEvaluationMode(),
               "startCandidacy": modifiedProject.getStartCandidacy(),
-              "endCandidacy": modifiedProject.getEndCandidacy()
+              "endCandidacy": modifiedProject.getEndCandidacy(),
+              "candidacies": modifiedProject.getCandidacies(),
+              "invites": modifiedProject.getInvites(),
+              "designers": modifiedProject.getDesigners()
             })))
         .body;
   }

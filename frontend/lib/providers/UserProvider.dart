@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:doit/model/User.dart';
 import 'package:doit/services/UserService.dart';
 import 'package:flutter/foundation.dart';
@@ -5,7 +7,7 @@ import 'package:flutter/foundation.dart';
 class UserProvider with ChangeNotifier {
   UserService _service;
 
-  List<User> _listUsers = [];
+  Set<User> _listUsers = new HashSet();
 
   UserProvider(UserService service) {
     _service = service;
@@ -33,7 +35,8 @@ class UserProvider with ChangeNotifier {
     for (String mail in mails) {
       if (!_listUsers.contains(mail)) mailsNotFount.add(mail);
     }
-    _listUsers.addAll(await _service.findByMails(mailsNotFount));
+    List<User> users = await _service.findByMails(mailsNotFount);
+    for (User user in users) _listUsers.add(user);
     notifyListeners();
   }
 

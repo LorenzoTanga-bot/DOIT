@@ -29,8 +29,10 @@ class _SearchByName extends State<SearchByName> {
 
   void buildSuggestions(BuildContext context, String query) async {
     if (query.isEmpty) {
-      projectsFind = [];
-      usersFind = [];
+      setState(() {
+        projectsFind = [];
+        usersFind = [];
+      });
     } else {
       searchProjects(query);
       await searchUsers(query, context);
@@ -42,7 +44,7 @@ class _SearchByName extends State<SearchByName> {
     if (Provider.of<SearchProvider>(context, listen: false)
         .getSearchProject()) {
       List<Project> projectsTemp = [];
-      projectsTemp.addAll(Provider.of<ProjectProvider>(context, listen: false)
+      projectsTemp = (Provider.of<ProjectProvider>(context, listen: false)
           .findByName(query));
       projectsFind = projectsTemp;
     } else

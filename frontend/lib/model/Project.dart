@@ -1,16 +1,19 @@
 class Project {
   String _id;
-  String _name;
   String _projectProposer;
   List<String> _tag;
   String _dateOfCreation;
   String _dateOfStart;
   String _dateOfEnd;
+  String _name;
   String _shortDescription;
   String _description;
   bool _evaluationMode; // if it's true, the project has evaluation mode.
   String _startCandidacy;
   String _endCandidacy;
+  List<String> _candidacies;
+  List<String> _invites;
+  List<String> _designers;
 
   Project() {
     this._dateOfCreation = DateTime.now().toIso8601String();
@@ -22,17 +25,20 @@ class Project {
 
   Project.fromJson(
       this._id,
-      this._name,
       this._projectProposer,
       this._tag,
       this._dateOfCreation,
       this._dateOfStart,
       this._dateOfEnd,
+      this._name,
       this._shortDescription,
       this._description,
       this._evaluationMode,
       this._startCandidacy,
-      this._endCandidacy);
+      this._endCandidacy,
+      this._candidacies,
+      this._invites,
+      this._designers);
 
   String getId() {
     return _id;
@@ -148,4 +154,59 @@ class Project {
     _endCandidacy = endCandidacy;
     return true;
   }
+
+  bool setCandidacies(List<String> candidacies) {
+    _candidacies = candidacies;
+    return true;
+  }
+
+  bool addCandidacy(String idCandidacy) {
+    _candidacies.add(idCandidacy);
+    return true;
+  }
+
+  bool removeCandidacy(String idCandidacy) {
+    return _candidacies.remove(idCandidacy);
+  }
+
+  List<String> getCandidacies() {
+    return _candidacies;
+  }
+
+  bool setInvites(List<String> invites) {
+    _invites = invites;
+    return true;
+  }
+
+  bool addInvite(String idInvite) {
+    _invites.add(idInvite);
+    return true;
+  }
+
+  bool removeInvite(String idInvite) {
+    return _invites.remove(idInvite);
+  }
+
+  List<String> getInvites() {
+    return _invites;
+  }
+
+   bool setDesigners(List<String> designers) {
+    _designers = designers;
+    return true;
+  }
+
+  bool addDesigner(String idDesigner) {
+    _designers.add(idDesigner);
+    return true;
+  }
+
+  bool removeDesigner(String idDesigner) {
+    return _designers.remove(idDesigner);
+  }
+
+  List<String> getDesigners() {
+    return _designers;
+  }
+
 }

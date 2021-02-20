@@ -88,7 +88,6 @@ class _CreateModifyProfile extends State<CreateModifyProfile> {
   _continue() async {
     _user.setMail(widget.mail);
     _user.setName(_name.text);
-    _user.setIsAPerson(isAPerson);
     _user.setSurname(_surname.text);
     _user.setUsername(_username.text);
     _user.setRoles(_roles);
@@ -109,14 +108,18 @@ class _CreateModifyProfile extends State<CreateModifyProfile> {
   }
 
   Widget _selectUserRole() {
-    List<S2Choice<UserRole>> choice = [
-      if (!isAPerson)
+    List<S2Choice<UserRole>> choice;
+    if (!isAPerson)
+      choice = [
         S2Choice<UserRole>(
             value: UserRole.PROJECT_PROPOSER, title: 'PROJECT PROPOSER'),
-      if (isAPerson)
+        S2Choice<UserRole>(value: UserRole.DESIGNER_ENTITY, title: 'DESIGNER'),
+      ];
+    else
+      choice = [
         S2Choice<UserRole>(value: UserRole.EXPERT, title: 'EXPERT'),
-      S2Choice<UserRole>(value: UserRole.DESIGNER, title: 'DESIGNER'),
-    ];
+        S2Choice<UserRole>(value: UserRole.DESIGNER_PERSON, title: 'DESIGNER'),
+      ];
     return SmartSelect<UserRole>.multiple(
       title: 'Role',
       value: _roles,
