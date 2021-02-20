@@ -41,9 +41,24 @@ class _HomePageState extends State<HomePage> {
         onTap: (index) => setState(
             () => context.read<ViewProvider>().setSelectedItemPosition(index)),
         items: [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.search), label: 'search'),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
+          BottomNavigationBarItem(
+              icon: GestureDetector(
+                  onDoubleTap: () =>
+                      context.read<ViewProvider>().dropFirstWidget(),
+                  child: (Icon(Icons.home))),
+              label: 'home'),
+          BottomNavigationBarItem(
+              icon: GestureDetector(
+                  onDoubleTap: () =>
+                      context.read<ViewProvider>().dropSecondWidget(),
+                  child: (Icon(Icons.search))),
+              label: 'search'),
+          BottomNavigationBarItem(
+              icon: GestureDetector(
+                  onDoubleTap: () =>
+                      context.read<ViewProvider>().dropThirdWidget(),
+                  child: (Icon(Icons.person))),
+              label: 'profile'),
         ],
         selectedLabelStyle: const TextStyle(fontSize: 14),
         unselectedLabelStyle: const TextStyle(fontSize: 10),

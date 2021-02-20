@@ -1,3 +1,4 @@
+import 'package:doit/model/AuthCredential.dart';
 import 'package:doit/model/Invite.dart';
 import 'package:doit/model/Project.dart';
 import 'package:doit/model/User.dart';
@@ -33,21 +34,31 @@ class _SendInvite extends State<SendInvite> {
   @override
   void initState() {
     super.initState();
+     
     _project = context.read<ProjectProvider>().findById(widget.id);
   }
 
   void createInvite() async {
     Invite newInvite = new Invite();
+    User sender = context.read<AuthCredentialProvider>().getUser();
     newInvite.setDesigner(_designer.getMail());
     newInvite.setDateOfInvite(DateTime.now().toIso8601String());
     newInvite.setDateOfExpire(_project.getDateOfStart());
+    newInvite.setProjectProposer(_project.getProjectProposer());
     if (_message.text.isNotEmpty) {
       newInvite.setMessage(_message.text);
     }
-    //newInvite.setState(StateInvite.WAITING);
-    newInvite.setProjectProposer(
-        context.read<AuthCredentialProvider>().getUser().getMail());
     newInvite.setProject(_project.getId());
+    newInvite.setSender(sender.getMail());
+    newInvite.setDesigner(_designer.getMail());
+
+    if (sender.getRoles().contains(UserRole.PROJECT_PROPOSER)) {
+      newInvite.setStateProjectProposer(StateInvite.POSITIVE);
+      newInvite.setStateDesigner(StateInvite.WAITING);
+    } else {
+      newInvite.setStateDesigner(StateInvite.WAITING);
+      newInvite.setStateProjectProposer(StateInvite.WAITING);
+    }
     context.read<InviteProvider>().addInvite(newInvite);
   }
 
@@ -58,20 +69,29 @@ class _SendInvite extends State<SendInvite> {
     } else {
       _visibilityLabelDesigner = false;
       await searchUsers(query, context);
+      
       setState(() {});
     }
   }
 
+  bool isSuitable(User user) {
+    for (String tag in _project.getTag())
+      if (user.getTags().contains(tag)) return true;
+    return false;
+  }
+
   Future searchUsers(String query, BuildContext context) async {
     List<User> usersTemp = [];
+    List<User> filterUser = [];
     usersTemp.addAll(await Provider.of<UserProvider>(context, listen: false)
         .findByUsername(query, "DESIGNER"));
-    _usersFind = usersTemp;
+    for (User user in usersTemp) if (isSuitable(user)) filterUser.add(user);
+    _usersFind = filterUser;
   }
 
   void selectDesigner(String mail) async {
-    _designer = await Provider.of<UserProvider>(context, listen: false)
-        .findUserByMail(mail);
+    _designer =
+        Provider.of<UserProvider>(context, listen: false).findByMail(mail);
     setState(() {
       _currentStep++;
     });

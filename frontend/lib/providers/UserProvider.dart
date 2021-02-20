@@ -7,7 +7,7 @@ import 'package:flutter/foundation.dart';
 class UserProvider with ChangeNotifier {
   UserService _service;
 
-  Set<User> _listUsers = new HashSet();
+  List<User> _listUsers = [];
 
   UserProvider(UserService service) {
     _service = service;
@@ -16,28 +16,27 @@ class UserProvider with ChangeNotifier {
   Future recoverPassword(String currentEmail) async {
     //TODO da fare
   }
-
-  Future<User> findUserByMail(String mail) async {
-    List<String> find = [];
-    find.add(mail);
-    if (_listUsers.isEmpty) await updateListUsers(find);
-    for (User user in _listUsers) {
-      if (user.getMail() == mail) {
-        return user;
-      }
+  Future updateListUsers(List<String> mails) async {
+    List<String> notFound = [];
+    for (String mail in mails) {
+      if (_listUsers.where((element) => element.getMail() == mail).isEmpty)
+        notFound.add(mail);
     }
-    await updateListUsers(find);
-    return findUserByMail(mail);
+    if (notFound.isNotEmpty)
+      _listUsers.addAll(await _service.findByMails(notFound));
+    notifyListeners();
   }
 
-  Future updateListUsers(List<String> mails) async {
-    List<String> mailsNotFount = [];
-    for (String mail in mails) {
-      if (!_listUsers.contains(mail)) mailsNotFount.add(mail);
+  User findByMail(String id) {
+    return _listUsers.firstWhere((element) => element.getMail() == id);
+  }
+
+  List<User> findByMails(List<String> ids) {
+    List<User> found = [];
+    for (String id in ids) {
+      found.add(findByMail(id));
     }
-    List<User> users = await _service.findByMails(mailsNotFount);
-    for (User user in users) _listUsers.add(user);
-    notifyListeners();
+    return found;
   }
 
   Future<List<User>> findByUsername(String username, String role) async {

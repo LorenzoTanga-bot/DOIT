@@ -88,6 +88,9 @@ class Invite {
   }
 
   StateInvite getStateDesigner() {
+    if (this._stateDesigner == StateInvite.WAITING &&
+        DateTime.parse(this._dateOfExpire).isBefore(DateTime.now()))
+      return StateInvite.EXPIRED;
     return this._stateDesigner;
   }
 
@@ -96,6 +99,9 @@ class Invite {
   }
 
   StateInvite getStateProjectProposer() {
+    if (this._stateProjectProposer == StateInvite.WAITING &&
+        DateTime.parse(this._dateOfExpire).isBefore(DateTime.now()))
+      return StateInvite.EXPIRED;
     return this._stateProjectProposer;
   }
 

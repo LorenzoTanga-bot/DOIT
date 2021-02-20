@@ -1,41 +1,45 @@
-import 'package:doit/model/Candidacy.dart';
+import 'package:doit/model/AuthCredential.dart';
+import 'package:doit/model/Invite.dart';
 import 'package:doit/model/Project.dart';
 import 'package:doit/model/User.dart';
 import 'package:doit/providers/AuthCredentialProvider.dart';
-import 'package:doit/providers/CandidacyProvider.dart';
+import 'package:doit/providers/InviteProvider.dart';
 
 import 'package:doit/providers/ProjectProvider.dart';
+import 'package:doit/providers/UserProvider.dart';
 import 'package:doit/providers/ViewProvider.dart';
 
 import 'package:doit/view/ProjectOverView.dart';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class CandidacyOverView extends StatefulWidget {
-  final Candidacy candidacy;
+class InviteOverview extends StatefulWidget {
+  final Invite invite;
 
-  const CandidacyOverView({Key key, @required this.candidacy})
-      : super(key: key);
+  const InviteOverview({Key key, @required this.invite}) : super(key: key);
 
   @override
-  _CandidacyOverView createState() => _CandidacyOverView();
+  _InviteOverview createState() => _InviteOverview();
 }
 
-class _CandidacyOverView extends State<CandidacyOverView> {
+class _InviteOverview extends State<InviteOverview> {
   Project project;
   String dateString;
   String dateOfExpireString;
   String state;
-  void  initState() {
+
+  void  initState()  {
     super.initState();
+    
     project = Provider.of<ProjectProvider>(context, listen: false)
-        .findById(widget.candidacy.getProject());
-    state = widget.candidacy.getState().toString();
+        .findById(widget.invite.getProject());
+    state = widget.invite.getState().toString();
     state = state.substring(state.indexOf(".") + 1);
-    DateTime date = DateTime.parse(widget.candidacy.getDateOfCandidacy());
+    DateTime date = DateTime.parse(widget.invite.getDateOfInvite());
     dateString = "${date.day}" + "/" + "${date.month}" + "/" + "${date.year}";
-    DateTime dateOfExpire = DateTime.parse(widget.candidacy.getDateOfExpire());
+    DateTime dateOfExpire = DateTime.parse(widget.invite.getDateOfExpire());
     dateOfExpireString = "${dateOfExpire.day}" +
         "/" +
         "${dateOfExpire.month}" +
@@ -44,24 +48,60 @@ class _CandidacyOverView extends State<CandidacyOverView> {
   }
 
   bool isTheProjectProposer() {
-    if (widget.candidacy.getState() == StateCandidacy.WAITING) {
+    if (widget.invite.getStateProjectProposer() == StateInvite.WAITING) {
       User user = context.read<AuthCredentialProvider>().getUser();
       if (user == null) return false;
-      return widget.candidacy.getProjectProposer() == user.getMail();
+      return widget.invite.getProjectProposer() == user.getMail();
     }
     return false;
   }
 
-  void acceptCandidacy() async {
-    widget.candidacy.setState(StateCandidacy.POSITIVE);
-    await Provider.of<CandidacyProvider>(context, listen: false)
-        .updateCandidacy(widget.candidacy);
+  bool isTheInviteSentByDesigner() {
+    if (Provider.of<UserProvider>(context, listen: false)
+        .findByMail(widget.invite.getSender())
+        .getRoles()
+        .contains(UserRole.DESIGNER_ENTITY)) {
+      return isTheProjectProposer();
+    }
   }
 
-  void declineCandidacy() async {
-    widget.candidacy.setState(StateCandidacy.NEGATIVE);
-    await Provider.of<CandidacyProvider>(context, listen: false)
-        .updateCandidacy(widget.candidacy);
+  bool isTheDesigner() {
+    if (widget.invite.getStateDesigner() == StateInvite.WAITING) {
+      User user = context.read<AuthCredentialProvider>().getUser();
+      if (user == null) return false;
+      return widget.invite.getDesigner() == user.getMail();
+    }
+    return false;
+  }
+
+  void acceptInvite() async {
+    if (Provider.of<AuthCredentialProvider>(context, listen: false)
+            .getUser()
+            .getMail() ==
+        widget.invite.getProjectProposer()) {
+      widget.invite.setStateProjectProposer(StateInvite.POSITIVE);
+      await Provider.of<InviteProvider>(context, listen: false)
+          .updateStateProjectProposer(widget.invite);
+    } else {
+      widget.invite.setStateDesigner(StateInvite.POSITIVE);
+      await Provider.of<InviteProvider>(context, listen: false)
+          .updateStateDesigner(widget.invite);
+    }
+  }
+
+  void declineInvite() async {
+    if (Provider.of<AuthCredentialProvider>(context, listen: false)
+            .getUser()
+            .getMail() ==
+        widget.invite.getProjectProposer()) {
+      widget.invite.setStateProjectProposer(StateInvite.NEGATIVE);
+      await Provider.of<InviteProvider>(context, listen: false)
+          .updateStateProjectProposer(widget.invite);
+    } else {
+      widget.invite.setStateDesigner(StateInvite.NEGATIVE);
+      await Provider.of<InviteProvider>(context, listen: false)
+          .updateStateDesigner(widget.invite);
+    }
   }
 
   Widget showButton() {
@@ -75,7 +115,7 @@ class _CandidacyOverView extends State<CandidacyOverView> {
                 child: RaisedButton(
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10)),
-                  onPressed: () => {acceptCandidacy(), Navigator.pop(context)},
+                  onPressed: () => {acceptInvite(), Navigator.pop(context)},
                   child: Text("Accetta"),
                 ))),
         Padding(
@@ -85,7 +125,7 @@ class _CandidacyOverView extends State<CandidacyOverView> {
                 child: RaisedButton(
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10)),
-                  onPressed: () => {declineCandidacy(), Navigator.pop(context)},
+                  onPressed: () => {declineInvite(), Navigator.pop(context)},
                   child: Text("Rifiuta"),
                 ))),
       ],
@@ -98,7 +138,7 @@ class _CandidacyOverView extends State<CandidacyOverView> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15.0),
         ),
-        title: Text("Candidacy"),
+        title: Text("Invite"),
         content: Column(mainAxisSize: MainAxisSize.min, children: [
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -139,7 +179,7 @@ class _CandidacyOverView extends State<CandidacyOverView> {
                 indent: 2,
                 endIndent: 2,
               ),
-              if (widget.candidacy.getMessage() != null)
+              if (widget.invite.getMessage() != null)
                 Column(
                   children: [
                     Row(
@@ -148,7 +188,7 @@ class _CandidacyOverView extends State<CandidacyOverView> {
                           Text("Message : "),
                           Flexible(
                               child: Text(
-                            widget.candidacy.getMessage(),
+                            widget.invite.getMessage(),
                           ))
                         ]),
                     Divider(
@@ -170,7 +210,7 @@ class _CandidacyOverView extends State<CandidacyOverView> {
               )
             ],
           ),
-          if (isTheProjectProposer()) showButton(),
+          if (isTheInviteSentByDesigner() || isTheDesigner()) showButton(),
           Divider(
             color: Colors.white,
             height: 8,

@@ -1,6 +1,7 @@
 import 'package:doit/view/ListOfProjects.dart';
 import 'package:doit/view/Login.dart';
 import 'package:doit/view/SearchPage.dart';
+import 'package:doit/widget/FutureBuilder.dart';
 
 import 'package:flutter/material.dart';
 
@@ -14,7 +15,7 @@ class ViewProvider with ChangeNotifier {
 
   List<Widget> _listFirstPosition = [];
   List<Widget> _listSecondPosition = [];
-  List<Widget> _listThreePosition = [];
+  List<Widget> _listThirdPosition = [];
 
   ViewProvider() {
     _listViewPosition = [_firstDefault, _secondDefault, _thirdDefault];
@@ -54,7 +55,7 @@ class ViewProvider with ChangeNotifier {
   }
 
   void dropThirdWidget() {
-    _listThreePosition.clear();
+    _listThirdPosition.clear();
     _listViewPosition.removeAt(2);
     _listViewPosition.insert(2, _thirdDefault);
     notifyListeners();
@@ -69,7 +70,7 @@ class ViewProvider with ChangeNotifier {
         _listSecondPosition.add(widget);
         break;
       case 2:
-        _listThreePosition.add(widget);
+        _listThirdPosition.add(widget);
         break;
     }
     _listViewPosition.removeAt(_selectedItemPosition);
@@ -82,6 +83,8 @@ class ViewProvider with ChangeNotifier {
     switch (_selectedItemPosition) {
       case 0:
         _listFirstPosition.removeLast();
+        if (_listFirstPosition.last is FutureBuild)
+          _listFirstPosition.removeLast();
         _listViewPosition.insert(
             _selectedItemPosition,
             _listFirstPosition.isEmpty
@@ -90,6 +93,8 @@ class ViewProvider with ChangeNotifier {
         break;
       case 1:
         _listSecondPosition.removeLast();
+        if (_listSecondPosition.last is FutureBuild)
+          _listSecondPosition.removeLast();
         _listViewPosition.insert(
             _selectedItemPosition,
             _listSecondPosition.isEmpty
@@ -97,12 +102,14 @@ class ViewProvider with ChangeNotifier {
                 : _listSecondPosition.last);
         break;
       case 2:
-        _listThreePosition.removeLast();
+        _listThirdPosition.removeLast();
+        if (_listThirdPosition.last is FutureBuild)
+          _listThirdPosition.removeLast();
         _listViewPosition.insert(
             _selectedItemPosition,
-            _listThreePosition.isEmpty
+            _listThirdPosition.isEmpty
                 ? _thirdDefault
-                : _listThreePosition.last);
+                : _listThirdPosition.last);
         break;
     }
     notifyListeners();

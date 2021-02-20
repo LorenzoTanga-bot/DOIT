@@ -62,7 +62,7 @@ public class AuthCredentialController {
 	}
 
 	@PutMapping("/updateUser")
-	//@PreAuthorize("@accessCheckerComponent.sameUser(principal, #user.getMail()) or hasAuthority('ADMIN')")
+	@PreAuthorize("@accessCheckerComponent.sameUser(principal, #user.getMail()) or hasAuthority('ADMIN')")
 	public User updateUser(@RequestBody @Param("user") User user) {
 		return userService.updateUser(user);
 	}

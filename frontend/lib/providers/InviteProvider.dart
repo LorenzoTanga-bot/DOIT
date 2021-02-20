@@ -32,4 +32,28 @@ class InviteProvider with ChangeNotifier {
   Future<List<Invite>> findByProject(String project) async {
     return await _service.findByProject(project);
   }
+ Future updateListInvites(List<String> ids) async {
+    List<String> notFound = [];
+    for (String id in ids) {
+      if (_listInvite 
+          .where((element) => element.getId() == id)
+          .isEmpty) notFound.add(id);
+    }
+    if (notFound.isNotEmpty)
+      _listInvite .addAll(await _service.findByIds(notFound));
+    notifyListeners();
+  }
+
+  Invite findById(String id) {
+    return _listInvite .firstWhere((element) => element.getId() == id);
+  }
+
+  List<Invite> findByIds(List<String> ids) {
+    List<Invite> found = [];
+    for (String id in ids) {
+      found.add(findById(id));
+    }
+    return found;
+  }
+
 }

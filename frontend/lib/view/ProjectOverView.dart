@@ -3,15 +3,17 @@ import 'package:doit/model/Project.dart';
 import 'package:doit/model/Tag.dart';
 import 'package:doit/model/User.dart';
 import 'package:doit/providers/AuthCredentialProvider.dart';
+import 'package:doit/providers/ProjectProvider.dart';
+
 import 'package:doit/providers/TagProvider.dart';
 import 'package:doit/providers/UserProvider.dart';
 import 'package:doit/providers/ViewProvider.dart';
 
 import 'package:doit/view/ProfileOverView.dart';
 import 'package:doit/view/projectproposer/CreateModifyProject.dart';
+import 'package:doit/widget/FutureBuilder.dart';
 
 import 'package:doit/widget/ListTags.dart';
-import 'package:doit/widget/LoadingScreen.dart';
 import 'package:doit/widget/SendCandidacy.dart';
 import 'package:doit/widget/SendInvite.dart';
 import 'package:flutter/gestures.dart';
@@ -31,24 +33,26 @@ class _ProjectOverView extends State<ProjectOverView> {
   User _projectProposer;
   List<Tag> _listTags;
   String _state;
+  List<User> _designers;
 
-  Future _uploadData() async {
-    await Future.wait([
-      Provider.of<UserProvider>(context, listen: false)
-          .updateListUsers([widget.project.getProjectProposer()]),
-      Provider.of<TagProvider>(context, listen: false)
-          .updateListTag(widget.project.getTag())
-    ]);
-    //TODO da sostiuire con [project.getProjectProposer()].addAll(project.getDesigner());
-    _projectProposer = await Provider.of<UserProvider>(context, listen: false)
-        .findUserByMail(widget.project.getProjectProposer());
+  void initState() {
+    super.initState();
+    _projectProposer = Provider.of<UserProvider>(context, listen: false)
+        .findByMail(widget.project.getProjectProposer());
     _listTags = Provider.of<TagProvider>(context, listen: false)
         .getTagsByIds(widget.project.getTag());
+    _designers = Provider.of<UserProvider>(context, listen: false)
+        .findByMails(widget.project.getDesigners());
     _state = (DateTime.parse(widget.project.getDateOfEnd())
                 .compareTo(DateTime.now()) ==
-            1)
-        ? (widget.project.getCandidacyMode() ? "Candidacy Mode" : "In corso")
-        : "Completed";
+            -1)
+        ? "Completed"
+        : (widget.project.getCandidacyMode()
+            ? "Candidacy Mode"
+            : (DateTime.parse(widget.project.getStartCandidacy())
+                    .isAfter(DateTime.now())
+                ? "In attesa di candidature "
+                : "In corso"));
   }
 
   String _getDate(String type) {
@@ -123,8 +127,26 @@ class _ProjectOverView extends State<ProjectOverView> {
                                 ..onTap = () {
                                   Provider.of<ViewProvider>(context,
                                           listen: false)
-                                      .pushWidget(ProfileOverView(
-                                          mail: _projectProposer.getMail()));
+                                      .pushWidget(FutureBuild(
+                                          future: Future.wait([
+                                            Provider.of<ProjectProvider>(
+                                                    context,
+                                                    listen: false)
+                                                .updateListProject(
+                                                    _projectProposer
+                                                        .getProposedProjects()),
+                                            Provider.of<ProjectProvider>(
+                                                    context,
+                                                    listen: false)
+                                                .updateListProject(_projectProposer
+                                                    .getPartecipateInProjects()),
+                                            Provider.of<TagProvider>(context,
+                                                    listen: false)
+                                                .updateListTag(
+                                                    _projectProposer.getTags())
+                                          ]),
+                                          newView: ProfileOverView(
+                                              user: _projectProposer)));
                                 }))
                     ]),
                     Divider(
@@ -235,19 +257,61 @@ class _ProjectOverView extends State<ProjectOverView> {
             endIndent: 2,
           ),
           Container(
-            height: 25,
-            child: ListView(
-              padding: EdgeInsets.only(left: 10, right: 10),
-              scrollDirection: Axis.horizontal,
-              children: <Widget>[
-                Text("Designer, "),
-                Padding(padding: EdgeInsets.all(5.00)),
-                Text("Designer "),
-                Padding(padding: EdgeInsets.all(5.00)),
-              ],
-            ),
-          )
+              height: 25,
+              child: ListView(
+                padding: EdgeInsets.only(left: 10, right: 10),
+                children: getListDesigners(),
+                scrollDirection: Axis.horizontal,
+              ))
         ]));
+  }
+
+  List<Widget> getListDesigners() {
+    List<Widget> _listDesigners = [];
+    for (int i = 0; i < _designers.length - 1; i++) {
+      _listDesigners.add(RichText(
+          text: TextSpan(
+              text: ('@' + _designers[i].getUsername() + ", "),
+              style: TextStyle(color: Colors.black),
+              recognizer: TapGestureRecognizer()
+                ..onTap = () {
+                  Provider.of<ViewProvider>(context, listen: false)
+                      .pushWidget(FutureBuild(
+                          future: Future.wait([
+                            Provider.of<ProjectProvider>(context, listen: false)
+                                .updateListProject(
+                                    _designers[i].getProposedProjects()),
+                            Provider.of<ProjectProvider>(context, listen: false)
+                                .updateListProject(
+                                    _designers[i].getPartecipateInProjects()),
+                            Provider.of<TagProvider>(context, listen: false)
+                                .updateListTag(_designers[i].getTags())
+                          ]),
+                          newView: ProfileOverView(user: _designers[i])));
+                })));
+    }
+    if (_designers.length > 0)
+      _listDesigners.add(RichText(
+          text: TextSpan(
+              text: ('@' + _designers.last.getUsername()),
+              style: TextStyle(color: Colors.black),
+              recognizer: TapGestureRecognizer()
+                ..onTap = () {
+                  Provider.of<ViewProvider>(context, listen: false)
+                      .pushWidget(FutureBuild(
+                          future: Future.wait([
+                            Provider.of<ProjectProvider>(context, listen: false)
+                                .updateListProject(
+                                    _designers.last.getProposedProjects()),
+                            Provider.of<ProjectProvider>(context, listen: false)
+                                .updateListProject(
+                                    _designers.last.getPartecipateInProjects()),
+                            Provider.of<TagProvider>(context, listen: false)
+                                .updateListTag(_designers.last.getTags())
+                          ]),
+                          newView: ProfileOverView(user: _designers.last)));
+                })));
+    return _listDesigners;
   }
 
   bool isADesigner() {
@@ -278,10 +342,22 @@ class _ProjectOverView extends State<ProjectOverView> {
         return false;
       else {
         if (isADesigner()) {
-          if (isSuitable(user)) return (!user.getIsAPerson());
+          if (isADesignerOfTeam()) return (!user.getIsAPerson());
         } else {
           return (isTheProjectProposer());
         }
+      }
+    }
+    return false;
+  }
+
+  bool isADesignerOfTeam() {
+    if (widget.project.getCandidacyMode().toString() == "true") {
+      User user = context.read<AuthCredentialProvider>().getUser();
+      if (user == null) {
+        return false;
+      } else if (isADesigner()) {
+        if (widget.project.getDesigners().contains(user.getMail())) return true;
       }
     }
     return false;
@@ -351,26 +427,13 @@ class _ProjectOverView extends State<ProjectOverView> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: _uploadData(),
-      builder: (context, data) {
-        switch (data.connectionState) {
-          case ConnectionState.none:
-          case ConnectionState.active:
-          case ConnectionState.waiting:
-            return LoadingScreen(message: "Loading");
-          case ConnectionState.done:
-            return ListView(
-              children: [
-                _firstCard(),
-                ListTags(listTag: _listTags),
-                _secondCard(),
-                _userCustomization()
-              ],
-            );
-        }
-        return null;
-      },
+    return ListView(
+      children: [
+        _firstCard(),
+        ListTags(listTag: _listTags),
+        if (_designers.isNotEmpty) _secondCard(),
+        _userCustomization()
+      ],
     );
   }
 }

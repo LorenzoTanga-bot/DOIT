@@ -4,7 +4,8 @@ import 'package:doit/providers/AuthCredentialProvider.dart';
 import 'package:doit/providers/TagProvider.dart';
 import 'package:doit/providers/UserProvider.dart';
 import 'package:doit/providers/ViewProvider.dart';
-import 'package:doit/view/ProfileOverView.dart';
+
+import 'package:doit/view/ThirdView.dart';
 import 'package:doit/widget/LoadingScreen.dart';
 import 'package:doit/widget/NewTagInsertion.dart';
 import 'package:doit/widget/SmartSelectTag.dart';
@@ -39,8 +40,8 @@ class _CreateModifyProfile extends State<CreateModifyProfile> {
 
   Future _uploadData() async {
     if (!widget.isNewUser) {
-      _user = await Provider.of<UserProvider>(context, listen: false)
-          .findUserByMail(widget.mail);
+      _user = Provider.of<UserProvider>(context, listen: false)
+          .findByMail(widget.mail);
       _name.text = _user.getName();
       _surname.text = _user.getSurname();
       _username.text = _user.getUsername();
@@ -95,9 +96,7 @@ class _CreateModifyProfile extends State<CreateModifyProfile> {
       _user.setTags(context.read<TagProvider>().getSelectTag("SIGNIN"));
       await Provider.of<AuthCredentialProvider>(context, listen: false)
           .addUser(_user);
-      context
-          .read<ViewProvider>()
-          .setProfileDefault(ProfileOverView(mail: _user.getMail()));
+      context.read<ViewProvider>().setProfileDefault(ThirdView());
     } else {
       _user.setTags(context.read<TagProvider>().getSelectTag("USER"));
       await Provider.of<AuthCredentialProvider>(context, listen: false)

@@ -29,32 +29,28 @@ class CandidacyProvider with ChangeNotifier {
   Future<List<Candidacy>> findByProject(String project) async {
     return await _service.findByProject(project);
   }
-
-  Future<Candidacy> findById(String id) async {
-    for (Candidacy candidacy in _listCandidacies) {
-      if (candidacy.getId() == id) {
-        return candidacy;
-      }
-    }
-    return await _service.findById(id);
-  }
-
-
-
-  Future updateListCandidacy(List<String> ids) async {
+ Future updateListCandidacies(List<String> ids) async {
     List<String> notFound = [];
-    bool found;
     for (String id in ids) {
-      found = false;
-      for (Candidacy candidacy in _listCandidacies) {
-        if (candidacy.getId() == id) {
-          found = true;
-          break;
-        }
-      }
-      if (!found) notFound.add(id);
+      if (_listCandidacies
+          .where((element) => element.getId() == id)
+          .isEmpty) notFound.add(id);
     }
     if (notFound.isNotEmpty)
       _listCandidacies.addAll(await _service.findByIds(notFound));
+    notifyListeners();
   }
+
+  Candidacy findById(String id) {
+    return _listCandidacies.firstWhere((element) => element.getId() == id);
+  }
+
+  List<Candidacy> findByIds(List<String> ids) {
+    List<Candidacy> found = [];
+    for (String id in ids) {
+      found.add(findById(id));
+    }
+    return found;
+  }
+
 }

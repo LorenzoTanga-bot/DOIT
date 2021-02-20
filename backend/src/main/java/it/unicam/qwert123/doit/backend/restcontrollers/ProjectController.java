@@ -49,7 +49,7 @@ public class ProjectController {
     }
 
     @PutMapping("/update")
-    @PreAuthorize("hasAuthority('PROJECT_PROPOSER') and @accessCheckerComponent.sameUser(principal, #project.getProjectProposer())")
+   @PreAuthorize("hasAuthority('PROJECT_PROPOSER') and @accessCheckerComponent.sameUser(principal, #project.getProjectProposer())")
     public Project updateProject(@RequestBody @Param("project") Project modifiedProject) {
         return projectService.updateProject(modifiedProject);
     }

@@ -5,12 +5,16 @@ import 'package:doit/model/User.dart';
 import 'package:doit/providers/AuthCredentialProvider.dart';
 import 'package:doit/providers/CandidacyProvider.dart';
 import 'package:doit/providers/InviteProvider.dart';
+import 'package:doit/providers/ProjectProvider.dart';
+import 'package:doit/providers/TagProvider.dart';
+import 'package:doit/providers/UserProvider.dart';
 import 'package:doit/providers/ViewProvider.dart';
 import 'package:doit/view/ListOfCandidacies.dart';
 import 'package:doit/view/ListOfInvites.dart';
 import 'package:doit/view/ProfileOverView.dart';
 import 'package:doit/view/projectproposer/CreateModifyProject.dart';
 import 'package:doit/widget/CardList.dart';
+import 'package:doit/widget/FutureBuilder.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -53,12 +57,19 @@ class _ThirdView extends State<ThirdView> {
         endIndent: 2,
       ),
       GestureDetector(
-        child: CardList(
-            name: "Profile", sDescription: "View and modify your profile"),
-        onTap: () => context
-            .read<ViewProvider>()
-            .pushWidget(ProfileOverView(mail: _user.getMail())),
-      ),
+          child: CardList(
+              name: "Profile", sDescription: "View and modify your profile"),
+          onTap: () => Provider.of<ViewProvider>(context, listen: false)
+              .pushWidget(FutureBuild(
+                  future: Future.wait([
+                    Provider.of<ProjectProvider>(context, listen: false)
+                        .updateListProject(_user.getProposedProjects()),
+                    Provider.of<ProjectProvider>(context, listen: false)
+                        .updateListProject(_user.getPartecipateInProjects()),
+                    Provider.of<TagProvider>(context, listen: false)
+                        .updateListTag(_user.getTags())
+                  ]),
+                  newView: ProfileOverView(user: _user)))),
     ]);
   }
 
@@ -168,6 +179,7 @@ class _ThirdView extends State<ThirdView> {
         child: CardList(
             name: "Projects evaluated",
             sDescription: "Active and completed projects evaluated"),
+            //TODO aggiustare
         onTap: () => context.read<ViewProvider>().pushWidget(null),
       ),
     ]);
@@ -199,9 +211,15 @@ class _ThirdView extends State<ThirdView> {
           candidacies =
               await Provider.of<CandidacyProvider>(context, listen: false)
                   .findByDesigner(_user.getMail());
-          context
-              .read<ViewProvider>()
-              .pushWidget(ListOfCandidacy(candidacies: candidacies));
+          List<String> users = [];
+          for (Candidacy candidacy in candidacies) {
+            users.addAll(
+                [candidacy.getDesigner(), candidacy.getProjectProposer()]);
+          }
+          context.read<ViewProvider>().pushWidget(FutureBuild(
+              future: Provider.of<UserProvider>(context, listen: false)
+                  .updateListUsers(users),
+              newView: ListOfCandidacy(candidacies: candidacies)));
           break;
         }
       case "PROJECT_PROPOSER":
@@ -209,9 +227,15 @@ class _ThirdView extends State<ThirdView> {
           candidacies =
               await Provider.of<CandidacyProvider>(context, listen: false)
                   .findByProjectProposer(_user.getMail());
-          context
-              .read<ViewProvider>()
-              .pushWidget(ListOfCandidacy(candidacies: candidacies));
+          List<String> users = [];
+          for (Candidacy candidacy in candidacies) {
+            users.addAll(
+                [candidacy.getDesigner(), candidacy.getProjectProposer()]);
+          }
+          context.read<ViewProvider>().pushWidget(FutureBuild(
+              future: Provider.of<UserProvider>(context, listen: false)
+                  .updateListUsers(users),
+              newView: ListOfCandidacy(candidacies: candidacies)));
           break;
         }
     }
@@ -223,18 +247,36 @@ class _ThirdView extends State<ThirdView> {
         {
           invites = await Provider.of<InviteProvider>(context, listen: false)
               .findByDesigner(_user.getMail());
-          context
-              .read<ViewProvider>()
-              .pushWidget(ListOfInvites(invites: invites));
+          List<String> users = [];
+          for (Invite invite in invites) {
+            users.addAll([
+              invite.getDesigner(),
+              invite.getProjectProposer(),
+              invite.getSender()
+            ]);
+          }
+          context.read<ViewProvider>().pushWidget(FutureBuild(
+              future: Provider.of<UserProvider>(context, listen: false)
+                  .updateListUsers(users),
+              newView: ListOfInvites(invites: invites)));
           break;
         }
       case "PROJECT_PROPOSER":
         {
           invites = await Provider.of<InviteProvider>(context, listen: false)
               .findByProjectProposer(_user.getMail());
-          context
-              .read<ViewProvider>()
-              .pushWidget(ListOfInvites(invites: invites));
+          List<String> users = [];
+          for (Invite invite in invites) {
+            users.addAll([
+              invite.getDesigner(),
+              invite.getProjectProposer(),
+              invite.getSender()
+            ]);
+          }
+          context.read<ViewProvider>().pushWidget(FutureBuild(
+              future: Provider.of<UserProvider>(context, listen: false)
+                  .updateListUsers(users),
+              newView: ListOfInvites(invites: invites)));
           break;
         }
     }

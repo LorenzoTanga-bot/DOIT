@@ -1,6 +1,9 @@
 import 'package:doit/model/Project.dart';
+import 'package:doit/providers/TagProvider.dart';
+import 'package:doit/providers/UserProvider.dart';
 import 'package:doit/providers/ViewProvider.dart';
 import 'package:doit/view/ProjectOverView.dart';
+import 'package:doit/widget/FutureBuilder.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -38,8 +41,18 @@ class CardListProject extends StatelessWidget {
         ),
       ),
       onTap: () {
-        Provider.of<ViewProvider>(context, listen: false)
-            .pushWidget(ProjectOverView(project: project));
+        List<String> users = [project.getProjectProposer()];
+        users.addAll(project.getDesigners());
+        context.read<ViewProvider>().pushWidget(FutureBuild(
+            future: Future.wait([
+              Provider.of<UserProvider>(context, listen: false)
+                  .updateListUsers(users),
+              Provider.of<TagProvider>(context, listen: false)
+                  .updateListTag(project.getTag())
+            ]),
+            newView: ProjectOverView(
+              project: project,
+            )));
       },
     );
   }

@@ -17,7 +17,7 @@ class _ListOfCandidacy extends State<ListOfCandidacy> {
     return Container(
         width: MediaQuery.of(context).size.width - 20,
         height: MediaQuery.of(context).size.height - 20,
-        child: Column(children: [
+        child: Column(mainAxisSize: MainAxisSize.min, children: [
           Padding(
             padding: EdgeInsets.all(10),
             child: Text(
