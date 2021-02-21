@@ -44,6 +44,7 @@ public class InviteController {
     @Autowired
     private AccessCheckerComponent accessCheckerComponent;
 
+
     private void updateUserProject(Invite invite){
         if(invite.getStateDesigner() == StateInvite.POSITIVE && invite.getStateProjectProposer() == StateInvite.POSITIVE && invite.getDateOfExpire().before(new Date())){
             User user = userService.findById(invite.getDesigner());
@@ -53,11 +54,14 @@ public class InviteController {
             project.addDesigner(invite.getDesigner());
             projectService.updateProject(project);
         }
-    }
-
+    } @GetMapping("/get")
+public List<Invite> get(){
+    return inviteService.findAll();
+    
+}
     @PostMapping("/new")
     @PreAuthorize("(hasAuthority('DESIGNER_ENTITY') or hasAuthority('PROJECT_PROPOSER')) and @accessCheckerComponent.sameUser(principal, #invite.getSender())")
-    public Invite addiInvite(@RequestBody @Param("invite") Invite invite) { 
+    public Invite addInvite(@RequestBody @Param("invite") Invite invite) { 
         Invite returnInvite = inviteService.addInvite(invite);
         //update desiner
         User user = userService.findById(returnInvite.getDesigner());

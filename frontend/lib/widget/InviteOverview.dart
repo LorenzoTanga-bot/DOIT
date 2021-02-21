@@ -34,7 +34,6 @@ class _InviteOverview extends State<InviteOverview> {
 
   void initState() {
     super.initState();
-
     project = Provider.of<ProjectProvider>(context, listen: false)
         .findById(widget.invite.getProject());
     state = widget.invite.getState().toString();
@@ -154,19 +153,21 @@ class _InviteOverview extends State<InviteOverview> {
                         recognizer: TapGestureRecognizer()
                           ..onTap = () {
                             Navigator.pop(context);
-                           List<String> users = [project.getProjectProposer()];
-        users.addAll(project.getDesigners());
-        context.read<ViewProvider>().pushWidget(FutureBuild(
-            future: Future.wait([
-              Provider.of<UserProvider>(context, listen: false)
-                  .updateListUsers(users),
-              Provider.of<TagProvider>(context, listen: false)
-                  .updateListTag(project.getTag())
-            ]),
-            newView: ProjectOverView(
-              id: project.getId(),
-            )));
-      }))
+                            List<String> users = [project.getProjectProposer()];
+                            users.addAll(project.getDesigners());
+                            context.read<ViewProvider>().pushWidget(FutureBuild(
+                                future: Future.wait([
+                                  Provider.of<UserProvider>(context,
+                                          listen: false)
+                                      .updateListUsers(users),
+                                  Provider.of<TagProvider>(context,
+                                          listen: false)
+                                      .updateListTag(project.getTag())
+                                ]),
+                                newView: ProjectOverView(
+                                  id: project.getId(),
+                                )));
+                          }))
               ]),
               Divider(
                 color: Colors.white,

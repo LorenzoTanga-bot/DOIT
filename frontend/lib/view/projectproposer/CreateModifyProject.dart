@@ -31,6 +31,7 @@ class _CreateModifyProject extends State<CreateModifyProject> {
   DateTime _dateOfEndProject = DateTime.now();
   DateTime _dateOfStartCandidacy = DateTime.now();
   DateTime _dateOfEndCandidacy = DateTime.now();
+  DateTime _dateOfCreation = DateTime.now();
   bool _visibilityLabelStartProject = false;
   bool _visibilityLabelEndProject = false;
   bool _visibilityLabelStartCandidacy = false;
@@ -48,6 +49,7 @@ class _CreateModifyProject extends State<CreateModifyProject> {
       _sDescription.text = _project.getShortDescription();
       _lDescription.text = _project.getDescription();
       _evaluationMode = _project.getEvaluationMode();
+      _dateOfCreation = DateTime.parse(_project.getDateOfCreation());
       _dateOfStartProject = DateTime.parse(_project.getDateOfStart());
       _dateOfEndProject = DateTime.parse(_project.getDateOfEnd());
       _dateOfStartCandidacy = DateTime.parse(_project.getStartCandidacy());
@@ -55,7 +57,6 @@ class _CreateModifyProject extends State<CreateModifyProject> {
       context.read<TagProvider>().setSelectTag(_project.getTag(), "PROJECT");
     } else {
       _project = new Project();
-      _project.setDateOfCreation(DateTime.now().toIso8601String());
     }
   }
 
@@ -71,6 +72,7 @@ class _CreateModifyProject extends State<CreateModifyProject> {
     _project.setShortDescription(_sDescription.text);
     _project.setDescription(_lDescription.text);
     _project.setEvaluationMode(_evaluationMode);
+    _project.setDateOfCreation(_dateOfCreation.toIso8601String());
     if (widget.id.isNotEmpty) {
       await context.read<ProjectProvider>().updateProject(_project);
     } else
@@ -132,7 +134,7 @@ class _CreateModifyProject extends State<CreateModifyProject> {
 
       return false;
     }
-    if (!DateTime.now().isAfter(_dateOfStartCandidacy)) {
+    if (!_dateOfCreation.isAfter(_dateOfStartCandidacy)) {
       _visibilityLabelStartCandidacy = false;
       return true;
     } else {

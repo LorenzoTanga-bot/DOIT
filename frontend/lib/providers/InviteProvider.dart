@@ -11,41 +11,69 @@ class InviteProvider with ChangeNotifier {
   }
 
   Future<Invite> addInvite(Invite invite) async {
-    return await _service.addInvite(invite);
+    Invite newInvite = await _service.addInvite(invite);
+    _listInvite.add(newInvite);
+    return newInvite;
   }
 
+// non funziona
   Future<Invite> updateStateDesigner(Invite invite) async {
-    return await _service.updateStateDesigner(invite);
+    Invite updateInvite = await _service.updateStateDesigner(invite);
+    _listInvite.remove(invite);
+    _listInvite.add(updateInvite);
+    return updateInvite;
   }
+
   Future<Invite> updateStateProjectProposer(Invite invite) async {
-    return await _service.updateStateProjectProposer(invite);
+    Invite updateInvite = await _service.updateStateProjectProposer(invite);
+    _listInvite.remove(invite);
+    _listInvite.add(updateInvite);
+    return updateInvite;
   }
 
   Future<List<Invite>> findByDesigner(String designer) async {
-    return await _service.findByDesigner(designer);
+    List<Invite> found = await _service.findByDesigner(designer);
+    List<String> invites = [];
+    for (Invite invite in found) {
+      invites.add(invite.getId());
+    }
+    updateListInvites(invites);
+    return found;
   }
 
   Future<List<Invite>> findByProjectProposer(String projectProposer) async {
-    return await _service.findByProjectProposer(projectProposer);
+    List<Invite> found = await _service.findByProjectProposer(projectProposer);
+    List<String> invites = [];
+    for (Invite invite in found) {
+      invites.add(invite.getId());
+    }
+    updateListInvites(invites);
+    return found;
   }
 
   Future<List<Invite>> findByProject(String project) async {
-    return await _service.findByProject(project);
+    List<Invite> found = await _service.findByProject(project);
+    List<String> invites = [];
+    for (Invite invite in found) {
+      invites.add(invite.getId());
+    }
+    updateListInvites(invites);
+    return found;
   }
- Future updateListInvites(List<String> ids) async {
+
+  Future updateListInvites(List<String> ids) async {
     List<String> notFound = [];
     for (String id in ids) {
-      if (_listInvite 
-          .where((element) => element.getId() == id)
-          .isEmpty) notFound.add(id);
+      if (_listInvite.where((element) => element.getId() == id).isEmpty)
+        notFound.add(id);
     }
     if (notFound.isNotEmpty)
-      _listInvite .addAll(await _service.findByIds(notFound));
+      _listInvite.addAll(await _service.findByIds(notFound));
     notifyListeners();
   }
 
   Invite findById(String id) {
-    return _listInvite .firstWhere((element) => element.getId() == id);
+    return _listInvite.firstWhere((element) => element.getId() == id);
   }
 
   List<Invite> findByIds(List<String> ids) {
@@ -55,5 +83,4 @@ class InviteProvider with ChangeNotifier {
     }
     return found;
   }
-
 }

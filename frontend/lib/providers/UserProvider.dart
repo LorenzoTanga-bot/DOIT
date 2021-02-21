@@ -1,5 +1,3 @@
-
-
 import 'package:doit/model/User.dart';
 import 'package:doit/services/UserService.dart';
 import 'package:flutter/foundation.dart';
@@ -40,8 +38,13 @@ class UserProvider with ChangeNotifier {
   }
 
   Future<List<User>> findByUsername(String username, String role) async {
-    List<User> find = await _service.findByUsername(username, role);
-    return find;
+    List<User> finds = await _service.findByUsername(username, role);
+    List<String> mails = [];
+    for (User find in finds) {
+      mails.add(find.getMail());
+    }
+    updateListUsers(mails);
+    return finds;
   }
 
   void updateUser(User user) {
@@ -51,7 +54,12 @@ class UserProvider with ChangeNotifier {
   }
 
   Future<List<User>> findByTags(List<String> tags, String role) async {
-    List<User> find = await _service.findByTags(tags, role);
-    return find;
+    List<User> finds = await _service.findByTags(tags, role);
+    List<String> mails = [];
+    for (User find in finds) {
+      mails.add(find.getMail());
+    }
+    updateListUsers(mails);
+    return finds;
   }
 }

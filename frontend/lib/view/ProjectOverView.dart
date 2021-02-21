@@ -320,7 +320,8 @@ class _ProjectOverView extends State<ProjectOverView> {
       User user = context.read<AuthCredentialProvider>().getUser();
       if (user == null) return false;
       return (user.getRoles().contains(UserRole.DESIGNER_PERSON) ||
-          user.getRoles().contains(UserRole.DESIGNER_ENTITY));
+          (user.getRoles().contains(UserRole.DESIGNER_ENTITY) &&
+              !isTheProjectProposer()));
     }
     return false;
   }

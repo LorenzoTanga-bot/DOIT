@@ -64,7 +64,9 @@ public class InviteService {
                 "Invalid candidacy: The designer don't have right tags");
 
     }
-
+ public List<Invite> findAll(){
+     return  repository.findAll();
+ }
     public Invite addInvite(@NonNull Invite invite) throws ResponseStatusException {
         if (checkInvite(invite)) {
             invite.setId(UUID.randomUUID());
