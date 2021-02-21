@@ -21,6 +21,7 @@ class InviteProvider with ChangeNotifier {
     Invite updateInvite = await _service.updateStateDesigner(invite);
     _listInvite.remove(invite);
     _listInvite.add(updateInvite);
+    notifyListeners();
     return updateInvite;
   }
 
@@ -33,31 +34,21 @@ class InviteProvider with ChangeNotifier {
 
   Future<List<Invite>> findByDesigner(String designer) async {
     List<Invite> found = await _service.findByDesigner(designer);
-    List<String> invites = [];
-    for (Invite invite in found) {
-      invites.add(invite.getId());
-    }
-    updateListInvites(invites);
+    updateListInvitesLocal(found);
     return found;
   }
 
   Future<List<Invite>> findByProjectProposer(String projectProposer) async {
     List<Invite> found = await _service.findByProjectProposer(projectProposer);
-    List<String> invites = [];
-    for (Invite invite in found) {
-      invites.add(invite.getId());
-    }
-    updateListInvites(invites);
+
+    updateListInvitesLocal(found);
     return found;
   }
 
   Future<List<Invite>> findByProject(String project) async {
     List<Invite> found = await _service.findByProject(project);
-    List<String> invites = [];
-    for (Invite invite in found) {
-      invites.add(invite.getId());
-    }
-    updateListInvites(invites);
+
+    updateListInvitesLocal(found);
     return found;
   }
 
@@ -69,6 +60,15 @@ class InviteProvider with ChangeNotifier {
     }
     if (notFound.isNotEmpty)
       _listInvite.addAll(await _service.findByIds(notFound));
+    notifyListeners();
+  }
+
+  void updateListInvitesLocal(List<Invite> invites) {
+    for (Invite invite in invites) {
+      if (!_listInvite.contains(invite)) {
+        _listInvite.add(invite);
+      }
+    }
     notifyListeners();
   }
 

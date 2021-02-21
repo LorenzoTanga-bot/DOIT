@@ -83,10 +83,18 @@ class _InviteOverview extends State<InviteOverview> {
       widget.invite.setStateProjectProposer(StateInvite.POSITIVE);
       await Provider.of<InviteProvider>(context, listen: false)
           .updateStateProjectProposer(widget.invite);
+      await Provider.of<UserProvider>(context, listen: false)
+          .reloadUser(widget.invite.getDesigner());
+      await Provider.of<ProjectProvider>(context, listen: false)
+          .reloadProject(widget.invite.getProject());
     } else {
       widget.invite.setStateDesigner(StateInvite.POSITIVE);
       await Provider.of<InviteProvider>(context, listen: false)
           .updateStateDesigner(widget.invite);
+      await Provider.of<UserProvider>(context, listen: false)
+          .reloadUser(widget.invite.getDesigner());
+      await Provider.of<ProjectProvider>(context, listen: false)
+          .reloadProject(widget.invite.getProject());
     }
   }
 

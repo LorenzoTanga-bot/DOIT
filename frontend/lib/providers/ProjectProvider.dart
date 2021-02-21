@@ -44,8 +44,19 @@ class ProjectProvider with ChangeNotifier {
     return found;
   }
 
+  void updateListProjectsLocal(List<Project> projects) {
+    for (Project project in projects) {
+      if (!_listProjects.contains(project)) {
+        _listProjects.add(project);
+      }
+    }
+    notifyListeners();
+  }
+
   Future<List<Project>> findByTags(List<String> tags) async {
-    return await _service.findByTags(tags);
+    List<Project> projects = await _service.findByTags(tags);
+    updateListProjectsLocal(projects);
+    return projects;
   }
 
   Future addProject(Project newProject) async {
@@ -76,5 +87,12 @@ class ProjectProvider with ChangeNotifier {
       }
     }
     return found;
+  }
+
+  Future reloadProject(String id) async {
+    Project reloadedProject = await _service.findById(id);
+    _listProjects.remove(reloadedProject);
+    _listProjects.add(reloadedProject);
+    notifyListeners();
   }
 }

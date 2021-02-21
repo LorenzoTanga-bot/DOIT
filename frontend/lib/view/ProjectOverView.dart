@@ -36,9 +36,8 @@ class _ProjectOverView extends State<ProjectOverView> {
   String _state;
   List<User> _designers;
 
-  void initState() {
-    super.initState();
-    _project = context.read<ProjectProvider>().findById(widget.id);
+  initializeState() {
+    _project = context.watch<ProjectProvider>().findById(widget.id);
     _projectProposer = Provider.of<UserProvider>(context, listen: false)
         .findByMail(_project.getProjectProposer());
     _listTags = Provider.of<TagProvider>(context, listen: false)
@@ -429,6 +428,7 @@ class _ProjectOverView extends State<ProjectOverView> {
 
   @override
   Widget build(BuildContext context) {
+    initializeState();
     return ListView(
       children: [
         _firstCard(),

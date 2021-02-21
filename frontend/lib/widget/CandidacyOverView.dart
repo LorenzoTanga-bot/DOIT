@@ -59,6 +59,11 @@ class _CandidacyOverView extends State<CandidacyOverView> {
     widget.candidacy.setState(StateCandidacy.POSITIVE);
     await Provider.of<CandidacyProvider>(context, listen: false)
         .updateCandidacy(widget.candidacy);
+        await Provider.of<UserProvider>(context, listen: false)
+        .reloadUser(widget.candidacy.getDesigner());
+         await Provider.of<ProjectProvider>(context, listen: false)
+        .reloadProject(widget.candidacy.getProject());
+        
   }
 
   void declineCandidacy() async {

@@ -39,11 +39,7 @@ class UserProvider with ChangeNotifier {
 
   Future<List<User>> findByUsername(String username, String role) async {
     List<User> finds = await _service.findByUsername(username, role);
-    List<String> mails = [];
-    for (User find in finds) {
-      mails.add(find.getMail());
-    }
-    updateListUsers(mails);
+    updateListUsersLocal(finds);
     return finds;
   }
 
@@ -53,13 +49,25 @@ class UserProvider with ChangeNotifier {
     _listUsers.add(user);
   }
 
+  void updateListUsersLocal(List<User> users) {
+    for (User user in users) {
+      if (!_listUsers.contains(user)) {
+        _listUsers.add(user);
+      }
+    }
+    notifyListeners();
+  }
+
   Future<List<User>> findByTags(List<String> tags, String role) async {
     List<User> finds = await _service.findByTags(tags, role);
-    List<String> mails = [];
-    for (User find in finds) {
-      mails.add(find.getMail());
-    }
-    updateListUsers(mails);
+    updateListUsersLocal(finds);
     return finds;
+  }
+
+  Future reloadUser(String mail) async {
+    User reloadedUser = await _service.findByMail(mail);
+    _listUsers.remove(reloadedUser);
+    _listUsers.add(reloadedUser);
+    notifyListeners();
   }
 }

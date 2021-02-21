@@ -88,7 +88,8 @@ public class InviteService {
             returnInvite.setStateProjectProposer(state);
         else
             returnInvite.setStateDesigner(state);
-        return returnInvite;
+           
+        return  repository.save(returnInvite);
     }
 
     public Invite updateInvite(@NonNull Invite invite) throws ResponseStatusException {

@@ -14,7 +14,7 @@ class ListCandidacies extends StatelessWidget {
         shrinkWrap: true,
         itemCount: candidacies.length,
         itemBuilder: (context, index) {
-          return CardListCandidacy(candidacy: candidacies[index]);
+          return CardListCandidacy(id: candidacies[index].getId());
         });
   }
 }

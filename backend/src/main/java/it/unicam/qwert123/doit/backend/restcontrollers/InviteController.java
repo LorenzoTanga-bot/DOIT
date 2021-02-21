@@ -46,7 +46,7 @@ public class InviteController {
 
 
     private void updateUserProject(Invite invite){
-        if(invite.getStateDesigner() == StateInvite.POSITIVE && invite.getStateProjectProposer() == StateInvite.POSITIVE && invite.getDateOfExpire().before(new Date())){
+        if(invite.getStateDesigner() == StateInvite.POSITIVE && invite.getStateProjectProposer() == StateInvite.POSITIVE && invite.getDateOfExpire().after(new Date())){
             User user = userService.findById(invite.getDesigner());
             user.addPartecipateInProject(invite.getProject());
             userService.updateUser(user);
@@ -84,7 +84,7 @@ public List<Invite> get(){
         return returnInvite;
     }
 
-    @PutMapping("/updateStateDesigner/")
+    @PutMapping("/updateStateDesigner")
     @PreAuthorize("(hasAuthority('DESIGNER_ENTITY') or hasAuthority('DESIGNER_PERSON')) and @accessCheckerComponent.sameUser(principal, #invite.getDesigner())")
     public Invite updateStateDesigner(@RequestBody @Param("invite") Invite invite) {
     Invite returnInvite;
@@ -97,7 +97,7 @@ public List<Invite> get(){
         }
     }
 
-    @PutMapping("/updateStateProjectProposer/")
+    @PutMapping("/updateStateProjectProposer")
     @PreAuthorize("hasAuthority('PROJECT_PROPOSER') and @accessCheckerComponent.sameUser(principal, #invite.getProjectProposer())")
     public Invite updateStateProjectProposer(@RequestBody @Param("invite") Invite invite) {
     Invite returnInvite;

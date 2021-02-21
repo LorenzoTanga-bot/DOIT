@@ -3,7 +3,6 @@ import 'package:doit/model/Invite.dart';
 import 'package:doit/widget/CardListInvite.dart';
 import 'package:flutter/material.dart';
 
-
 class ListInvites extends StatelessWidget {
   final List<Invite> invites;
   const ListInvites({Key key, @required this.invites}) : super(key: key);
@@ -14,7 +13,7 @@ class ListInvites extends StatelessWidget {
         shrinkWrap: true,
         itemCount: invites.length,
         itemBuilder: (context, index) {
-          return CardListInvite(invite: invites[index]);
+          return CardListInvite(id: invites[index].getId());
         });
   }
 }

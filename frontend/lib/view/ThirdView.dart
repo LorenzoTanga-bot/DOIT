@@ -222,11 +222,13 @@ class _ThirdView extends State<ThirdView> {
           candidacies =
               await Provider.of<CandidacyProvider>(context, listen: false)
                   .findByDesigner(_user.getMail());
+
           List<String> users = [];
           for (Candidacy candidacy in candidacies) {
             users.addAll(
                 [candidacy.getDesigner(), candidacy.getProjectProposer()]);
           }
+
           context.read<ViewProvider>().pushWidget(FutureBuild(
               future: Provider.of<UserProvider>(context, listen: false)
                   .updateListUsers(users),
@@ -243,6 +245,7 @@ class _ThirdView extends State<ThirdView> {
             users.addAll(
                 [candidacy.getDesigner(), candidacy.getProjectProposer()]);
           }
+
           context.read<ViewProvider>().pushWidget(FutureBuild(
               future: Provider.of<UserProvider>(context, listen: false)
                   .updateListUsers(users),

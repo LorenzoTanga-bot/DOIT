@@ -1,20 +1,27 @@
 import 'package:doit/model/Invite.dart';
 import 'package:doit/model/Project.dart';
+import 'package:doit/providers/InviteProvider.dart';
 import 'package:doit/providers/ProjectProvider.dart';
 
 import 'package:doit/widget/InviteOverview.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class CardListInvite extends StatelessWidget {
-  final Invite invite;
+class CardListInvite extends StatefulWidget {
+  final String id;
 
   const CardListInvite({
     Key key,
-    @required this.invite,
+    @required this.id,
   }) : super(key: key);
 
+  @override
+  _CardListInvite createState() => _CardListInvite();
+}
+
+class _CardListInvite extends State<CardListInvite> {
   Widget build(BuildContext context) {
+    Invite invite = context.watch<InviteProvider>().findById(widget.id);
     String state = invite.getState().toString();
     state = state.substring(state.indexOf(".") + 1);
     DateTime date = DateTime.parse(invite.getDateOfInvite());
@@ -43,7 +50,6 @@ class CardListInvite extends StatelessWidget {
             context: context,
             builder: (context) {
               return InviteOverview(
-                
                 invite: invite,
               );
             })
