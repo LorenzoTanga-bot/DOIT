@@ -48,8 +48,14 @@ public class UserService {
         return repository.insert(newUser);
     }
 
+    public User addFirstAccess(@NonNull User newUser) throws ResponseStatusException {
+        newUser.setUsername(newUser.getUsernameToShow().toUpperCase().trim());
+        if (existById(newUser.getMail()) && checkUser(newUser))
+            return repository.save(newUser);
+        return null;
+    }
+
     public User updateUser(User modifiedUser) throws ResponseStatusException {
-        modifiedUser.setUsername(modifiedUser.getUsernameToShow().toUpperCase().trim());
         if (existById(modifiedUser.getMail())) {
             if (repository.findById(modifiedUser.getMail()).get().getUsername().equals(modifiedUser.getUsername())) {
                 if (checkUser(modifiedUser)) {

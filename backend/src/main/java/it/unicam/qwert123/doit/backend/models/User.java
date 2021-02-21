@@ -1,5 +1,6 @@
 package it.unicam.qwert123.doit.backend.models;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -27,12 +28,12 @@ public class User {
     private String name;
     private String surname; // se è un azienda, qui viene memorizzata la partita iva
     private List<Role> roles;
-    private List<UUID> tags;
-    private List<UUID> proposedProjects;
-    private List<UUID> partecipateInProjects;
-    private List<UUID> invites;
-    private List<UUID> candidacies;
-    private List<UUID> evaluations;
+    private List<UUID> tags = new ArrayList<>();
+    private List<UUID> proposedProjects = new ArrayList<>();
+    private List<UUID> partecipateInProjects = new ArrayList<>();
+    private List<UUID> invites = new ArrayList<>();
+    private List<UUID> candidacies = new ArrayList<>();
+    private List<UUID> evaluations = new ArrayList<>();
 
     public boolean addPProposedProject(UUID idProject) {
         return proposedProjects.add(idProject);

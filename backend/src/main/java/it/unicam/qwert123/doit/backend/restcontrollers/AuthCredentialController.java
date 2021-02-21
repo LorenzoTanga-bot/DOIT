@@ -41,22 +41,18 @@ public class AuthCredentialController {
 
 	@PostMapping("/addCredential")
 	@PreAuthorize("permitAll")
-	public boolean addCredential(@RequestBody AuthCredential credentials) {
-		if(authService.addCredentials(credentials)){
-			User newUser = new User();
-			newUser.setMail(credentials.getMail());
-			newUser.setRoles(credentials.getRoles());
-			userService.addUser(newUser);
-			return true;
-		}
-		return false;
-
+	public User addCredential(@RequestBody AuthCredential credentials) {
+		authService.addCredentials(credentials);
+		User newUser = new User();
+		newUser.setMail(credentials.getMail());
+		newUser.setRoles(credentials.getRoles());
+		return userService.addUser(newUser);
 	}
 
 	@PostMapping("/addUser")
 	@PreAuthorize("@accessCheckerComponent.sameUser(principal, #user.getMail()) or hasAuthority('ADMIN')")
 	public User addUser(@RequestBody @Param("user") User user) {
-		User newUser = userService.addUser(user);
+		User newUser = userService.addFirstAccess(user);
 		AuthCredential authCredential = authService.getAuthCredentialsInstance(user.getMail());
 		authCredential.setRoles(newUser.getRoles());
 		authService.updateRolesCredential(authCredential);
