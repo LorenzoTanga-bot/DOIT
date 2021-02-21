@@ -42,7 +42,15 @@ public class AuthCredentialController {
 	@PostMapping("/addCredential")
 	@PreAuthorize("permitAll")
 	public boolean addCredential(@RequestBody AuthCredential credentials) {
-		return authService.addCredentials(credentials);
+		if(authService.addCredentials(credentials)){
+			User newUser = new User();
+			newUser.setMail(credentials.getMail());
+			newUser.setRoles(credentials.getRoles());
+			userService.addUser(newUser);
+			return true;
+		}
+		return false;
+
 	}
 
 	@PostMapping("/addUser")

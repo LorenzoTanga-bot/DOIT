@@ -57,7 +57,7 @@ public class InviteController {
 
     @PostMapping("/new")
     @PreAuthorize("(hasAuthority('DESIGNER_ENTITY') or hasAuthority('PROJECT_PROPOSER')) and @accessCheckerComponent.sameUser(principal, #invite.getSender())")
-    public Invite addiInvite(@RequestBody @Param("invite") Invite invite) {
+    public Invite addiInvite(@RequestBody @Param("invite") Invite invite) { 1
         Invite returnInvite = inviteService.addInvite(invite);
         //update desiner
         User user = userService.findById(returnInvite.getDesigner());

@@ -45,13 +45,7 @@ public class UserService {
     }
 
     public User addUser(@NonNull User newUser) throws ResponseStatusException {
-        newUser.setUsername(newUser.getUsernameToShow().toUpperCase().trim());
-        if (repository.existsByUsername(newUser.getUsername()))
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Username already used");
-        if (checkUser(newUser)) {
-            return repository.insert(newUser);
-        }
-        return null;
+        return repository.insert(newUser);
     }
 
     public User updateUser(User modifiedUser) throws ResponseStatusException {
@@ -65,7 +59,6 @@ public class UserService {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Username cannot be changed");
         }
         return null;
-
     }
 
     public boolean deleteUser(@NonNull String id) throws ResponseStatusException {
