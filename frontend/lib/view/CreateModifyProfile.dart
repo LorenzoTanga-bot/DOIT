@@ -40,17 +40,15 @@ class _CreateModifyProfile extends State<CreateModifyProfile> {
 
   initState() {
     super.initState();
+    _user = context.read<AuthCredentialProvider>().getUser();
     if (!widget.isNewUser) {
-      _user = Provider.of<UserProvider>(context, listen: false)
-          .findByMail(widget.mail);
       _name.text = _user.getName();
       _surname.text = _user.getSurname();
       _username.text = _user.getUsername();
       _roles = _user.getRoles();
       isAPerson = _user.getIsAPerson();
       context.read<TagProvider>().setSelectTag(_user.getTags(), "USER");
-    } else
-      _user = new User();
+    }
   }
 
   bool _checkPrincipalInformation() {
@@ -88,7 +86,6 @@ class _CreateModifyProfile extends State<CreateModifyProfile> {
   }
 
   _continue() async {
-    _user.setMail(widget.mail);
     _user.setName(_name.text);
     _user.setSurname(_surname.text);
     _user.setUsername(_username.text);
@@ -102,8 +99,7 @@ class _CreateModifyProfile extends State<CreateModifyProfile> {
       _user.setTags(context.read<TagProvider>().getSelectTag("USER"));
       await Provider.of<AuthCredentialProvider>(context, listen: false)
           .updateUser(_user);
-      await Provider.of<UserProvider>(context, listen: false)
-          .reloadUser(_user.getMail());
+      Provider.of<UserProvider>(context, listen: false).reloadUser(_user.getMail());
       context.read<ViewProvider>().popWidget();
     }
   }

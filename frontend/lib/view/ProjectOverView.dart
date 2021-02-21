@@ -316,7 +316,7 @@ class _ProjectOverView extends State<ProjectOverView> {
 
   bool isADesigner() {
     if (_project.getCandidacyMode().toString() == "true") {
-      User user = context.read<AuthCredentialProvider>().getUser();
+      User user = Provider.of<AuthCredentialProvider>(context, listen:  false).getUser();
       if (user == null) return false;
       return (user.getRoles().contains(UserRole.DESIGNER_PERSON) ||
           (user.getRoles().contains(UserRole.DESIGNER_ENTITY) &&
@@ -327,7 +327,7 @@ class _ProjectOverView extends State<ProjectOverView> {
 
   bool isAnExpert() {
     if (_project.getEvaluationMode()) {
-      User user = context.read<AuthCredentialProvider>().getUser();
+      User user = Provider.of<AuthCredentialProvider>(context, listen:  false).getUser();
       if (user == null) return false;
       if (isSuitable(user)) {
         return (user.getRoles().contains(UserRole.EXPERT));
@@ -338,7 +338,7 @@ class _ProjectOverView extends State<ProjectOverView> {
 
   bool isTheProjectProposerOrCompanyDesigner() {
     if (_project.getCandidacyMode().toString() == "true") {
-      User user = context.read<AuthCredentialProvider>().getUser();
+      User user = Provider.of<AuthCredentialProvider>(context, listen:  false).getUser();
       if (user == null)
         return false;
       else {
@@ -354,7 +354,7 @@ class _ProjectOverView extends State<ProjectOverView> {
 
   bool isADesignerOfTeam() {
     if (_project.getCandidacyMode().toString() == "true") {
-      User user = context.read<AuthCredentialProvider>().getUser();
+      User user = Provider.of<AuthCredentialProvider>(context, listen:  false).getUser();
       if (user == null) {
         return false;
       } else if (isADesigner()) {
@@ -365,7 +365,7 @@ class _ProjectOverView extends State<ProjectOverView> {
   }
 
   bool isTheProjectProposer() {
-    User user = context.read<AuthCredentialProvider>().getUser();
+    User user = Provider.of<AuthCredentialProvider>(context, listen:  false).getUser();
     if (user == null) return false;
     return _project.getProjectProposer() == user.getMail();
   }

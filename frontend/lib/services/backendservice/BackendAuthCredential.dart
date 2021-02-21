@@ -62,10 +62,8 @@ class BackendAuthCredential implements AuthCredentialService {
   }
 
   @override
-  Future<bool> addCredentials(AuthCredential authCredential) async {
-    return (await _controller.addCredential(authCredential)) == "true"
-        ? true
-        : false;
+  Future<User> addCredentials(AuthCredential authCredential) async {
+    return _createUser(await _controller.addCredential(authCredential));
   }
 
   @override

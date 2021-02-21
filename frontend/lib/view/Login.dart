@@ -5,7 +5,6 @@ import 'package:doit/providers/ViewProvider.dart';
 
 import 'package:doit/view/ThirdView.dart';
 import 'package:doit/view/CreateModifyProfile.dart';
-import 'package:doit/widget/FutureBuilder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
 import 'package:provider/provider.dart';
@@ -39,8 +38,6 @@ class _Login extends State<Login> {
     try {
       await Provider.of<AuthCredentialProvider>(context, listen: false)
           .loginWithCredentials(new AuthCredential(login.name, login.password));
-
-      _isFirstAccess = false;
     } catch (e) {
       switch (e.code) {
         case 'ERROR_USER_NOT_FOUND':
@@ -64,10 +61,9 @@ class _Login extends State<Login> {
 
   Future<String> _newUser(LoginData login) async {
     try {
-      Provider.of<AuthCredentialProvider>(context, listen: false)
+      await Provider.of<AuthCredentialProvider>(context, listen: false)
           .newMailPassword(new AuthCredential(login.name, login.password));
       mail = login.name;
-      _isFirstAccess = true;
     } catch (e) {
       switch (e.code) {
         case 'ERROR_INVALID_EMAIL':
@@ -111,14 +107,16 @@ class _Login extends State<Login> {
           return value.isEmpty ? 'Invalid password entered' : null;
         },
         onSubmitAnimationCompleted: () {
-          if (_isFirstAccess) {
+          if (context
+              .read<AuthCredentialProvider>()
+              .getUser()
+              .getRoles()
+              .contains(UserRole.NOT_COMPLETED)) {
             Provider.of<ViewProvider>(context, listen: false)
-                .setProfileDefault(FutureBuild(
-                    future: Future.wait({}),
-                    newView: CreateModifyProfile(
-                      mail: mail,
-                      isNewUser: true,
-                    )));
+                .setProfileDefault(CreateModifyProfile(
+              mail: mail,
+              isNewUser: true,
+            ));
           } else
             Provider.of<ViewProvider>(context, listen: false)
                 .setProfileDefault(ThirdView());

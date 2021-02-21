@@ -37,7 +37,7 @@ class _ProfileOverView extends State<ProfileOverView> {
   }
 
   bool isTheOwner() {
-    User user = context.read<AuthCredentialProvider>().getUser();
+    User user = Provider.of<AuthCredentialProvider>(context, listen:  false).getUser();
     if (user == null) return false;
     return user.getMail() == widget.user.getMail();
   }

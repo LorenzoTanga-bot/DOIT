@@ -24,7 +24,7 @@ class AuthCredentialProvider with ChangeNotifier {
   }
 
   Future newMailPassword(AuthCredential authCredential) async {
-    await _service.addCredentials(authCredential);
+    _user = await _service.addCredentials(authCredential);
     BasicAuthConfig().setAuthCredential(authCredential);
     notifyListeners();
   }
