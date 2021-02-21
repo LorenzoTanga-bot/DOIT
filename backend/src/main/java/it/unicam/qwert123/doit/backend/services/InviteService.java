@@ -49,11 +49,7 @@ public class InviteService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid invite: User is null");
         if (invite.getDateOfInvite() == null)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid invite: Date of invite is null");
-        List<Invite> invites = repository.findByProject(invite.getProject());
-        for (Invite existingInvite : invites) {
-            if (existingInvite.getDesigner().equals(invite.getDesigner()))
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid invite: invite already sent");
-        }
+      
         User user = userService.findById(invite.getDesigner());
         Project project = projectService.findById(invite.getProject());
         for (UUID tag : project.getTag()) {
@@ -69,6 +65,11 @@ public class InviteService {
  }
     public Invite addInvite(@NonNull Invite invite) throws ResponseStatusException {
         if (checkInvite(invite)) {
+            List<Invite> invites = repository.findByProject(invite.getProject());
+            for (Invite existingInvite : invites) {
+                if (existingInvite.getDesigner().equals(invite.getDesigner()))
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid invite: invite already sent");
+            }
             invite.setId(UUID.randomUUID());
             return repository.insert(invite);
         }

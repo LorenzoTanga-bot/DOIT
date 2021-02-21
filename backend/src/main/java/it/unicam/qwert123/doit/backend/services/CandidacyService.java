@@ -42,11 +42,7 @@ public class CandidacyService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid candidacy: User is null");
         if (candidacy.getDateOfCandidacy() == null)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid candidacy: Date of Candidacy is null");
-        List<Candidacy> candidacies = repository.findByProject(candidacy.getProject());
-        for (Candidacy existingCandidacy : candidacies) {
-            if (existingCandidacy.getDesigner().equals(candidacy.getDesigner()))
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid candidacy: Candidacy already exist");
-        }
+       
         User user = userService.findById(candidacy.getDesigner());
         Project project = projectService.findById(candidacy.getProject());
         for (UUID tag : project.getTag()) {
@@ -59,6 +55,11 @@ public class CandidacyService {
 
     public Candidacy addCandidacy(@NonNull Candidacy candidacy) throws ResponseStatusException {
         if (checkCandidacy(candidacy)) {
+            List<Candidacy> candidacies = repository.findByProject(candidacy.getProject());
+            for (Candidacy existingCandidacy : candidacies) {
+                if (existingCandidacy.getDesigner().equals(candidacy.getDesigner()))
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid candidacy: Candidacy already exist");
+            }
             candidacy.setDateOfExpire(projectService.findById(candidacy.getProject()).getDateOfStart());
             candidacy.setId(UUID.randomUUID());
             return repository.insert(candidacy);

@@ -16,7 +16,7 @@ class InviteProvider with ChangeNotifier {
     return newInvite;
   }
 
-// non funziona
+
   Future<Invite> updateStateDesigner(Invite invite) async {
     Invite updateInvite = await _service.updateStateDesigner(invite);
     _listInvite.remove(invite);
@@ -47,7 +47,6 @@ class InviteProvider with ChangeNotifier {
 
   Future<List<Invite>> findByProject(String project) async {
     List<Invite> found = await _service.findByProject(project);
-
     updateListInvitesLocal(found);
     return found;
   }

@@ -34,7 +34,7 @@ class _SendInvite extends State<SendInvite> {
   @override
   void initState() {
     super.initState();
-     
+
     _project = context.read<ProjectProvider>().findById(widget.id);
   }
 
@@ -52,14 +52,14 @@ class _SendInvite extends State<SendInvite> {
     newInvite.setSender(sender.getMail());
     newInvite.setDesigner(_designer.getMail());
 
-    if (sender.getRoles().contains(UserRole.PROJECT_PROPOSER)) {
+    if (sender.getMail() == _project.getProjectProposer()) {
       newInvite.setStateProjectProposer(StateInvite.POSITIVE);
       newInvite.setStateDesigner(StateInvite.WAITING);
     } else {
       newInvite.setStateDesigner(StateInvite.WAITING);
       newInvite.setStateProjectProposer(StateInvite.WAITING);
     }
-    context.read<InviteProvider>().addInvite(newInvite);
+    await context.read<InviteProvider>().addInvite(newInvite);
   }
 
   void buildSuggestions(BuildContext context, String query) async {
@@ -69,7 +69,7 @@ class _SendInvite extends State<SendInvite> {
     } else {
       _visibilityLabelDesigner = false;
       await searchUsers(query, context);
-      
+
       setState(() {});
     }
   }

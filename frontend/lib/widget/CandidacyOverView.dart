@@ -57,7 +57,7 @@ class _CandidacyOverView extends State<CandidacyOverView> {
     return false;
   }
 
-  void acceptCandidacy() async {
+  void acceptCandidacy(BuildContext context) async {
     widget.candidacy.setState(StateCandidacy.POSITIVE);
     await Provider.of<CandidacyProvider>(context, listen: false)
         .updateCandidacy(widget.candidacy);
@@ -67,7 +67,7 @@ class _CandidacyOverView extends State<CandidacyOverView> {
         .reloadProject(widget.candidacy.getProject());
   }
 
-  void declineCandidacy() async {
+  void declineCandidacy(BuildContext context) async {
     widget.candidacy.setState(StateCandidacy.NEGATIVE);
     await Provider.of<CandidacyProvider>(context, listen: false)
         .updateCandidacy(widget.candidacy);
@@ -84,7 +84,8 @@ class _CandidacyOverView extends State<CandidacyOverView> {
                 child: RaisedButton(
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10)),
-                  onPressed: () => {acceptCandidacy(), Navigator.pop(context)},
+                  onPressed: () =>
+                      {acceptCandidacy(context), Navigator.pop(context)},
                   child: Text("Accetta"),
                 ))),
         Padding(
@@ -94,7 +95,8 @@ class _CandidacyOverView extends State<CandidacyOverView> {
                 child: RaisedButton(
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10)),
-                  onPressed: () => {declineCandidacy(), Navigator.pop(context)},
+                  onPressed: () =>
+                      {declineCandidacy(context), Navigator.pop(context)},
                   child: Text("Rifiuta"),
                 ))),
       ],

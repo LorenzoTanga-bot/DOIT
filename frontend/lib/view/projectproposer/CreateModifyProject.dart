@@ -113,52 +113,39 @@ class _CreateModifyProject extends State<CreateModifyProject> {
   }
 
   bool _checkDate() {
-    if ((_dateOfStartProject).isAfter(_dateOfEndCandidacy)) {
-      _visibilityLabelStartProject = false;
-    } else {
+    if (!(_dateOfStartProject).isAfter(_dateOfEndCandidacy)) {
       _visibilityLabelStartProject = true;
 
       return false;
     }
-    if (_dateOfStartCandidacy.isBefore(_dateOfEndCandidacy)) {
-      _visibilityLabelEndCandidacy = false;
-    } else {
+    if (!_dateOfStartCandidacy.isBefore(_dateOfEndCandidacy)) {
       _visibilityLabelEndCandidacy = true;
 
       return false;
     }
-    if (_dateOfStartProject.isBefore(_dateOfEndProject)) {
-      _visibilityLabelEndProject = false;
-    } else {
+    if (!_dateOfStartProject.isBefore(_dateOfEndProject)) {
       _visibilityLabelEndProject = true;
-
       return false;
     }
-    if (!_dateOfCreation.isAfter(_dateOfStartCandidacy)) {
-      _visibilityLabelStartCandidacy = false;
-      return true;
-    } else {
+    if (_dateOfCreation.isAfter(_dateOfStartCandidacy)) {
       _visibilityLabelStartCandidacy = true;
+      return true;
     }
     return false;
   }
 
   bool _checkPrincipalInfomration() {
-    if (_name.text.isEmpty) {
-      _checkDate();
-      _visibilityLabelName = true;
-      _visibilityLabelSDescription = false;
-      return false;
-    }
-    if (_sDescription.text.isEmpty) {
-      _checkDate();
-      _visibilityLabelSDescription = true;
-      _visibilityLabelName = false;
-      return false;
-    }
     _visibilityLabelSDescription = false;
     _visibilityLabelName = false;
     if (_checkDate()) {
+      if (_name.text.isEmpty) {
+        _visibilityLabelName = true;
+        return false;
+      }
+      if (_sDescription.text.isEmpty) {
+        _visibilityLabelSDescription = true;
+        return false;
+      }
       return true;
     } else
       return false;

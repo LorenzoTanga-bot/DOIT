@@ -20,8 +20,10 @@ import 'package:provider/provider.dart';
 
 class InviteOverview extends StatefulWidget {
   final Invite invite;
+  final BuildContext context;
 
-  const InviteOverview({Key key, @required this.invite}) : super(key: key);
+  const InviteOverview({Key key, @required this.invite, @required this.context})
+      : super(key: key);
 
   @override
   _InviteOverview createState() => _InviteOverview();
@@ -66,6 +68,7 @@ class _InviteOverview extends State<InviteOverview> {
         .contains(UserRole.DESIGNER_ENTITY)) {
       return isTheProjectProposer();
     }
+    return false;
   }
 
   bool isTheDesigner() {
@@ -77,7 +80,7 @@ class _InviteOverview extends State<InviteOverview> {
     return false;
   }
 
-  void acceptInvite() async {
+  void acceptInvite(BuildContext context) async {
     if (Provider.of<AuthCredentialProvider>(context, listen: false)
             .getUser()
             .getMail() ==
@@ -98,9 +101,10 @@ class _InviteOverview extends State<InviteOverview> {
       await Provider.of<ProjectProvider>(context, listen: false)
           .reloadProject(widget.invite.getProject());
     }
+    Navigator.pop(context);
   }
 
-  void declineInvite() async {
+  void declineInvite(BuildContext context) async {
     if (Provider.of<AuthCredentialProvider>(context, listen: false)
             .getUser()
             .getMail() ==
@@ -113,6 +117,7 @@ class _InviteOverview extends State<InviteOverview> {
       await Provider.of<InviteProvider>(context, listen: false)
           .updateStateDesigner(widget.invite);
     }
+    Navigator.pop(context);
   }
 
   Widget showButton() {
@@ -126,7 +131,7 @@ class _InviteOverview extends State<InviteOverview> {
                 child: RaisedButton(
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10)),
-                  onPressed: () => {acceptInvite(), Navigator.pop(context)},
+                  onPressed: () => {acceptInvite(context)},
                   child: Text("Accetta"),
                 ))),
         Padding(
@@ -136,7 +141,9 @@ class _InviteOverview extends State<InviteOverview> {
                 child: RaisedButton(
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10)),
-                  onPressed: () => {declineInvite(), Navigator.pop(context)},
+                  onPressed: () => {
+                    declineInvite(context),
+                  },
                   child: Text("Rifiuta"),
                 ))),
       ],
@@ -145,6 +152,7 @@ class _InviteOverview extends State<InviteOverview> {
 
   @override
   Widget build(BuildContext context) {
+    context = widget.context;
     return AlertDialog(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15.0),

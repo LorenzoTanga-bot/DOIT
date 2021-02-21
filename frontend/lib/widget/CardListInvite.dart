@@ -51,6 +51,7 @@ class _CardListInvite extends State<CardListInvite> {
             builder: (context) {
               return InviteOverview(
                 invite: invite,
+                context: context,
               );
             })
       },
