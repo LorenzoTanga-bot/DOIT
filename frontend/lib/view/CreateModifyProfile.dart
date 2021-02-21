@@ -6,7 +6,7 @@ import 'package:doit/providers/UserProvider.dart';
 import 'package:doit/providers/ViewProvider.dart';
 
 import 'package:doit/view/ThirdView.dart';
-import 'package:doit/widget/LoadingScreen.dart';
+
 import 'package:doit/widget/NewTagInsertion.dart';
 import 'package:doit/widget/SmartSelectTag.dart';
 import 'package:flutter/material.dart';
@@ -38,7 +38,8 @@ class _CreateModifyProfile extends State<CreateModifyProfile> {
   bool _visibilityLabelRoles = false;
   bool _visibilityLabelTags = false;
 
-  Future _uploadData() async {
+  initState() {
+    super.initState();
     if (!widget.isNewUser) {
       _user = Provider.of<UserProvider>(context, listen: false)
           .findByMail(widget.mail);
@@ -164,181 +165,164 @@ class _CreateModifyProfile extends State<CreateModifyProfile> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-        future: _uploadData(),
-        // ignore: missing_return
-        builder: (context, data) {
-          switch (data.connectionState) {
-            case ConnectionState.none:
-            case ConnectionState.active:
-            case ConnectionState.waiting:
-              return LoadingScreen(message: "Loading");
-            case ConnectionState.done:
-              return Container(
-                  padding: EdgeInsets.all(5.0),
-                  child: Card(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15.0),
-                      ),
-                      child: Padding(
-                        padding: EdgeInsets.all(12.0),
-                        child: Column(children: [
-                          if (widget.isNewUser)
-                            Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Align(
-                                    child: Text(
-                                      "Complete registration",
-                                      style: TextStyle(fontSize: 35),
-                                    ),
-                                    alignment: Alignment.center,
-                                  ),
-                                  Divider(
-                                    color: Colors.white,
-                                    height: 17,
-                                    thickness: 1,
-                                    indent: 2,
-                                    endIndent: 2,
-                                  ),
-                                  Text(
-                                    "You are a :",
-                                    style: TextStyle(fontSize: 20),
-                                  ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        "Person",
-                                        style: TextStyle(fontSize: 17),
-                                      ),
-                                      Radio(
-                                          value: 1,
-                                          groupValue: group,
-                                          onChanged: (value) {
-                                            setState(() {
-                                              isAPerson = true;
-                                              group = value;
-                                            });
-                                          }),
-                                      Text("Entity",
-                                          style: TextStyle(fontSize: 17)),
-                                      Radio(
-                                        value: 2,
-                                        groupValue: group,
-                                        onChanged: (value) {
-                                          setState(() {
-                                            isAPerson = false;
-                                            group = value;
-                                          });
-                                        },
-                                      ),
-                                    ],
-                                  ),
-                                ])
-                          else
+    return Container(
+        padding: EdgeInsets.all(5.0),
+        child: Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15.0),
+            ),
+            child: Padding(
+              padding: EdgeInsets.all(12.0),
+              child: Column(children: [
+                if (widget.isNewUser)
+                  Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Align(
+                          child: Text(
+                            "Complete registration",
+                            style: TextStyle(fontSize: 35),
+                          ),
+                          alignment: Alignment.center,
+                        ),
+                        Divider(
+                          color: Colors.white,
+                          height: 17,
+                          thickness: 1,
+                          indent: 2,
+                          endIndent: 2,
+                        ),
+                        Text(
+                          "You are a :",
+                          style: TextStyle(fontSize: 20),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
                             Text(
-                              "Modify your profile",
-                              style: TextStyle(fontSize: 35),
+                              "Person",
+                              style: TextStyle(fontSize: 17),
                             ),
-                          TextField(
-                              controller: _name,
-                              decoration: InputDecoration(
-                                labelText: 'Name',
-                              )),
-                          Visibility(
-                            child: Text("The name cannot be empty",
-                                style: TextStyle(color: Colors.red)),
-                            visible: _visibilityLabelName,
-                          ),
-                          isAPerson
-                              ? TextField(
-                                  controller: _surname,
-                                  decoration:
-                                      InputDecoration(labelText: 'Surname'))
-                              : TextField(
-                                  controller: _surname,
-                                  decoration:
-                                      InputDecoration(labelText: 'P.Iva')),
-                          isAPerson
-                              ? Visibility(
-                                  child: Text("The surname cannot be empty",
-                                      style: TextStyle(color: Colors.red)),
-                                  visible: _visibilityLabelSurname,
-                                )
-                              : Visibility(
-                                  child: Text("The P.Iva cannot be empty",
-                                      style: TextStyle(color: Colors.red)),
-                                  visible: _visibilityLabelSurname,
-                                ),
-                          if (widget.isNewUser)
-                            TextField(
-                                controller: _username,
-                                decoration:
-                                    InputDecoration(labelText: 'Username'))
-                          else
-                            Container(
-                                padding: EdgeInsets.only(top: 8),
-                                child: Column(
-                                  children: [
-                                    Align(
-                                        alignment: Alignment.bottomLeft,
-                                        child: Text("Username",
-                                            style: TextStyle(
-                                                color: Colors.grey[600],
-                                                fontSize: 12))),
-                                    Align(
-                                        alignment: Alignment.centerLeft,
-                                        child: Text(_user.getUsername(),
-                                            style: TextStyle(fontSize: 15))),
-                                    Divider(
-                                      color: Colors.white,
-                                      height: 10,
-                                      thickness: 1,
-                                      indent: 2,
-                                      endIndent: 2,
-                                    ),
-                                    Divider(
-                                      color: Colors.grey,
-                                      height: 5,
-                                      thickness: 1,
-                                      indent: 2,
-                                      endIndent: 2,
-                                    ),
-                                  ],
-                                )),
-                          if (widget.isNewUser)
-                            Visibility(
-                              child: Text("The username cannot be empty",
-                                  style: TextStyle(color: Colors.red)),
-                              visible: _visibilityLabelUsername,
+                            Radio(
+                                value: 1,
+                                groupValue: group,
+                                onChanged: (value) {
+                                  setState(() {
+                                    isAPerson = true;
+                                    group = value;
+                                  });
+                                }),
+                            Text("Entity", style: TextStyle(fontSize: 17)),
+                            Radio(
+                              value: 2,
+                              groupValue: group,
+                              onChanged: (value) {
+                                setState(() {
+                                  isAPerson = false;
+                                  group = value;
+                                });
+                              },
                             ),
-                          _selectUserRole(),
-                          Visibility(
-                            child: Text("Select at least one role",
-                                style: TextStyle(color: Colors.red)),
-                            visible: _visibilityLabelRoles,
+                          ],
+                        ),
+                      ])
+                else
+                  Text(
+                    "Modify your profile",
+                    style: TextStyle(fontSize: 35),
+                  ),
+                TextField(
+                    controller: _name,
+                    decoration: InputDecoration(
+                      labelText: 'Name',
+                    )),
+                Visibility(
+                  child: Text("The name cannot be empty",
+                      style: TextStyle(color: Colors.red)),
+                  visible: _visibilityLabelName,
+                ),
+                isAPerson
+                    ? TextField(
+                        controller: _surname,
+                        decoration: InputDecoration(labelText: 'Surname'))
+                    : TextField(
+                        controller: _surname,
+                        decoration: InputDecoration(labelText: 'P.Iva')),
+                isAPerson
+                    ? Visibility(
+                        child: Text("The surname cannot be empty",
+                            style: TextStyle(color: Colors.red)),
+                        visible: _visibilityLabelSurname,
+                      )
+                    : Visibility(
+                        child: Text("The P.Iva cannot be empty",
+                            style: TextStyle(color: Colors.red)),
+                        visible: _visibilityLabelSurname,
+                      ),
+                if (widget.isNewUser)
+                  TextField(
+                      controller: _username,
+                      decoration: InputDecoration(labelText: 'Username'))
+                else
+                  Container(
+                      padding: EdgeInsets.only(top: 8),
+                      child: Column(
+                        children: [
+                          Align(
+                              alignment: Alignment.bottomLeft,
+                              child: Text("Username",
+                                  style: TextStyle(
+                                      color: Colors.grey[600], fontSize: 12))),
+                          Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(_user.getUsername(),
+                                  style: TextStyle(fontSize: 15))),
+                          Divider(
+                            color: Colors.white,
+                            height: 10,
+                            thickness: 1,
+                            indent: 2,
+                            endIndent: 2,
                           ),
-                          _insertTags(),
-                          Visibility(
-                            child: Text("Select at least one tag",
-                                style: TextStyle(color: Colors.red)),
-                            visible: _visibilityLabelTags,
+                          Divider(
+                            color: Colors.grey,
+                            height: 5,
+                            thickness: 1,
+                            indent: 2,
+                            endIndent: 2,
                           ),
-                          RaisedButton.icon(
-                            icon: Icon(Icons.create),
-                            onPressed: () => {
-                              if (_checkPrincipalInformation())
-                                _continue()
-                              else
-                                setState(() {})
-                            },
-                            label: Text('CREATE'),
-                            color: Colors.blue,
-                          )
-                        ]),
-                      )));
-          }
-        });
+                        ],
+                      )),
+                if (widget.isNewUser)
+                  Visibility(
+                    child: Text("The username cannot be empty",
+                        style: TextStyle(color: Colors.red)),
+                    visible: _visibilityLabelUsername,
+                  ),
+                _selectUserRole(),
+                Visibility(
+                  child: Text("Select at least one role",
+                      style: TextStyle(color: Colors.red)),
+                  visible: _visibilityLabelRoles,
+                ),
+                _insertTags(),
+                Visibility(
+                  child: Text("Select at least one tag",
+                      style: TextStyle(color: Colors.red)),
+                  visible: _visibilityLabelTags,
+                ),
+                RaisedButton.icon(
+                  icon: Icon(Icons.create),
+                  onPressed: () => {
+                    if (_checkPrincipalInformation())
+                      _continue()
+                    else
+                      setState(() {})
+                  },
+                  label: Text('CREATE'),
+                  color: Colors.blue,
+                )
+              ]),
+            )));
   }
 }

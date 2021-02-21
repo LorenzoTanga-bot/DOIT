@@ -1,6 +1,7 @@
 import 'package:doit/model/AuthCredential.dart';
 import 'package:doit/model/Candidacy.dart';
 import 'package:doit/model/Invite.dart';
+
 import 'package:doit/model/User.dart';
 import 'package:doit/providers/AuthCredentialProvider.dart';
 import 'package:doit/providers/CandidacyProvider.dart';
@@ -9,8 +10,10 @@ import 'package:doit/providers/ProjectProvider.dart';
 import 'package:doit/providers/TagProvider.dart';
 import 'package:doit/providers/UserProvider.dart';
 import 'package:doit/providers/ViewProvider.dart';
+
 import 'package:doit/view/ListOfCandidacies.dart';
 import 'package:doit/view/ListOfInvites.dart';
+import 'package:doit/view/ListOfProjects.dart';
 import 'package:doit/view/ProfileOverView.dart';
 import 'package:doit/view/projectproposer/CreateModifyProject.dart';
 import 'package:doit/widget/CardList.dart';
@@ -114,7 +117,15 @@ class _ThirdView extends State<ThirdView> {
           child: CardList(
               name: "Proposed project",
               sDescription: "View all proposed project"),
-          onTap: () => {}),
+          onTap: () => {
+                context.read<ViewProvider>().pushWidget(FutureBuild(
+                    future: Provider.of<ProjectProvider>(context, listen: false)
+                        .updateListProject(_user.getProposedProjects()),
+                    newView: ListOfProjects(
+                        projects:
+                            Provider.of<ProjectProvider>(context, listen: false)
+                                .findByIds(_user.getProposedProjects()))))
+              }),
     ]);
   }
 
@@ -179,7 +190,7 @@ class _ThirdView extends State<ThirdView> {
         child: CardList(
             name: "Projects evaluated",
             sDescription: "Active and completed projects evaluated"),
-            //TODO aggiustare
+        //TODO aggiustare
         onTap: () => context.read<ViewProvider>().pushWidget(null),
       ),
     ]);

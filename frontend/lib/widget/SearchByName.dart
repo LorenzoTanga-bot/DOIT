@@ -131,6 +131,13 @@ class _SearchByName extends State<SearchByName> {
               (Container(
                   constraints: BoxConstraints(maxHeight: 250),
                   child: ListProjects(projects: projectsFind))),
+              Divider(
+                color: Colors.white70,
+                height: 20,
+                thickness: 1,
+                indent: 2,
+                endIndent: 2,
+              ),
               if (usersFind.isNotEmpty)
                 Text(
                   "Users",
@@ -138,8 +145,8 @@ class _SearchByName extends State<SearchByName> {
                   style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                 ),
               Divider(
-                color: Colors.white,
-                height: 5,
+                color: Colors.white70,
+                height: 20,
                 thickness: 1,
                 indent: 2,
                 endIndent: 2,

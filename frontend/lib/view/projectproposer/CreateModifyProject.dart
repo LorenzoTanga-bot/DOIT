@@ -42,7 +42,7 @@ class _CreateModifyProject extends State<CreateModifyProject> {
   @override
   void initState() {
     super.initState();
-    if (widget.id != null) {
+    if (widget.id.isNotEmpty) {
       _project = context.read<ProjectProvider>().findById(widget.id);
       _name.text = _project.getName();
       _sDescription.text = _project.getShortDescription();
@@ -53,8 +53,10 @@ class _CreateModifyProject extends State<CreateModifyProject> {
       _dateOfStartCandidacy = DateTime.parse(_project.getStartCandidacy());
       _dateOfEndCandidacy = DateTime.parse(_project.getEndCandidacy());
       context.read<TagProvider>().setSelectTag(_project.getTag(), "PROJECT");
-    } else
+    } else {
       _project = new Project();
+      _project.setDateOfCreation(DateTime.now().toIso8601String());
+    }
   }
 
   _createProject() async {
@@ -62,7 +64,6 @@ class _CreateModifyProject extends State<CreateModifyProject> {
         context.read<AuthCredentialProvider>().getUser().getMail());
     _project.setName(_name.text);
     _project.setTag(context.read<TagProvider>().getSelectTag("PROJECT"));
-    _project.setDateOfCreation(DateTime.now().toIso8601String());
     _project.setDateOfEnd(_dateOfEndProject.toIso8601String());
     _project.setDateOfStart(_dateOfStartProject.toIso8601String());
     _project.setStartCandidacy(_dateOfStartCandidacy.toIso8601String());
@@ -70,7 +71,10 @@ class _CreateModifyProject extends State<CreateModifyProject> {
     _project.setShortDescription(_sDescription.text);
     _project.setDescription(_lDescription.text);
     _project.setEvaluationMode(_evaluationMode);
-    context.read<ProjectProvider>().addProject(_project);
+    if (widget.id.isNotEmpty) {
+      await context.read<ProjectProvider>().updateProject(_project);
+    } else
+      await context.read<ProjectProvider>().addProject(_project);
     context.read<ViewProvider>().popWidget();
   }
 
@@ -128,7 +132,7 @@ class _CreateModifyProject extends State<CreateModifyProject> {
 
       return false;
     }
-    if (DateTime.now().isAfter(_dateOfStartCandidacy)) {
+    if (!DateTime.now().isAfter(_dateOfStartCandidacy)) {
       _visibilityLabelStartCandidacy = false;
       return true;
     } else {

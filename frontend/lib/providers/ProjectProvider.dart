@@ -5,7 +5,7 @@ import 'package:flutter/foundation.dart';
 class ProjectProvider with ChangeNotifier {
   ProjectService _service;
 
-  List<Project> _listProjects= [];
+  List<Project> _listProjects = [];
 
   ProjectProvider(ProjectService service) {
     _service = service;
@@ -24,9 +24,8 @@ class ProjectProvider with ChangeNotifier {
   Future updateListProject(List<String> ids) async {
     List<String> notFound = [];
     for (String id in ids) {
-      if (_listProjects
-          .where((element) => element.getId() == id)
-          .isEmpty) notFound.add(id);
+      if (_listProjects.where((element) => element.getId() == id).isEmpty)
+        notFound.add(id);
     }
     if (notFound.isNotEmpty)
       _listProjects.addAll(await _service.findByIds(notFound));
@@ -44,6 +43,7 @@ class ProjectProvider with ChangeNotifier {
     }
     return found;
   }
+
   Future<List<Project>> findByTags(List<String> tags) async {
     return await _service.findByTags(tags);
   }
@@ -54,6 +54,18 @@ class ProjectProvider with ChangeNotifier {
 
     notifyListeners();
     return true;
+  }
+
+  Future<Project> updateProject(Project project) async {
+    Project updateProject = await _service.updateProject(project);
+    for (Project oldProject in _listProjects)
+      if (oldProject.getId() == project.getId()) {
+        _listProjects.remove(oldProject);
+        break;
+      }
+    _listProjects.add(updateProject);
+    notifyListeners();
+    return updateProject;
   }
 
   List<Project> findByName(String name) {

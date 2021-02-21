@@ -17,9 +17,14 @@ class CardListProject extends StatelessWidget {
 
   String _determinateState() {
     return (DateTime.parse(project.getDateOfEnd()).compareTo(DateTime.now()) ==
-            1)
-        ? (project.getCandidacyMode() ? "Candidacy Mode" : "In corso")
-        : "Completato";
+            -1)
+        ? "Completed"
+        : (project.getCandidacyMode()
+            ? "Candidacy Mode"
+            : (DateTime.parse(project.getStartCandidacy())
+                    .isAfter(DateTime.now())
+                ? "Attesa apertura candidature"
+                : "In corso"));
   }
 
   @override
@@ -51,7 +56,7 @@ class CardListProject extends StatelessWidget {
                   .updateListTag(project.getTag())
             ]),
             newView: ProjectOverView(
-              project: project,
+              id: project.getId(),
             )));
       },
     );

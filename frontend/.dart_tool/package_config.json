@@ -32,12 +32,6 @@
       "languageVersion": "2.10"
     },
     {
-      "name": "cloud_firestore",
-      "rootUri": "file:///Users/ale/Documenti/Code/flutter/.pub-cache/hosted/pub.dartlang.org/cloud_firestore-0.12.11",
-      "packageUri": "lib/",
-      "languageVersion": "2.0"
-    },
-    {
       "name": "collection",
       "rootUri": "file:///Users/ale/Documenti/Code/flutter/.pub-cache/hosted/pub.dartlang.org/collection-1.15.0-nullsafety.3",
       "packageUri": "lib/",
@@ -66,36 +60,6 @@
       "rootUri": "file:///Users/ale/Documenti/Code/flutter/.pub-cache/hosted/pub.dartlang.org/file-5.2.1",
       "packageUri": "lib/",
       "languageVersion": "2.2"
-    },
-    {
-      "name": "firebase",
-      "rootUri": "file:///Users/ale/Documenti/Code/flutter/.pub-cache/hosted/pub.dartlang.org/firebase-7.3.3",
-      "packageUri": "lib/",
-      "languageVersion": "2.7"
-    },
-    {
-      "name": "firebase_auth",
-      "rootUri": "file:///Users/ale/Documenti/Code/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_auth-0.14.0+9",
-      "packageUri": "lib/",
-      "languageVersion": "2.0"
-    },
-    {
-      "name": "firebase_core",
-      "rootUri": "file:///Users/ale/Documenti/Code/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_core-0.4.5",
-      "packageUri": "lib/",
-      "languageVersion": "2.0"
-    },
-    {
-      "name": "firebase_core_platform_interface",
-      "rootUri": "file:///Users/ale/Documenti/Code/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_core_platform_interface-1.0.4",
-      "packageUri": "lib/",
-      "languageVersion": "2.0"
-    },
-    {
-      "name": "firebase_core_web",
-      "rootUri": "file:///Users/ale/Documenti/Code/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_core_web-0.1.1+2",
-      "packageUri": "lib/",
-      "languageVersion": "2.0"
     },
     {
       "name": "flare_dart",
@@ -174,12 +138,6 @@
       "rootUri": "file:///Users/ale/Documenti/Code/flutter/.pub-cache/hosted/pub.dartlang.org/intl-0.16.1",
       "packageUri": "lib/",
       "languageVersion": "2.5"
-    },
-    {
-      "name": "js",
-      "rootUri": "file:///Users/ale/Documenti/Code/flutter/.pub-cache/hosted/pub.dartlang.org/js-0.6.2",
-      "packageUri": "lib/",
-      "languageVersion": "2.0"
     },
     {
       "name": "matcher",
@@ -398,7 +356,7 @@
       "languageVersion": "2.7"
     }
   ],
-  "generated": "2021-02-20T09:18:52.208136Z",
+  "generated": "2021-02-20T14:50:10.178408Z",
   "generator": "pub",
   "generatorVersion": "2.10.5"
 }

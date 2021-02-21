@@ -6,6 +6,7 @@ import 'package:doit/providers/ProjectProvider.dart';
 import 'package:doit/providers/TagProvider.dart';
 import 'package:doit/providers/ViewProvider.dart';
 import 'package:doit/view/CreateModifyProfile.dart';
+import 'package:doit/widget/FutureBuilder.dart';
 import 'package:doit/widget/ListProjects.dart';
 import 'package:doit/widget/PrincipalInformationUser.dart';
 import 'package:flutter/material.dart';
@@ -54,9 +55,15 @@ class _ProfileOverView extends State<ProfileOverView> {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10)),
                   onPressed: () => {
-                    Provider.of<ViewProvider>(context, listen: false)
-                        .pushWidget(CreateModifyProfile(
-                            mail: widget.user.getMail(), isNewUser: false))
+                    context.read<ViewProvider>().pushWidget(FutureBuild(
+                        future: Future.wait([
+                          Provider.of<TagProvider>(context, listen: false)
+                              .updateListTag(widget.user.getTags())
+                        ]),
+                        newView: CreateModifyProfile(
+                          mail: widget.user.getMail(),
+                          isNewUser: false,
+                        )))
                   },
                   child: Text("Modifica"),
                 ))),

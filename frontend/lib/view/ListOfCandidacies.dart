@@ -32,6 +32,16 @@ class _ListOfCandidacy extends State<ListOfCandidacy> {
             indent: 2,
             endIndent: 2,
           ),
+          if (widget.candidacies.isEmpty)
+            Padding(
+              padding: EdgeInsets.all(10),
+              child: Text(
+                "You have no candidacy at the moment",
+                style: TextStyle(
+                  fontSize: 20,
+                ),
+              ),
+            ),
           ListCandidacies(candidacies: widget.candidacies)
         ]));
   }

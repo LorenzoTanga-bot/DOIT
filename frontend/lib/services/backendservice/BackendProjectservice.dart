@@ -21,9 +21,12 @@ class BackendProjectService implements ProjectService {
     List<String> candidacies = [];
     List<String> designers = [];
     for (String tag in parseJson) tags.add(tag);
-    for (String invite in invitesJson) invites.add(invite);
-    for (String candidacy in candidaciesJson) candidacies.add(candidacy);
-    for (String designer in designersJson) designers.add(designer);
+    if (invitesJson != null)
+      for (String invite in invitesJson) invites.add(invite);
+    if (candidaciesJson != null)
+      for (String candidacy in candidaciesJson) candidacies.add(candidacy);
+    if (designersJson != null)
+      for (String designer in designersJson) designers.add(designer);
     return new Project.fromJson(
         project["id"],
         project["projectProposer"],
@@ -88,8 +91,8 @@ class BackendProjectService implements ProjectService {
   }
 
   @override
-  Future<Project> updateProject(Project newProject) async {
-    return _createProject(await _controller.updateProject(newProject));
+  Future<Project> updateProject(Project modifiedProject) async {
+    return _createProject(await _controller.updateProject(modifiedProject));
   }
 
   @override

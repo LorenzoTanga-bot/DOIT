@@ -11,9 +11,9 @@ class Project {
   bool _evaluationMode; // if it's true, the project has evaluation mode.
   String _startCandidacy;
   String _endCandidacy;
-  List<String> _candidacies;
-  List<String> _invites;
-  List<String> _designers;
+  List<String> _candidacies = [];
+  List<String> _invites = [];
+  List<String> _designers = [];
 
   Project() {
     this._dateOfCreation = DateTime.now().toIso8601String();
@@ -191,7 +191,7 @@ class Project {
     return _invites;
   }
 
-   bool setDesigners(List<String> designers) {
+  bool setDesigners(List<String> designers) {
     _designers = designers;
     return true;
   }
@@ -208,5 +208,4 @@ class Project {
   List<String> getDesigners() {
     return _designers;
   }
-
 }

@@ -1,8 +1,7 @@
 import 'package:doit/model/Invite.dart';
 import 'package:doit/model/Project.dart';
 import 'package:doit/providers/ProjectProvider.dart';
-import 'package:doit/providers/ViewProvider.dart';
-import 'package:doit/view/ProjectOverView.dart';
+
 import 'package:doit/widget/InviteOverview.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

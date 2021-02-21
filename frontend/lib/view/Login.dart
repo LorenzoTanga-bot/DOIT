@@ -5,6 +5,7 @@ import 'package:doit/providers/ViewProvider.dart';
 
 import 'package:doit/view/ThirdView.dart';
 import 'package:doit/view/CreateModifyProfile.dart';
+import 'package:doit/widget/FutureBuilder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
 import 'package:provider/provider.dart';
@@ -110,13 +111,15 @@ class _Login extends State<Login> {
           return value.isEmpty ? 'Invalid password entered' : null;
         },
         onSubmitAnimationCompleted: () {
-          if (_isFirstAccess)
+          if (_isFirstAccess) {
             Provider.of<ViewProvider>(context, listen: false)
-                .setProfileDefault(CreateModifyProfile(
-              mail: mail,
-              isNewUser: true,
-            ));
-          else
+                .setProfileDefault(FutureBuild(
+                    future: Future.wait({}),
+                    newView: CreateModifyProfile(
+                      mail: mail,
+                      isNewUser: true,
+                    )));
+          } else
             Provider.of<ViewProvider>(context, listen: false)
                 .setProfileDefault(ThirdView());
         });

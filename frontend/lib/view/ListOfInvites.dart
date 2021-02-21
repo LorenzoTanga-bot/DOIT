@@ -31,6 +31,16 @@ class _ListOfInvites extends State<ListOfInvites> {
             indent: 2,
             endIndent: 2,
           ),
+          if (widget.invites.isEmpty)
+            Padding(
+              padding: EdgeInsets.all(10),
+              child: Text(
+                "You have no invites at the moment",
+                style: TextStyle(
+                  fontSize: 20,
+                ),
+              ),
+            ),
           ListInvites(invites: widget.invites)
         ]));
   }

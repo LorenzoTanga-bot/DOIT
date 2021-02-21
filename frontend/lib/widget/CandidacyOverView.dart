@@ -5,9 +5,12 @@ import 'package:doit/providers/AuthCredentialProvider.dart';
 import 'package:doit/providers/CandidacyProvider.dart';
 
 import 'package:doit/providers/ProjectProvider.dart';
+import 'package:doit/providers/TagProvider.dart';
+import 'package:doit/providers/UserProvider.dart';
 import 'package:doit/providers/ViewProvider.dart';
 
 import 'package:doit/view/ProjectOverView.dart';
+import 'package:doit/widget/FutureBuilder.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -27,7 +30,7 @@ class _CandidacyOverView extends State<CandidacyOverView> {
   String dateString;
   String dateOfExpireString;
   String state;
-  void  initState() {
+  void initState() {
     super.initState();
     project = Provider.of<ProjectProvider>(context, listen: false)
         .findById(widget.candidacy.getProject());
@@ -112,9 +115,19 @@ class _CandidacyOverView extends State<CandidacyOverView> {
                         recognizer: TapGestureRecognizer()
                           ..onTap = () {
                             Navigator.pop(context);
-                            Provider.of<ViewProvider>(context, listen: false)
-                                .pushWidget(ProjectOverView(project: project));
-                          }))
+                             List<String> users = [project.getProjectProposer()];
+        users.addAll(project.getDesigners());
+        context.read<ViewProvider>().pushWidget(FutureBuild(
+            future: Future.wait([
+              Provider.of<UserProvider>(context, listen: false)
+                  .updateListUsers(users),
+              Provider.of<TagProvider>(context, listen: false)
+                  .updateListTag(project.getTag())
+            ]),
+            newView: ProjectOverView(
+              id: project.getId(),
+            )));
+      }))
               ]),
               Divider(
                 color: Colors.white,
