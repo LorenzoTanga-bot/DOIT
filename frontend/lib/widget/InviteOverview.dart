@@ -9,6 +9,7 @@ import 'package:doit/providers/ProjectProvider.dart';
 import 'package:doit/providers/TagProvider.dart';
 import 'package:doit/providers/UserProvider.dart';
 import 'package:doit/providers/ViewProvider.dart';
+import 'package:doit/view/ProfileOverView.dart';
 
 import 'package:doit/view/ProjectOverView.dart';
 import 'package:doit/widget/FutureBuilder.dart';
@@ -31,6 +32,7 @@ class _InviteOverview extends State<InviteOverview> {
   String dateString;
   String dateOfExpireString;
   String state;
+  User user;
 
   void initState() {
     super.initState();
@@ -175,6 +177,80 @@ class _InviteOverview extends State<InviteOverview> {
                                 newView: ProjectOverView(
                                   id: project.getId(),
                                 )));
+                          }))
+              ]),
+              Divider(
+                color: Colors.white,
+                height: 8,
+                thickness: 1,
+                indent: 2,
+                endIndent: 2,
+              ),
+              Row(children: [
+                Text("Sender: "),
+                RichText(
+                    text: TextSpan(
+                        text: (widget.invite.getSender()),
+                        style: TextStyle(color: Colors.black),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            Navigator.pop(context);
+                            user = Provider.of<UserProvider>(context,
+                                    listen: false)
+                                .findByMail(widget.invite.getSender());
+                            Provider.of<ViewProvider>(context, listen: false)
+                                .pushWidget(FutureBuild(
+                                    future: Future.wait([
+                                      Provider.of<ProjectProvider>(context,
+                                              listen: false)
+                                          .updateListProject(
+                                              user.getProposedProjects()),
+                                      Provider.of<ProjectProvider>(context,
+                                              listen: false)
+                                          .updateListProject(
+                                              user.getPartecipateInProjects()),
+                                      Provider.of<TagProvider>(context,
+                                              listen: false)
+                                          .updateListTag(user.getTags())
+                                    ]),
+                                    newView: ProfileOverView(user: user)));
+                          }))
+              ]),
+              Divider(
+                color: Colors.white,
+                height: 8,
+                thickness: 1,
+                indent: 2,
+                endIndent: 2,
+              ),
+              Row(children: [
+                Text("Receiver: "),
+                RichText(
+                    text: TextSpan(
+                        text: (widget.invite.getDesigner()),
+                        style: TextStyle(color: Colors.black),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            Navigator.pop(context);
+                            user = Provider.of<UserProvider>(context,
+                                    listen: false)
+                                .findByMail(widget.invite.getDesigner());
+                            Provider.of<ViewProvider>(context, listen: false)
+                                .pushWidget(FutureBuild(
+                                    future: Future.wait([
+                                      Provider.of<ProjectProvider>(context,
+                                              listen: false)
+                                          .updateListProject(
+                                              user.getProposedProjects()),
+                                      Provider.of<ProjectProvider>(context,
+                                              listen: false)
+                                          .updateListProject(
+                                              user.getPartecipateInProjects()),
+                                      Provider.of<TagProvider>(context,
+                                              listen: false)
+                                          .updateListTag(user.getTags())
+                                    ]),
+                                    newView: ProfileOverView(user: user)));
                           }))
               ]),
               Divider(

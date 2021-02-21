@@ -27,7 +27,8 @@ class InviteProvider with ChangeNotifier {
 
   Future<Invite> updateStateProjectProposer(Invite invite) async {
     Invite updateInvite = await _service.updateStateProjectProposer(invite);
-    _listInvite.remove(invite);
+    _listInvite
+        .removeWhere((element) => element.getId() == updateInvite.getId());
     _listInvite.add(updateInvite);
     return updateInvite;
   }
@@ -40,7 +41,6 @@ class InviteProvider with ChangeNotifier {
 
   Future<List<Invite>> findByProjectProposer(String projectProposer) async {
     List<Invite> found = await _service.findByProjectProposer(projectProposer);
-
     updateListInvitesLocal(found);
     return found;
   }

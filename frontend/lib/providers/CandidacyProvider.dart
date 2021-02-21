@@ -18,9 +18,10 @@ class CandidacyProvider with ChangeNotifier {
 
   Future<Candidacy> updateCandidacy(Candidacy candidacy) async {
     Candidacy modifiedCandidacy = await _service.updateCandidacy(candidacy);
-    _listCandidacies.remove(candidacy);
+    _listCandidacies
+        .removeWhere((element) => element.getId() == modifiedCandidacy.getId());
     _listCandidacies.add(modifiedCandidacy);
-    
+
     return modifiedCandidacy;
   }
 

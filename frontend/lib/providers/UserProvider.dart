@@ -43,12 +43,6 @@ class UserProvider with ChangeNotifier {
     return finds;
   }
 
-  void updateUser(User user) {
-    User oldUser = _listUsers.firstWhere((p) => p.getMail() == user.getMail());
-    _listUsers.remove(oldUser);
-    _listUsers.add(user);
-  }
-
   void updateListUsersLocal(List<User> users) {
     for (User user in users) {
       if (!_listUsers.contains(user)) {
@@ -66,7 +60,8 @@ class UserProvider with ChangeNotifier {
 
   Future reloadUser(String mail) async {
     User reloadedUser = await _service.findByMail(mail);
-    _listUsers.remove(reloadedUser);
+    _listUsers
+        .removeWhere((element) => element.getMail() == reloadedUser.getMail());
     _listUsers.add(reloadedUser);
     notifyListeners();
   }

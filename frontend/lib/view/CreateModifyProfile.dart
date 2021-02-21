@@ -102,7 +102,8 @@ class _CreateModifyProfile extends State<CreateModifyProfile> {
       _user.setTags(context.read<TagProvider>().getSelectTag("USER"));
       await Provider.of<AuthCredentialProvider>(context, listen: false)
           .updateUser(_user);
-      Provider.of<UserProvider>(context, listen: false).updateUser(_user);
+      await Provider.of<UserProvider>(context, listen: false)
+          .reloadUser(_user.getMail());
       context.read<ViewProvider>().popWidget();
     }
   }

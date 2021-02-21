@@ -156,6 +156,7 @@ class _SearchByTag extends State<SearchByTag> {
                               child: CardList(
                                   name: usersFind[index].getUsername(),
                                   sDescription: usersFind[index].getName() +
+                                      " " +
                                       usersFind[index].getSurname()),
                               onTap: () {
                                 Provider.of<ViewProvider>(context,

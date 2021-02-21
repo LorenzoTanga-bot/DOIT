@@ -151,7 +151,7 @@ class _ThirdView extends State<ThirdView> {
       ),
       GestureDetector(
           child: CardList(
-              name: "Candidature", sDescription: "View all candidacy sent"),
+              name: "Candidacies", sDescription: "View all candidacy sent"),
           onTap: () => getListCandidacy("DESIGNER")),
       GestureDetector(
           child: CardList(

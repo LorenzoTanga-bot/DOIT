@@ -8,6 +8,7 @@ import 'package:doit/providers/ProjectProvider.dart';
 import 'package:doit/providers/TagProvider.dart';
 import 'package:doit/providers/UserProvider.dart';
 import 'package:doit/providers/ViewProvider.dart';
+import 'package:doit/view/ProfileOverView.dart';
 
 import 'package:doit/view/ProjectOverView.dart';
 import 'package:doit/widget/FutureBuilder.dart';
@@ -30,6 +31,7 @@ class _CandidacyOverView extends State<CandidacyOverView> {
   String dateString;
   String dateOfExpireString;
   String state;
+  User user;
   void initState() {
     super.initState();
     project = Provider.of<ProjectProvider>(context, listen: false)
@@ -59,11 +61,10 @@ class _CandidacyOverView extends State<CandidacyOverView> {
     widget.candidacy.setState(StateCandidacy.POSITIVE);
     await Provider.of<CandidacyProvider>(context, listen: false)
         .updateCandidacy(widget.candidacy);
-        await Provider.of<UserProvider>(context, listen: false)
+    await Provider.of<UserProvider>(context, listen: false)
         .reloadUser(widget.candidacy.getDesigner());
-         await Provider.of<ProjectProvider>(context, listen: false)
+    await Provider.of<ProjectProvider>(context, listen: false)
         .reloadProject(widget.candidacy.getProject());
-        
   }
 
   void declineCandidacy() async {
@@ -120,20 +121,104 @@ class _CandidacyOverView extends State<CandidacyOverView> {
                         recognizer: TapGestureRecognizer()
                           ..onTap = () {
                             Navigator.pop(context);
-                             List<String> users = [project.getProjectProposer()];
-        users.addAll(project.getDesigners());
-        context.read<ViewProvider>().pushWidget(FutureBuild(
-            future: Future.wait([
-              Provider.of<UserProvider>(context, listen: false)
-                  .updateListUsers(users),
-              Provider.of<TagProvider>(context, listen: false)
-                  .updateListTag(project.getTag())
-            ]),
-            newView: ProjectOverView(
-              id: project.getId(),
-            )));
-      }))
+                            List<String> users = [project.getProjectProposer()];
+                            users.addAll(project.getDesigners());
+                            context.read<ViewProvider>().pushWidget(FutureBuild(
+                                future: Future.wait([
+                                  Provider.of<UserProvider>(context,
+                                          listen: false)
+                                      .updateListUsers(users),
+                                  Provider.of<TagProvider>(context,
+                                          listen: false)
+                                      .updateListTag(project.getTag())
+                                ]),
+                                newView: ProjectOverView(
+                                  id: project.getId(),
+                                )));
+                          }))
               ]),
+              Divider(
+                color: Colors.white,
+                height: 8,
+                thickness: 1,
+                indent: 2,
+                endIndent: 2,
+              ),
+              Row(children: [
+                Text("Sender: "),
+                RichText(
+                    text: TextSpan(
+                        text: (widget.candidacy.getProjectProposer()),
+                        style: TextStyle(color: Colors.black),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            Navigator.pop(context);
+                            user = Provider.of<UserProvider>(context,
+                                    listen: false)
+                                .findByMail(
+                                    widget.candidacy.getProjectProposer());
+                            Provider.of<ViewProvider>(context, listen: false)
+                                .pushWidget(FutureBuild(
+                                    future: Future.wait([
+                                      Provider.of<ProjectProvider>(context,
+                                              listen: false)
+                                          .updateListProject(
+                                              user.getProposedProjects()),
+                                      Provider.of<ProjectProvider>(context,
+                                              listen: false)
+                                          .updateListProject(
+                                              user.getPartecipateInProjects()),
+                                      Provider.of<TagProvider>(context,
+                                              listen: false)
+                                          .updateListTag(user.getTags())
+                                    ]),
+                                    newView: ProfileOverView(user: user)));
+                          }))
+              ]),
+              Divider(
+                color: Colors.white,
+                height: 8,
+                thickness: 1,
+                indent: 2,
+                endIndent: 2,
+              ),
+              Row(children: [
+                Text("Receiver: "),
+                RichText(
+                    text: TextSpan(
+                        text: (widget.candidacy.getDesigner()),
+                        style: TextStyle(color: Colors.black),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            Navigator.pop(context);
+                            user = Provider.of<UserProvider>(context,
+                                    listen: false)
+                                .findByMail(widget.candidacy.getDesigner());
+                            Provider.of<ViewProvider>(context, listen: false)
+                                .pushWidget(FutureBuild(
+                                    future: Future.wait([
+                                      Provider.of<ProjectProvider>(context,
+                                              listen: false)
+                                          .updateListProject(
+                                              user.getProposedProjects()),
+                                      Provider.of<ProjectProvider>(context,
+                                              listen: false)
+                                          .updateListProject(
+                                              user.getPartecipateInProjects()),
+                                      Provider.of<TagProvider>(context,
+                                              listen: false)
+                                          .updateListTag(user.getTags())
+                                    ]),
+                                    newView: ProfileOverView(user: user)));
+                          }))
+              ]),
+              Divider(
+                color: Colors.white,
+                height: 8,
+                thickness: 1,
+                indent: 2,
+                endIndent: 2,
+              ),
               Divider(
                 color: Colors.white,
                 height: 8,

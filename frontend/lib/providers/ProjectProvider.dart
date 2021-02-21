@@ -69,11 +69,8 @@ class ProjectProvider with ChangeNotifier {
 
   Future<Project> updateProject(Project project) async {
     Project updateProject = await _service.updateProject(project);
-    for (Project oldProject in _listProjects)
-      if (oldProject.getId() == project.getId()) {
-        _listProjects.remove(oldProject);
-        break;
-      }
+    _listProjects
+        .removeWhere((element) => element.getId() == updateProject.getId());
     _listProjects.add(updateProject);
     notifyListeners();
     return updateProject;
@@ -91,7 +88,8 @@ class ProjectProvider with ChangeNotifier {
 
   Future reloadProject(String id) async {
     Project reloadedProject = await _service.findById(id);
-    _listProjects.remove(reloadedProject);
+    _listProjects
+        .removeWhere((element) => element.getId() == reloadedProject.getId());
     _listProjects.add(reloadedProject);
     notifyListeners();
   }
