@@ -51,16 +51,18 @@ public class EvaluationController {
         User user = userService.findById(rEvaluation.getSender());
         user.addEvaluationsSend(rEvaluation.getId());
         userService.updateUser(user);
-        // update designer
-        if (rEvaluation.getEvaluationMode().equals(EvaluationMode.TEAM)) {
-            user = userService.findById(rEvaluation.getSender());
-            user.addEvaluationsSend(rEvaluation.getId());
-            userService.updateUser(user);
-        }
         //update project
         Project project = projectService.findById(rEvaluation.getProject());
         project.addEvaluations(rEvaluation.getId());
         projectService.updateProject(project);
+        // update designers
+        if (rEvaluation.getEvaluationMode().equals(EvaluationMode.TEAM)) {
+            List<User> desiners = userService.findByIds(project.getDesigners());
+            for (User desiner : desiners) {
+                desiner.addEvaluationsReceived(rEvaluation.getId());
+                userService.updateUser(user);
+            }
+        }
         return rEvaluation;
     }
 
