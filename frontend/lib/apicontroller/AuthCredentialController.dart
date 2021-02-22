@@ -78,7 +78,8 @@ class AuthCredentialController {
               'proposedProjects': newUser.getProposedProjects(),
               'partecipateInProjects': newUser.getPartecipateInProjects(),
               'invites': newUser.getInvites(),
-              'evaluations': newUser.getEvaluations(),
+              'evaluationsSend': newUser.getEvaluationsSend(),
+              'evaluationsReceived': newUser.getEvaluationsReceived(),
               'candidacies': newUser.getCandidacies(),
             })))
         .body;
@@ -97,7 +98,8 @@ class AuthCredentialController {
               'proposedProjects': newUser.getProposedProjects(),
               'partecipateInProjects': newUser.getPartecipateInProjects(),
               'invites': newUser.getInvites(),
-              'evaluations': newUser.getEvaluations(),
+              'evaluationsSend': newUser.getEvaluationsSend(),
+              'evaluationsReceived': newUser.getEvaluationsReceived(),
               'candidacies': newUser.getCandidacies(),
             })))
         .body;

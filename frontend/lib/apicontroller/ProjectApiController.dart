@@ -31,7 +31,8 @@ class ProjectApiController {
               "endCandidacy": newProject.getEndCandidacy(),
               "candidacies": newProject.getCandidacies(),
               "invites": newProject.getInvites(),
-              "designers": newProject.getDesigners()
+              "designers": newProject.getDesigners(),
+              "evaluations" : newProject.getEvaluations()
             })))
         .body;
   }
@@ -54,7 +55,8 @@ class ProjectApiController {
               "endCandidacy": modifiedProject.getEndCandidacy(),
               "candidacies": modifiedProject.getCandidacies(),
               "invites": modifiedProject.getInvites(),
-              "designers": modifiedProject.getDesigners()
+              "designers": modifiedProject.getDesigners(),
+              "evaluations" : modifiedProject.getEvaluations()
             })))
         .body;
   }

@@ -12,21 +12,22 @@ class BackendProjectService implements ProjectService {
   }
 
   Project _newProject(var project) {
-    var parseJson = project["tag"];
-    var invitesJson = project["invites"];
-    var candidaciesJson = project["candidacies"];
-    var designersJson = project["designers"];
     List<String> tags = new List<String>();
     List<String> invites = [];
     List<String> candidacies = [];
     List<String> designers = [];
-    for (String tag in parseJson) tags.add(tag);
-    if (invitesJson != null)
-      for (String invite in invitesJson) invites.add(invite);
-    if (candidaciesJson != null)
-      for (String candidacy in candidaciesJson) candidacies.add(candidacy);
-    if (designersJson != null)
-      for (String designer in designersJson) designers.add(designer);
+    List<String> evaluations = [];
+    for (String tag in project["tag"]) tags.add(tag);
+    if (project["invites"] != null)
+      for (String invite in project["invites"]) invites.add(invite);
+    if (project["candidacies"] != null)
+      for (String candidacy in project["candidacies"])
+        candidacies.add(candidacy);
+    if (project["designers"] != null)
+      for (String designer in project["designers"]) designers.add(designer);
+    if (project["evaluations"] != null)
+      for (String evaluation in project["evaluations"])
+        evaluations.add(evaluation);
     return new Project.fromJson(
         project["id"],
         project["projectProposer"],
@@ -42,7 +43,8 @@ class BackendProjectService implements ProjectService {
         project["endCandidacy"],
         candidacies,
         invites,
-        designers);
+        designers,
+        evaluations);
   }
 
   Project _createProject(String controllerJson) {

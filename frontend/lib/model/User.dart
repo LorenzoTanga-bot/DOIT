@@ -12,7 +12,8 @@ class User {
 
   List<String> _invites = [];
   List<String> _candidacies = [];
-  List<String> _evaluations = [];
+  List<String> _evaluationsSend = [];
+  List<String> _evaluationsReceived = [];
 
   User();
 
@@ -22,19 +23,18 @@ class User {
   }
 
   User.complete(
-    this._mail,
-    this._username,
-    this._name,
-    this._surname,
-    
-    this._roles,
-    this._tags,
-    this._proposedProjects,
-    this._partecipateInProjects,
-    this._invites,
-    this._candidacies,
-    this._evaluations,
-  );
+      this._mail,
+      this._username,
+      this._name,
+      this._surname,
+      this._roles,
+      this._tags,
+      this._proposedProjects,
+      this._partecipateInProjects,
+      this._invites,
+      this._candidacies,
+      this._evaluationsSend,
+      this._evaluationsReceived);
 
   bool setMail(String mail) {
     _mail = mail;
@@ -134,22 +134,40 @@ class User {
     return _partecipateInProjects;
   }
 
-  bool setEvaluations(List<String> evaluation) {
-    _evaluations = evaluation;
+  bool setEvaluationsSend(List<String> evaluation) {
+    _evaluationsSend = evaluation;
     return true;
   }
 
-  bool addEvaluations(String idEvaluations) {
-    _evaluations.add(idEvaluations);
+  bool addEvaluationsSend(String idEvaluations) {
+    _evaluationsSend.add(idEvaluations);
     return true;
   }
 
-  bool removeEvaluations(String idEvaluations) {
-    return _evaluations.remove(idEvaluations);
+  bool removeEvaluationsSend(String idEvaluations) {
+    return _evaluationsSend.remove(idEvaluations);
   }
 
-  List<String> getEvaluations() {
-    return _evaluations;
+  List<String> getEvaluationsSend() {
+    return _evaluationsSend;
+  }
+
+  bool setEvaluationsReceived(List<String> evaluation) {
+    _evaluationsReceived = evaluation;
+    return true;
+  }
+
+  bool addEvaluationsReceived(String idEvaluations) {
+    _evaluationsReceived.add(idEvaluations);
+    return true;
+  }
+
+  bool removeEvaluationsReceived(String idEvaluations) {
+    return _evaluationsReceived.remove(idEvaluations);
+  }
+
+  List<String> getEvaluationsReceived() {
+    return _evaluationsReceived;
   }
 
   bool setCandidacies(List<String> candidacies) {

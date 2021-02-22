@@ -14,6 +14,7 @@ class Project {
   List<String> _candidacies = [];
   List<String> _invites = [];
   List<String> _designers = [];
+  List<String> _evaluations = [];
 
   Project() {
     this._dateOfCreation = DateTime.now().toIso8601String();
@@ -38,7 +39,8 @@ class Project {
       this._endCandidacy,
       this._candidacies,
       this._invites,
-      this._designers);
+      this._designers,
+      this._evaluations);
 
   String getId() {
     return _id;
@@ -207,5 +209,23 @@ class Project {
 
   List<String> getDesigners() {
     return _designers;
+  }
+
+  bool setEvaluations(List<String> evaluations) {
+    _evaluations = evaluations;
+    return true;
+  }
+
+  bool addEvaluations(String idEvaluations) {
+    _evaluations.add(idEvaluations);
+    return true;
+  }
+
+  bool removeEvaluations(String idEvaluations) {
+    return _evaluations.remove(idEvaluations);
+  }
+
+  List<String> getEvaluations() {
+    return _evaluations;
   }
 }

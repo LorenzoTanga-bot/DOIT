@@ -27,43 +27,42 @@ class BackendUserService implements UserService {
   }
 
   User _newUser(var user) {
-    var rolesJson = user["roles"];
-    var tagsJson = user["tags"];
-    var proposedProjectsJson = user["proposedProjects"];
-    var partecipateInProjectsJson = user["partecipateInProjects"];
-    var evaluationsJson = user["evaluations"];
-    var invitesJson = user["invites"];
-    var candidaciesJson = user["candidacies"];
     List<UserRole> roles = [];
     List<String> tags = [];
     List<String> proposedProjects = [];
     List<String> partecipateInProjects = [];
-    List<String> evaluations = [];
+    List<String> evaluationsSend = [];
+    List<String> evaluationsReceived = [];
     List<String> invites = [];
     List<String> candidacies = [];
-    for (String role in rolesJson)
+
+    for (String role in user["roles"])
       roles.add(UserRole.values
           .firstWhere((e) => e.toString() == 'UserRole.' + role));
-    if (roles.contains(UserRole.NOT_COMPLETED)) return _newNotCompleted(user);
-    for (String tag in tagsJson) tags.add(tag);
-    for (String project in proposedProjectsJson) proposedProjects.add(project);
-    for (String project in partecipateInProjectsJson)
+    for (String tag in user["tags"]) tags.add(tag);
+    for (String project in user["proposedProjects"])
+      proposedProjects.add(project);
+    for (String project in user["partecipateInProjects"])
       partecipateInProjects.add(project);
-    for (String evaluation in evaluationsJson) evaluations.add(evaluation);
-    for (String invite in invitesJson) invites.add(invite);
-    for (String candidacy in candidaciesJson) candidacies.add(candidacy);
+    for (String evaluation in user["evaluationsSend"])
+      evaluationsSend.add(evaluation);
+    for (String evaluation in user["evaluationsReceived"])
+      evaluationsReceived.add(evaluation);
+    for (String invite in user["invites"]) invites.add(invite);
+    for (String candidacy in user["candidacies"]) candidacies.add(candidacy);
     return new User.complete(
         user["mail"],
         user["usernameToShow"],
         user["name"],
         user["surname"],
-         roles,
-         tags,
+        roles,
+        tags,
         proposedProjects,
         partecipateInProjects,
-        evaluations,
         invites,
-        candidacies);
+        candidacies,
+        evaluationsSend,
+        evaluationsReceived);
   }
 
   User _createUser(String controllerJson) {
