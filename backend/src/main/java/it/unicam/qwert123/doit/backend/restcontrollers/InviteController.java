@@ -27,7 +27,7 @@ import it.unicam.qwert123.doit.backend.services.ProjectService;
 import it.unicam.qwert123.doit.backend.services.UserService;
 import it.unicam.qwert123.doit.backend.utility.AccessCheckerComponent;
 
-@RestController
+@RestController 
 @RequestMapping("doit/api/invite")
 public class InviteController {
 

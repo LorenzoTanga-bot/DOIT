@@ -16,39 +16,58 @@ import lombok.NonNull;
 
 @Service
 public class EvaluationService {
-    
+
     @Autowired
-    private EvaluationRepository repository;
-     
-    public Evaluation addEvaluations(@NonNull Evaluation evaluation){
-        return repository.insert(evaluation);
+    private EvaluationRepository evaluationRepository;
+
+    private boolean checkEvaluation(Evaluation evaluation) {
+        if (evaluation.getSender().isEmpty())
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid evaluation: Sender is null");
+        if (evaluation.getProject() == null)
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid evaluation: Project is null");
+        if (evaluation.getMessage().isEmpty())
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid evaluation: Message is null");
+        if (evaluation.getEvaluationMode() == null)
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid evaluation: Evaluation mode is null");
+
+        return true;
+
     }
 
-    public boolean deleteEvaluations(@NonNull UUID id){
-        repository.deleteById(id);
+    public Evaluation addEvaluations(@NonNull Evaluation evaluation) {
+        evaluation.setId(UUID.randomUUID());
+        if (checkEvaluation(evaluation))
+            return evaluationRepository.insert(evaluation);
+        return null;
+    }
+
+    public boolean deleteEvaluations(@NonNull UUID id) {
+        evaluationRepository.deleteById(id);
         return true;
     }
 
-    public Evaluation updateEvaluation(@NonNull Evaluation evaluation){
-        return repository.save(evaluation);
+    public Evaluation updateEvaluation(@NonNull Evaluation evaluation) {
+        if (checkEvaluation(evaluation))
+            return evaluationRepository.save(evaluation);
+        return null;
     }
 
     public Evaluation findById(@NonNull UUID id) throws ResponseStatusException {
-        return repository.findById(id)
+        return evaluationRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Project not found"));
     }
-    
+
     public List<Evaluation> findByIds(List<UUID> ids) {
-        return StreamSupport.stream(repository.findAllById(ids).spliterator(), false).collect(Collectors.toList());
+        return StreamSupport.stream(evaluationRepository.findAllById(ids).spliterator(), false)
+                .collect(Collectors.toList());
     }
 
     public List<Evaluation> findBySender(@NonNull String idSender) {
-        return repository.findBySender(idSender);
+        return evaluationRepository.findBySender(idSender);
     }
 
     public List<Evaluation> findByProject(@NonNull UUID idProject) {
-        return repository.findByProject(idProject);
+        return evaluationRepository.findByProject(idProject);
     }
 
-
-	}
+}

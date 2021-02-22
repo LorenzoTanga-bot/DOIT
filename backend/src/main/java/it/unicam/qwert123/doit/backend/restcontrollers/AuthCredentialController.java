@@ -37,7 +37,7 @@ public class AuthCredentialController {
 	@PreAuthorize("permitAll")
 	public User loginWithCredentials(@RequestBody AuthCredential credentials) {
 		return authService.loginWithCredentials(credentials) ? userService.findById(credentials.getMail()) : null;
-	}
+	} 
 
 	@PostMapping("/addCredential")
 	@PreAuthorize("permitAll")
