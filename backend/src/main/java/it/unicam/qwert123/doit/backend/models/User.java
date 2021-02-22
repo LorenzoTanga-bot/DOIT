@@ -33,7 +33,8 @@ public class User {
     private List<UUID> partecipateInProjects = new ArrayList<>();
     private List<UUID> invites = new ArrayList<>();
     private List<UUID> candidacies = new ArrayList<>();
-    private List<UUID> evaluations = new ArrayList<>();
+    private List<UUID> evaluationsSend = new ArrayList<>();
+    private List<UUID> evaluationsReceived = new ArrayList<>();
 
     public boolean addPProposedProject(UUID idProject) {
         return proposedProjects.add(idProject);
@@ -51,13 +52,22 @@ public class User {
         return partecipateInProjects.remove(idProject);
     }
 
-    public boolean addEvaluations(UUID idEvaluations) {
-        return evaluations.add(idEvaluations);
+    public boolean addEvaluationsSend(UUID idEvaluations) {
+        return evaluationsSend.add(idEvaluations);
     }
 
-    public boolean removeEvaluationss(UUID idEvaluations) {
-        return evaluations.remove(idEvaluations);
+    public boolean removeEvaluationsSend(UUID idEvaluations) {
+        return evaluationsSend.remove(idEvaluations);
     }
+
+    public boolean addEvaluationsReceived(UUID idEvaluations) {
+        return evaluationsReceived.add(idEvaluations);
+    }
+
+    public boolean removeEvaluationsReceived(UUID idEvaluations) {
+        return evaluationsReceived.remove(idEvaluations);
+    }
+
 
     public boolean addCandidacy(UUID idCandidacy) {
         return candidacies.add(idCandidacy);

@@ -1,8 +1,8 @@
 package it.unicam.qwert123.doit.backend.models;
 
 import java.util.Date;
-import java.util.UUID;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -12,8 +12,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter
 @Setter
+@Getter
 @NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Document(collection = "project")
@@ -36,6 +36,7 @@ public class Project {
     private List<UUID> candidacies;
     private List<UUID> invites;
     private List<String> designers;
+    private List<UUID> evaluations;
 
     boolean getCandidacyMode() {
         Date now = new Date();
@@ -70,5 +71,13 @@ public class Project {
 
     public boolean removeDesigner(String idDesigner) {
         return designers.remove(idDesigner);
+    }
+
+    public boolean addEvaluations(UUID idEvaluations) {
+        return evaluations.add(idEvaluations);
+    }
+
+    public boolean removeEvaluations(UUID idEvaluations) {
+        return evaluations.remove(idEvaluations);
     }
 }

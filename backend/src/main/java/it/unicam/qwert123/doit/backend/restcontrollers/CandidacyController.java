@@ -44,7 +44,7 @@ public class CandidacyController {
     private AccessCheckerComponent accessCheckerComponent;
 
     @PostMapping("/new")
-    @PreAuthorize("hasAuthority('DESIGNER_ENTITY') or hasAuthority('DESIGNER_PERSON')")
+    @PreAuthorize("(hasAuthority('DESIGNER_ENTITY') or hasAuthority('DESIGNER_PERSON')) and @accessCheckerComponent.sameUser(principal, #candidacy.getProjectProposer())")
     public Candidacy addCandidacy(@RequestBody @Param("candidacy") Candidacy candidacy) {
         Candidacy returnCandidacy = candidacyService.addCandidacy(candidacy);
         //update designer
