@@ -108,7 +108,11 @@ public class EvaluationController {
 
     @GetMapping("/getByProject/{id}")
     public List<Evaluation> findByProject(@PathVariable("id") String idProject) {
-        return evaluationService.findByProject(idProject);
+        try {
+        return evaluationService.findByProject(UUID.fromString(idProject));
+    } catch (IllegalArgumentException e) {
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+    } 
     }
 
     
