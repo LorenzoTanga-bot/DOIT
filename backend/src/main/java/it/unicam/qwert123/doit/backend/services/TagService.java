@@ -2,6 +2,8 @@ package it.unicam.qwert123.doit.backend.services;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -35,7 +37,7 @@ public class TagService {
     }
 
     public List<Tag> findByIds(@NonNull List<UUID> ids) {
-        return repository.findByIds(ids);
+        return StreamSupport.stream(repository.findAllById(ids).spliterator(), false).collect(Collectors.toList());
     }
 
     public Tag findByValue(@NonNull String value) {

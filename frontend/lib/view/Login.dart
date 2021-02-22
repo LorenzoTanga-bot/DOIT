@@ -15,7 +15,7 @@ class Login extends StatefulWidget {
 }
 
 class _Login extends State<Login> {
-  bool _isFirstAccess;
+ 
   String mail;
 
   LoginMessages _buildLoginMessages() {

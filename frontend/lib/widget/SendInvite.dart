@@ -1,4 +1,4 @@
-import 'package:doit/model/AuthCredential.dart';
+
 import 'package:doit/model/Invite.dart';
 import 'package:doit/model/Project.dart';
 import 'package:doit/model/User.dart';

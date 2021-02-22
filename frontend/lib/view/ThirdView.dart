@@ -115,6 +115,11 @@ class _ThirdView extends State<ThirdView> {
           onTap: () => getListInvite("PROJECT_PROPOSER")),
       GestureDetector(
           child: CardList(
+              name: "Invites from Designer",
+              sDescription: "View all invites recieved"),
+          onTap: () => getListInviteFromDesigner()),
+      GestureDetector(
+          child: CardList(
               name: "Proposed project",
               sDescription: "View all proposed project"),
           onTap: () => {
@@ -294,5 +299,28 @@ class _ThirdView extends State<ThirdView> {
           break;
         }
     }
+  }
+
+  getListInviteFromDesigner() async {
+    invites = await Provider.of<InviteProvider>(context, listen: false)
+        .findByProjectProposer(_user.getMail());
+    List<Invite> byDesigners = [];
+    for (Invite invite in invites) {
+      if (invite.getSender() == _user.getMail()) ;
+      byDesigners.add(invite);
+    }
+
+    List<String> users = [];
+    for (Invite invite in byDesigners) {
+      users.addAll([
+        invite.getDesigner(),
+        invite.getProjectProposer(),
+        invite.getSender()
+      ]);
+    }
+    context.read<ViewProvider>().pushWidget(FutureBuild(
+        future: Provider.of<UserProvider>(context, listen: false)
+            .updateListUsers(users),
+        newView: ListOfInvites(invites: byDesigners)));
   }
 }

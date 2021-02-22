@@ -129,9 +129,9 @@ class _CreateModifyProject extends State<CreateModifyProject> {
     }
     if (_dateOfCreation.isAfter(_dateOfStartCandidacy)) {
       _visibilityLabelStartCandidacy = true;
-      return true;
+      return false;
     }
-    return false;
+    return true;
   }
 
   bool _checkPrincipalInfomration() {
