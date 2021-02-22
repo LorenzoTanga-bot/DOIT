@@ -15,6 +15,7 @@ import 'package:doit/widget/FutureBuilder.dart';
 
 import 'package:doit/widget/ListTags.dart';
 import 'package:doit/widget/SendCandidacy.dart';
+import 'package:doit/widget/SendEvaluation.dart';
 import 'package:doit/widget/SendInvite.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -316,7 +317,8 @@ class _ProjectOverView extends State<ProjectOverView> {
 
   bool isADesigner() {
     if (_project.getCandidacyMode().toString() == "true") {
-      User user = Provider.of<AuthCredentialProvider>(context, listen:  false).getUser();
+      User user =
+          Provider.of<AuthCredentialProvider>(context, listen: false).getUser();
       if (user == null) return false;
       return (user.getRoles().contains(UserRole.DESIGNER_PERSON) ||
           (user.getRoles().contains(UserRole.DESIGNER_ENTITY) &&
@@ -327,7 +329,8 @@ class _ProjectOverView extends State<ProjectOverView> {
 
   bool isAnExpert() {
     if (_project.getEvaluationMode()) {
-      User user = Provider.of<AuthCredentialProvider>(context, listen:  false).getUser();
+      User user =
+          Provider.of<AuthCredentialProvider>(context, listen: false).getUser();
       if (user == null) return false;
       if (isSuitable(user)) {
         return (user.getRoles().contains(UserRole.EXPERT));
@@ -338,7 +341,8 @@ class _ProjectOverView extends State<ProjectOverView> {
 
   bool isTheProjectProposerOrCompanyDesigner() {
     if (_project.getCandidacyMode().toString() == "true") {
-      User user = Provider.of<AuthCredentialProvider>(context, listen:  false).getUser();
+      User user =
+          Provider.of<AuthCredentialProvider>(context, listen: false).getUser();
       if (user == null)
         return false;
       else {
@@ -354,7 +358,8 @@ class _ProjectOverView extends State<ProjectOverView> {
 
   bool isADesignerOfTeam() {
     if (_project.getCandidacyMode().toString() == "true") {
-      User user = Provider.of<AuthCredentialProvider>(context, listen:  false).getUser();
+      User user =
+          Provider.of<AuthCredentialProvider>(context, listen: false).getUser();
       if (user == null) {
         return false;
       } else if (isADesigner()) {
@@ -365,7 +370,8 @@ class _ProjectOverView extends State<ProjectOverView> {
   }
 
   bool isTheProjectProposer() {
-    User user = Provider.of<AuthCredentialProvider>(context, listen:  false).getUser();
+    User user =
+        Provider.of<AuthCredentialProvider>(context, listen: false).getUser();
     if (user == null) return false;
     return _project.getProjectProposer() == user.getMail();
   }
@@ -386,11 +392,17 @@ class _ProjectOverView extends State<ProjectOverView> {
               child: Align(
                   alignment: Alignment.bottomRight,
                   child: RaisedButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
-                    onPressed: () => {},
-                    child: Text("Valuta"),
-                  ))),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10)),
+                      onPressed: () => {
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return SendEvaluation(id: _project.getId());
+                              },
+                              child: Text("Valuta"),
+                            )
+                          }))),
         if (isADesigner())
           Padding(
               padding: EdgeInsets.only(right: 15),

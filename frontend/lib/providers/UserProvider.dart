@@ -45,7 +45,9 @@ class UserProvider with ChangeNotifier {
 
   void updateListUsersLocal(List<User> users) {
     for (User user in users) {
-      if (!_listUsers.contains(user)) {
+      if (_listUsers
+          .where((element) => element.getMail() == user.getMail())
+          .isEmpty) {
         _listUsers.add(user);
       }
     }

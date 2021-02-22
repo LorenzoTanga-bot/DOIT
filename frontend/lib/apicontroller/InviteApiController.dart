@@ -105,4 +105,9 @@ class InviteApiController {
             headers: BasicAuthConfig().getBaseHeader()))
         .body;
   }
+    Future<String> getInvitesBySender(String id) async {
+    return (await http.get(Uri.encodeFull("$_baseUrl/getBySender/$id"),
+            headers: BasicAuthConfig().getBaseHeader()))
+        .body;
+  }
 }

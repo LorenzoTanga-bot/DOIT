@@ -140,6 +140,10 @@ public List<Invite> get(){
     public List<Invite> getInvitesByProjectProposer(@PathVariable("user") String user) {
         return inviteService.findByProjectProposer(user);
     }
+    @GetMapping("/getBySender/{user}")
+    public List<Invite> getInvitesBySender(@PathVariable("user") String user) {
+        return inviteService.findBySender(user);
+    }
 
     @GetMapping("/getByProject/{id}")
     public List<Invite> getInvitesByProject(@PathVariable("id") String project) {

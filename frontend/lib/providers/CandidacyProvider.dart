@@ -46,7 +46,9 @@ class CandidacyProvider with ChangeNotifier {
 
   void updateListCandidaciesLocal(List<Candidacy> candidacies) {
     for (Candidacy candidacy in candidacies) {
-      if (!_listCandidacies.contains(candidacy)) {
+      if (_listCandidacies
+          .where((element) => element.getId() == candidacy.getId())
+          .isEmpty) {
         _listCandidacies.add(candidacy);
       }
     }

@@ -74,6 +74,12 @@ class BackendInviteService implements InviteService {
   }
 
   @override
+  Future<List<Invite>> findBySender(String sender) async {
+    return _createListInvite(
+        await _controller.getInvitesBySender(sender));
+  }
+
+  @override
   Future<Invite> updateStateDesigner(Invite invite) async {
     return _createInvite(await _controller.updateStateDesigner(invite));
   }

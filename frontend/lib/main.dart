@@ -1,5 +1,6 @@
 import 'package:doit/providers/AuthCredentialProvider.dart';
 import 'package:doit/providers/CandidacyProvider.dart';
+import 'package:doit/providers/EvaluationProvider.dart';
 import 'package:doit/providers/InviteProvider.dart';
 import 'package:doit/providers/ProjectProvider.dart';
 import 'package:doit/providers/SearchProvider.dart';
@@ -8,6 +9,7 @@ import 'package:doit/providers/UserProvider.dart';
 import 'package:doit/providers/ViewProvider.dart';
 import 'package:doit/services/backendservice/BackendAuthCredential.dart';
 import 'package:doit/services/backendservice/BackendCandidacyService.dart';
+import 'package:doit/services/backendservice/BackendEvaluationService.dart';
 import 'package:doit/services/backendservice/BackendInviteService.dart';
 import 'package:doit/services/backendservice/BackendProjectservice.dart';
 import 'package:doit/services/backendservice/BackendTagService.dart';
@@ -41,6 +43,9 @@ void main() {
                 CandidacyProvider(new BackendCandidacyService(_ip))),
         ChangeNotifierProvider(
             create: (context) => InviteProvider(new BackendInviteService(_ip))),
+        ChangeNotifierProvider(
+            create: (context) =>
+                EvaluationProvider(new BackendEvaluationService(_ip))),
       ],
       child: Doit(),
     ),

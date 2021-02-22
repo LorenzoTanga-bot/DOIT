@@ -16,10 +16,10 @@ class InviteProvider with ChangeNotifier {
     return newInvite;
   }
 
-
   Future<Invite> updateStateDesigner(Invite invite) async {
     Invite updateInvite = await _service.updateStateDesigner(invite);
-    _listInvite.remove(invite);
+    _listInvite
+        .removeWhere((element) => element.getId() == updateInvite.getId());
     _listInvite.add(updateInvite);
     notifyListeners();
     return updateInvite;
@@ -38,7 +38,11 @@ class InviteProvider with ChangeNotifier {
     updateListInvitesLocal(found);
     return found;
   }
-
+Future<List<Invite>> findBySender(String sender) async {
+    List<Invite> found = await _service.findBySender(sender);
+    updateListInvitesLocal(found);
+    return found;
+  }
   Future<List<Invite>> findByProjectProposer(String projectProposer) async {
     List<Invite> found = await _service.findByProjectProposer(projectProposer);
     updateListInvitesLocal(found);
@@ -64,7 +68,9 @@ class InviteProvider with ChangeNotifier {
 
   void updateListInvitesLocal(List<Invite> invites) {
     for (Invite invite in invites) {
-      if (!_listInvite.contains(invite)) {
+      if (_listInvite
+          .where((element) => element.getId() == invite.getId())
+          .isEmpty) {
         _listInvite.add(invite);
       }
     }

@@ -111,6 +111,9 @@ public class InviteService {
     public List<Invite> findByDesigner(String user) {
         return repository.findByDesigner(user);
     }
+    public List<Invite> findBySender(String user) {
+        return repository.findBySender(user);
+    }
 
     public List<Invite> findByProjectProposer(String user) {
         return repository.findByProjectProposer(user);

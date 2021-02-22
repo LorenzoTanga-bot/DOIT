@@ -13,7 +13,7 @@ class ProjectProvider with ChangeNotifier {
 
   Future<ProjectsPage> pageListUser(int index) async {
     ProjectsPage page = await _service.getProjectsPage(index);
-    _listProjects.addAll(page.getListProject());
+    updateListProjectsLocal(page.getListProject());
     return page;
   }
 
@@ -46,7 +46,9 @@ class ProjectProvider with ChangeNotifier {
 
   void updateListProjectsLocal(List<Project> projects) {
     for (Project project in projects) {
-      if (!_listProjects.contains(project)) {
+      if (_listProjects
+          .where((element) => element.getId() == project.getId())
+          .isEmpty) {
         _listProjects.add(project);
       }
     }

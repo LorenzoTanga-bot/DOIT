@@ -12,9 +12,7 @@ class BackendUserService implements UserService {
     _controller = new UserApiController(ip);
   }
 
-  User _newNotCompleted(var user) {
-    return new User.firstAccess(user["mail"]);
-  }
+
 
   List<User> _createListUser(String controllerJson) {
     if (controllerJson == "") return null;

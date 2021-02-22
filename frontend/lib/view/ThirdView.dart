@@ -1,10 +1,12 @@
 import 'package:doit/model/AuthCredential.dart';
 import 'package:doit/model/Candidacy.dart';
+import 'package:doit/model/Evaluation.dart';
 import 'package:doit/model/Invite.dart';
 
 import 'package:doit/model/User.dart';
 import 'package:doit/providers/AuthCredentialProvider.dart';
 import 'package:doit/providers/CandidacyProvider.dart';
+import 'package:doit/providers/EvaluationProvider.dart';
 import 'package:doit/providers/InviteProvider.dart';
 import 'package:doit/providers/ProjectProvider.dart';
 import 'package:doit/providers/TagProvider.dart';
@@ -12,6 +14,7 @@ import 'package:doit/providers/UserProvider.dart';
 import 'package:doit/providers/ViewProvider.dart';
 
 import 'package:doit/view/ListOfCandidacies.dart';
+import 'package:doit/view/ListOfEvaluations.dart';
 import 'package:doit/view/ListOfInvites.dart';
 import 'package:doit/view/ListOfProjects.dart';
 import 'package:doit/view/ProfileOverView.dart';
@@ -31,6 +34,7 @@ class _ThirdView extends State<ThirdView> {
   List<Widget> _listView = [];
   List<Candidacy> candidacies = [];
   List<Invite> invites = [];
+  List<Evaluation> evaluations = [];
 
   _default() {
     _listView.addAll([
@@ -117,7 +121,7 @@ class _ThirdView extends State<ThirdView> {
           child: CardList(
               name: "Invites from Designer",
               sDescription: "View all invites recieved"),
-          onTap: () => getListInviteFromDesigner()),
+          onTap: () => getListInviteFromDesigner("PROJECT_PROPOSER")),
       GestureDetector(
           child: CardList(
               name: "Proposed project",
@@ -162,12 +166,17 @@ class _ThirdView extends State<ThirdView> {
           child: CardList(
               name: "Invites", sDescription: "View all invites recieved"),
           onTap: () => getListInvite("DESIGNER")),
+      GestureDetector(
+          child: CardList(
+              name: "Evaluations",
+              sDescription: "View all evaluations recieved"),
+          onTap: () => getEvaluationsList("DESIGNER", null)),
       if (_user.getRoles().contains(UserRole.DESIGNER_ENTITY))
         GestureDetector(
             child: CardList(
                 name: "Invites to designer",
                 sDescription: "View all invites sent"),
-            onTap: () => {}),
+            onTap: () => {getListInviteFromDesigner("DESIGNER")}),
     ]);
   }
 
@@ -193,10 +202,15 @@ class _ThirdView extends State<ThirdView> {
       ),
       GestureDetector(
         child: CardList(
-            name: "Projects evaluated",
-            sDescription: "Active and completed projects evaluated"),
-        //TODO aggiustare
-        onTap: () => context.read<ViewProvider>().pushWidget(null),
+            name: "evaluations of projects",
+            sDescription: "View all evaluations given to projects"),
+        onTap: () => getEvaluationsList("EXPERT", true),
+      ),
+      GestureDetector(
+        child: CardList(
+            name: " evaluattions of team",
+            sDescription: "Active all evaluations given to teams"),
+        onTap: () => getEvaluationsList("EXPERT", false),
       ),
     ]);
   }
@@ -283,7 +297,7 @@ class _ThirdView extends State<ThirdView> {
       case "PROJECT_PROPOSER":
         {
           invites = await Provider.of<InviteProvider>(context, listen: false)
-              .findByProjectProposer(_user.getMail());
+              .findBySender(_user.getMail());
           List<String> users = [];
           for (Invite invite in invites) {
             users.addAll([
@@ -301,26 +315,108 @@ class _ThirdView extends State<ThirdView> {
     }
   }
 
-  getListInviteFromDesigner() async {
-    invites = await Provider.of<InviteProvider>(context, listen: false)
-        .findByProjectProposer(_user.getMail());
-    List<Invite> byDesigners = [];
-    for (Invite invite in invites) {
-      if (invite.getSender() == _user.getMail()) ;
-      byDesigners.add(invite);
-    }
+  getListInviteFromDesigner(String role) async {
+    switch (role) {
+      case "PROJECT_PROPOSER":
+        invites = await Provider.of<InviteProvider>(context, listen: false)
+            .findByProjectProposer(_user.getMail());
+        List<Invite> byDesigners = [];
+        for (Invite invite in invites) {
+          if (!(invite.getSender() == _user.getMail())) byDesigners.add(invite);
+        }
 
-    List<String> users = [];
-    for (Invite invite in byDesigners) {
-      users.addAll([
-        invite.getDesigner(),
-        invite.getProjectProposer(),
-        invite.getSender()
-      ]);
+        List<String> users = [];
+        for (Invite invite in byDesigners) {
+          users.addAll([
+            invite.getDesigner(),
+            invite.getProjectProposer(),
+            invite.getSender()
+          ]);
+        }
+        context.read<ViewProvider>().pushWidget(FutureBuild(
+            future: Provider.of<UserProvider>(context, listen: false)
+                .updateListUsers(users),
+            newView: ListOfInvites(invites: byDesigners)));
+
+        break;
+
+      case "DESIGNER":
+        invites = await Provider.of<InviteProvider>(context, listen: false)
+            .findBySender(_user.getMail());
+        List<Invite> byDesigners = [];
+        for (Invite invite in invites) {
+          if (!(invite.getProjectProposer() == _user.getMail()))
+            byDesigners.add(invite);
+        }
+        List<String> users = [];
+        for (Invite invite in byDesigners) {
+          users.addAll([
+            invite.getDesigner(),
+            invite.getProjectProposer(),
+            invite.getSender()
+          ]);
+        }
+        context.read<ViewProvider>().pushWidget(FutureBuild(
+            future: Provider.of<UserProvider>(context, listen: false)
+                .updateListUsers(users),
+            newView: ListOfInvites(invites: byDesigners)));
+
+        break;
     }
-    context.read<ViewProvider>().pushWidget(FutureBuild(
-        future: Provider.of<UserProvider>(context, listen: false)
-            .updateListUsers(users),
-        newView: ListOfInvites(invites: byDesigners)));
+  }
+
+  getEvaluationsList(String role, bool isForProject) async {
+    switch (role) {
+      case "EXPERT":
+        evaluations =
+            await Provider.of<EvaluationProvider>(context, listen: false)
+                .findBySender(_user.getMail());
+        List<Evaluation> toShow = [];
+        if (isForProject)
+          for (Evaluation evaluation in evaluations) {
+            if (evaluation.getEvaluationMode() == EvaluationMode.PROJECT)
+              toShow.add(evaluation);
+          }
+        else
+          for (Evaluation evaluation in evaluations) {
+            if (evaluation.getEvaluationMode() == EvaluationMode.TEAM)
+              toShow.add(evaluation);
+          }
+        List<String> project = [];
+        for (Evaluation evaluation in toShow) {
+          project.add(evaluation.getProject());
+        }
+        context.read<ViewProvider>().pushWidget(FutureBuild(
+            future: Provider.of<ProjectProvider>(context, listen: false)
+                .updateListProject(project),
+            newView: ListOfEvaluations(evaluations: toShow)));
+        break;
+
+      case "DESIGNER":
+        List<String> idEvaluations = _user.getEvaluationsReceived();
+
+        await Provider.of<EvaluationProvider>(context, listen: false)
+            .updateListEvaluation(idEvaluations);
+        evaluations = Provider.of<EvaluationProvider>(context, listen: false)
+            .findByIds(idEvaluations);
+
+        List<String> project = [];
+        List<Evaluation> toShow = [];
+        if (evaluations.isNotEmpty) {
+          for (Evaluation evaluation in evaluations) {
+            if (evaluation.getEvaluationMode() == EvaluationMode.TEAM)
+              toShow.add(evaluation);
+          }
+
+          for (Evaluation evaluation in toShow) {
+            project.add(evaluation.getProject());
+          }
+        }
+        context.read<ViewProvider>().pushWidget(FutureBuild(
+            future: Provider.of<ProjectProvider>(context, listen: false)
+                .updateListProject(project),
+            newView: ListOfEvaluations(evaluations: toShow)));
+        break;
+    }
   }
 }
