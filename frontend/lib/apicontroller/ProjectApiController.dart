@@ -32,7 +32,8 @@ class ProjectApiController {
               "candidacies": newProject.getCandidacies(),
               "invites": newProject.getInvites(),
               "designers": newProject.getDesigners(),
-              "evaluations" : newProject.getEvaluations()
+              "projectEvaluations" : newProject.getProjectEvaluations(),
+               "teamEvaluations" : newProject.getTeamEvaluations()
             })))
         .body;
   }
@@ -56,7 +57,8 @@ class ProjectApiController {
               "candidacies": modifiedProject.getCandidacies(),
               "invites": modifiedProject.getInvites(),
               "designers": modifiedProject.getDesigners(),
-              "evaluations" : modifiedProject.getEvaluations()
+              "projectEvaluations" : modifiedProject.getProjectEvaluations(),
+               "teamEvaluations" : modifiedProject.getTeamEvaluations()
             })))
         .body;
   }

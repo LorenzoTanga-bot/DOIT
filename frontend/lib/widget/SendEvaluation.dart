@@ -3,14 +3,16 @@ import 'package:doit/model/Project.dart';
 import 'package:doit/providers/AuthCredentialProvider.dart';
 import 'package:doit/providers/EvaluationProvider.dart';
 import 'package:doit/providers/ProjectProvider.dart';
+import 'package:doit/providers/UserProvider.dart';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class SendEvaluation extends StatefulWidget {
   final String id;
-
-  const SendEvaluation({Key key, this.id}) : super(key: key);
+  final BuildContext context;
+  const SendEvaluation({Key key, @required this.id, @required this.context})
+      : super(key: key);
 
   @override
   _SendEvaluation createState() => _SendEvaluation();
@@ -28,7 +30,7 @@ class _SendEvaluation extends State<SendEvaluation> {
     _project = context.read<ProjectProvider>().findById(widget.id);
   }
 
-  void createEvaluation() async {
+  void createEvaluation(BuildContext context) async {
     Evaluation evaluation = new Evaluation();
     evaluation
         .setSender(context.read<AuthCredentialProvider>().getUser().getMail());
@@ -39,11 +41,18 @@ class _SendEvaluation extends State<SendEvaluation> {
     else
       evaluation.setEvaluationMode(EvaluationMode.PROJECT);
     evaluation.setProject(_project.getId());
-    await context.read<EvaluationProvider>().addEvaluation(evaluation);
+    await Provider.of<EvaluationProvider>(context, listen: false)
+        .addEvaluation(evaluation);
+
+    await Provider.of<ProjectProvider>(context, listen: false)
+        .reloadProject(_project.getId());
+    await Provider.of<UserProvider>(context, listen: false)
+        .reloadUser(context.read<AuthCredentialProvider>().getUser().getMail());
   }
 
   @override
   Widget build(BuildContext context) {
+    context = widget.context;
     return AlertDialog(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15.0),
@@ -60,7 +69,7 @@ class _SendEvaluation extends State<SendEvaluation> {
                   style: TextStyle(fontSize: 17),
                 ),
                 Radio(
-                    value: 1,
+                    value: 0,
                     groupValue: group,
                     onChanged: (value) {
                       setState(() {
@@ -70,7 +79,7 @@ class _SendEvaluation extends State<SendEvaluation> {
                     }),
                 Text("Project", style: TextStyle(fontSize: 17)),
                 Radio(
-                  value: 2,
+                  value: 1,
                   groupValue: group,
                   onChanged: (value) {
                     setState(() {
@@ -128,7 +137,8 @@ class _SendEvaluation extends State<SendEvaluation> {
               RaisedButton(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10)),
-                onPressed: () => {createEvaluation(), Navigator.pop(context)},
+                onPressed: () =>
+                    {createEvaluation(context), Navigator.pop(context)},
                 child: Text("Evaluate"),
               )
             ])

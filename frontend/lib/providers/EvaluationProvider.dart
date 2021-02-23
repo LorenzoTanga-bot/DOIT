@@ -27,13 +27,13 @@ class EvaluationProvider with ChangeNotifier {
 
   Future<List<Evaluation>> findBySender(String sender) async {
     List<Evaluation> found = await _service.findBySender(sender);
-    updateListInvitesLocal(found);
+    updateListEvaluationsLocal(found);
     return found;
   }
 
   Future<List<Evaluation>> findByProject(String project) async {
     List<Evaluation> found = await _service.findByProject(project);
-    updateListInvitesLocal(found);
+    updateListEvaluationsLocal(found);
     return found;
   }
 
@@ -48,7 +48,7 @@ class EvaluationProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void updateListInvitesLocal(List<Evaluation> evaluations) {
+  void updateListEvaluationsLocal(List<Evaluation> evaluations) {
     for (Evaluation evaluation in evaluations) {
       if (_listEvaluations
           .where((element) => element.getId() == evaluation.getId())

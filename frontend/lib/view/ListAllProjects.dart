@@ -1,4 +1,5 @@
 import 'package:doit/model/Project.dart';
+import 'package:doit/providers/EvaluationProvider.dart';
 import 'package:doit/providers/ProjectProvider.dart';
 import 'package:doit/providers/TagProvider.dart';
 import 'package:doit/providers/UserProvider.dart';
@@ -19,7 +20,10 @@ class _ListAllProjects extends State<ListAllProjects> {
 
   _updateUserList(List<Project> projects) {
     Set<String> usersMail = new Set();
-    for (Project item in projects) usersMail.add(item.getProjectProposer());
+    for (Project item in projects) {
+      usersMail.add(item.getProjectProposer());
+      usersMail.addAll(item.getDesigners());
+    }
     context.read<UserProvider>().updateListUsers(usersMail.toList());
   }
 
@@ -29,12 +33,24 @@ class _ListAllProjects extends State<ListAllProjects> {
     context.read<TagProvider>().updateListTag(tagId.toList());
   }
 
+  _updateEvaluationList(List<Project> project) {
+    Set<String> evaluationsId = new Set();
+    for (Project item in project) {
+      evaluationsId.addAll(item.getTeamEvaluations());
+      evaluationsId.addAll(item.getTeamEvaluations());
+      context
+          .read<EvaluationProvider>()
+          .updateListEvaluation(evaluationsId.toList());
+    }
+  }
+
   Future<void> _fetchPage(int pageKey) async {
     try {
       ProjectsPage newItems =
           await context.read<ProjectProvider>().pageListUser(pageKey);
       _updateUserList(newItems.getListProject());
       _updateTagList(newItems.getListProject());
+      _updateEvaluationList(newItems.getListProject());
       if (newItems.isLast()) {
         _pagingController.appendLastPage(newItems.getListProject());
       } else {

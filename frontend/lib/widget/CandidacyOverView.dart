@@ -3,6 +3,7 @@ import 'package:doit/model/Project.dart';
 import 'package:doit/model/User.dart';
 import 'package:doit/providers/AuthCredentialProvider.dart';
 import 'package:doit/providers/CandidacyProvider.dart';
+import 'package:doit/providers/EvaluationProvider.dart';
 
 import 'package:doit/providers/ProjectProvider.dart';
 import 'package:doit/providers/TagProvider.dart';
@@ -34,7 +35,8 @@ class _CandidacyOverView extends State<CandidacyOverView> {
   User user;
   void initState() {
     super.initState();
-    project = Provider.of<ProjectProvider>(context, listen: false)
+    project = context
+        .watch<ProjectProvider>()
         .findById(widget.candidacy.getProject());
     state = widget.candidacy.getState().toString();
     state = state.substring(state.indexOf(".") + 1);
@@ -124,6 +126,8 @@ class _CandidacyOverView extends State<CandidacyOverView> {
                           ..onTap = () {
                             Navigator.pop(context);
                             List<String> users = [project.getProjectProposer()];
+                            List<String> evaluations = project.getTeamEvaluations();
+                            evaluations.addAll(project.getProjectEvaluations());
                             users.addAll(project.getDesigners());
                             context.read<ViewProvider>().pushWidget(FutureBuild(
                                 future: Future.wait([
@@ -132,10 +136,12 @@ class _CandidacyOverView extends State<CandidacyOverView> {
                                       .updateListUsers(users),
                                   Provider.of<TagProvider>(context,
                                           listen: false)
-                                      .updateListTag(project.getTag())
+                                      .updateListTag(project.getTag()),
+                                      Provider.of<EvaluationProvider>(context,
+                                          listen: false).updateListEvaluation(evaluations)
                                 ]),
                                 newView: ProjectOverView(
-                                  id: project.getId(),
+                                  project: project,
                                 )));
                           }))
               ]),

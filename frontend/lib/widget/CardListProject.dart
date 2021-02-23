@@ -1,4 +1,5 @@
 import 'package:doit/model/Project.dart';
+import 'package:doit/providers/EvaluationProvider.dart';
 import 'package:doit/providers/TagProvider.dart';
 import 'package:doit/providers/UserProvider.dart';
 import 'package:doit/providers/ViewProvider.dart';
@@ -47,16 +48,26 @@ class CardListProject extends StatelessWidget {
       ),
       onTap: () {
         List<String> users = [project.getProjectProposer()];
+        List<String> evaluations = [];
+        for (String evaluation in project.getTeamEvaluations()) {
+          evaluations.add(evaluation);
+        }
+        for (String evaluation in project.getProjectEvaluations()) {
+          evaluations.add(evaluation);
+        }
+
         users.addAll(project.getDesigners());
         context.read<ViewProvider>().pushWidget(FutureBuild(
             future: Future.wait([
               Provider.of<UserProvider>(context, listen: false)
                   .updateListUsers(users),
               Provider.of<TagProvider>(context, listen: false)
-                  .updateListTag(project.getTag())
+                  .updateListTag(project.getTag()),
+              Provider.of<EvaluationProvider>(context, listen: false)
+                  .updateListEvaluation(evaluations)
             ]),
             newView: ProjectOverView(
-              id: project.getId(),
+              project: project,
             )));
       },
     );

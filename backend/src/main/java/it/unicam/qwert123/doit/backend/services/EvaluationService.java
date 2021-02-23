@@ -54,7 +54,7 @@ public class EvaluationService {
 
     public Evaluation findById(@NonNull UUID id) throws ResponseStatusException {
         return evaluationRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Project not found"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Evaluation not found"));
     }
 
     public List<Evaluation> findByIds(List<UUID> ids) {

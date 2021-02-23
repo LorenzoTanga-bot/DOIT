@@ -1,6 +1,7 @@
 import 'package:doit/model/Evaluation.dart';
 import 'package:doit/model/Project.dart';
 import 'package:doit/model/User.dart';
+import 'package:doit/providers/EvaluationProvider.dart';
 import 'package:doit/providers/ProjectProvider.dart';
 import 'package:doit/providers/TagProvider.dart';
 import 'package:doit/providers/UserProvider.dart';
@@ -41,53 +42,63 @@ class _EvaluationOverView extends State<EvaluationOverView> {
           borderRadius: BorderRadius.circular(15.0),
         ),
         title: Text("Evaluation"),
-        content:
-            Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Row(children: [
-            Text("Project: "),
-            RichText(
-                text: TextSpan(
-                    text: (project.getName()),
-                    style: TextStyle(color: Colors.black),
-                    recognizer: TapGestureRecognizer()
-                      ..onTap = () {
-                        Navigator.pop(context);
-                        List<String> users = [project.getProjectProposer()];
-                        users.addAll(project.getDesigners());
-                        context.read<ViewProvider>().pushWidget(FutureBuild(
-                            future: Future.wait([
-                              Provider.of<UserProvider>(context, listen: false)
-                                  .updateListUsers(users),
-                              Provider.of<TagProvider>(context, listen: false)
-                                  .updateListTag(project.getTag())
-                            ]),
-                            newView: ProjectOverView(
-                              id: project.getId(),
-                            )));
-                      }))
-          ]),
-          Divider(
-            color: Colors.white,
-            height: 10,
-            thickness: 1,
-            indent: 2,
-            endIndent: 2,
-          ),
-           Text("Evaluation for : "+ state),
-            Divider(
-            color: Colors.white,
-            height: 10,
-            thickness: 1,
-            indent: 2,
-            endIndent: 2,
-          ),
-          Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text("Message : "),
-            Flexible(
-                child: Text(
-              widget.evaluation.getMessage(),
-            ))
-          ]),
-        ]));
+        content: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(children: [
+                Text("Project: "),
+                RichText(
+                    text: TextSpan(
+                        text: (project.getName()),
+                        style: TextStyle(color: Colors.black),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            Navigator.pop(context);
+                            List<String> users = [project.getProjectProposer()];
+                            List<String> evaluations =
+                                project.getTeamEvaluations();
+                            evaluations.addAll(project.getProjectEvaluations());
+                            users.addAll(project.getDesigners());
+                            context.read<ViewProvider>().pushWidget(FutureBuild(
+                                future: Future.wait([
+                                  Provider.of<UserProvider>(context,
+                                          listen: false)
+                                      .updateListUsers(users),
+                                  Provider.of<TagProvider>(context,
+                                          listen: false)
+                                      .updateListTag(project.getTag()),
+                                  Provider.of<EvaluationProvider>(context,
+                                          listen: false)
+                                      .updateListEvaluation(evaluations)
+                                ]),
+                                newView: ProjectOverView(
+                                  project: project,
+                                )));
+                          }))
+              ]),
+              Divider(
+                color: Colors.white,
+                height: 10,
+                thickness: 1,
+                indent: 2,
+                endIndent: 2,
+              ),
+              Text("Evaluation for : " + state),
+              Divider(
+                color: Colors.white,
+                height: 10,
+                thickness: 1,
+                indent: 2,
+                endIndent: 2,
+              ),
+              Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                Text("Message : "),
+                Flexible(
+                    child: Text(
+                  widget.evaluation.getMessage(),
+                ))
+              ]),
+            ]));
   }
 }

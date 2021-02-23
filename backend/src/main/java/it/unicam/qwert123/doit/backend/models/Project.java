@@ -36,7 +36,8 @@ public class Project {
     private List<UUID> candidacies;
     private List<UUID> invites;
     private List<String> designers;
-    private List<UUID> evaluations;
+    private List<UUID> projectEvaluations;
+    private List<UUID> teamEvaluations;
 
     boolean getCandidacyMode() {
         Date now = new Date();
@@ -73,11 +74,18 @@ public class Project {
         return designers.remove(idDesigner);
     }
 
-    public boolean addEvaluations(UUID idEvaluations) {
-        return evaluations.add(idEvaluations);
+    public boolean addProjectEvaluations(UUID idEvaluations) {
+        return projectEvaluations.add(idEvaluations);
     }
 
-    public boolean removeEvaluations(UUID idEvaluations) {
-        return evaluations.remove(idEvaluations);
+    public boolean removeProjecEvaluations(UUID idEvaluations) {
+        return projectEvaluations.remove(idEvaluations);
+    }
+    public boolean addTeamEvaluations(UUID idEvaluations) {
+        return teamEvaluations.add(idEvaluations);
+    }
+
+    public boolean removeTeamEvaluations(UUID idEvaluations) {
+        return teamEvaluations.remove(idEvaluations);
     }
 }

@@ -16,7 +16,8 @@ class BackendProjectService implements ProjectService {
     List<String> invites = [];
     List<String> candidacies = [];
     List<String> designers = [];
-    List<String> evaluations = [];
+    List<String> projectEvaluations = [];
+    List<String> teamEvaluations = [];
     for (String tag in project["tag"]) tags.add(tag);
     if (project["invites"] != null)
       for (String invite in project["invites"]) invites.add(invite);
@@ -25,9 +26,12 @@ class BackendProjectService implements ProjectService {
         candidacies.add(candidacy);
     if (project["designers"] != null)
       for (String designer in project["designers"]) designers.add(designer);
-    if (project["evaluations"] != null)
-      for (String evaluation in project["evaluations"])
-        evaluations.add(evaluation);
+    if (project["projectEvaluations"] != null)
+      for (String evaluation in project["projectEvaluations"])
+        projectEvaluations.add(evaluation);
+    if (project["teamEvaluations"] != null)
+      for (String evaluation in project["teamEvaluations"])
+        teamEvaluations.add(evaluation);
     return new Project.fromJson(
         project["id"],
         project["projectProposer"],
@@ -44,7 +48,8 @@ class BackendProjectService implements ProjectService {
         candidacies,
         invites,
         designers,
-        evaluations);
+        projectEvaluations,
+        teamEvaluations);
   }
 
   Project _createProject(String controllerJson) {

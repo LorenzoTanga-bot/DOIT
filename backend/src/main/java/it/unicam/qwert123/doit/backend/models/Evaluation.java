@@ -16,7 +16,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@Document(collection = "authcredential")
+@Document(collection = "evaluation")
 public class Evaluation {
     @Id
     private UUID id;

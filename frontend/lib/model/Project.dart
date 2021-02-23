@@ -11,10 +11,11 @@ class Project {
   bool _evaluationMode; // if it's true, the project has evaluation mode.
   String _startCandidacy;
   String _endCandidacy;
-  List<String> _candidacies = [];
-  List<String> _invites = [];
-  List<String> _designers = [];
-  List<String> _evaluations = [];
+  List<String> _candidacies;
+  List<String> _invites;
+  List<String> _designers;
+  List<String> _projectEvaluations;
+  List<String> _teamEvaluations;
 
   Project() {
     this._dateOfCreation = DateTime.now().toIso8601String();
@@ -40,7 +41,8 @@ class Project {
       this._candidacies,
       this._invites,
       this._designers,
-      this._evaluations);
+      this._projectEvaluations,
+      this._teamEvaluations);
 
   String getId() {
     return _id;
@@ -211,21 +213,39 @@ class Project {
     return _designers;
   }
 
-  bool setEvaluations(List<String> evaluations) {
-    _evaluations = evaluations;
+  bool setProjectEvaluations(List<String> evaluations) {
+    _projectEvaluations = evaluations;
     return true;
   }
 
-  bool addEvaluations(String idEvaluations) {
-    _evaluations.add(idEvaluations);
+  bool addProjectEvaluations(String idEvaluations) {
+    _projectEvaluations.add(idEvaluations);
     return true;
   }
 
-  bool removeEvaluations(String idEvaluations) {
-    return _evaluations.remove(idEvaluations);
+  bool removeProjectEvaluations(String idEvaluations) {
+    return _projectEvaluations.remove(idEvaluations);
   }
 
-  List<String> getEvaluations() {
-    return _evaluations;
+  List<String> getProjectEvaluations() {
+    return _projectEvaluations;
+  }
+
+  bool setTeamEvaluations(List<String> evaluations) {
+    _teamEvaluations = evaluations;
+    return true;
+  }
+
+  bool addTeamEvaluations(String idEvaluations) {
+    _teamEvaluations.add(idEvaluations);
+    return true;
+  }
+
+  bool removeTeamEvaluations(String idEvaluations) {
+    return _teamEvaluations.remove(idEvaluations);
+  }
+
+  List<String> getTeamEvaluations() {
+    return _teamEvaluations;
   }
 }

@@ -9,7 +9,8 @@ class Evaluation {
 
   Evaluation();
 
-  Evaluation.complete(_id, _sender, _project, _message, _evaluationMode);
+  Evaluation.complete(this._id, this._sender, this._project, this._message,
+      this._evaluationMode);
 
   String getId() {
     return _id;
@@ -23,8 +24,8 @@ class Evaluation {
     return _sender;
   }
 
-  void setSender(String project) {
-    _project = project;
+  void setSender(String sender) {
+    _sender = sender;
   }
 
   String getProject() {

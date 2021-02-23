@@ -8,8 +8,10 @@ import 'package:provider/provider.dart';
 
 class SendCandidacy extends StatefulWidget {
   final String id;
+  final BuildContext context;
 
-  const SendCandidacy({Key key, this.id}) : super(key: key);
+  const SendCandidacy({Key key, @required this.id, @required this.context})
+      : super(key: key);
 
   @override
   _SendCandidacy createState() => _SendCandidacy();
@@ -37,11 +39,12 @@ class _SendCandidacy extends State<SendCandidacy> {
     newCandidacy.setState(StateCandidacy.WAITING);
     newCandidacy.setProjectProposer(_project.getProjectProposer());
     newCandidacy.setProject(_project.getId());
-   await context.read<CandidacyProvider>().addCandidacy(newCandidacy);
+    await context.read<CandidacyProvider>().addCandidacy(newCandidacy);
   }
 
   @override
   Widget build(BuildContext context) {
+    context = widget.context;
     return AlertDialog(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15.0),

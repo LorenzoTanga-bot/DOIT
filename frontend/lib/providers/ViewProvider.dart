@@ -83,7 +83,8 @@ class ViewProvider with ChangeNotifier {
     switch (_selectedItemPosition) {
       case 0:
         _listFirstPosition.removeLast();
-        if (_listFirstPosition.last is FutureBuild)
+        if (_listFirstPosition.isNotEmpty &&
+            _listFirstPosition.last is FutureBuild)
           _listFirstPosition.removeLast();
         _listViewPosition.insert(
             _selectedItemPosition,
@@ -93,7 +94,8 @@ class ViewProvider with ChangeNotifier {
         break;
       case 1:
         _listSecondPosition.removeLast();
-        if (_listSecondPosition.last is FutureBuild)
+        if (_listSecondPosition.isNotEmpty &&
+            _listSecondPosition.last is FutureBuild)
           _listSecondPosition.removeLast();
         _listViewPosition.insert(
             _selectedItemPosition,
@@ -103,7 +105,8 @@ class ViewProvider with ChangeNotifier {
         break;
       case 2:
         _listThirdPosition.removeLast();
-        if (_listThirdPosition.last is FutureBuild)
+        if (_listThirdPosition.isNotEmpty &&
+            _listThirdPosition.last is FutureBuild)
           _listThirdPosition.removeLast();
         _listViewPosition.insert(
             _selectedItemPosition,

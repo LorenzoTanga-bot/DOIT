@@ -53,7 +53,10 @@ public class EvaluationController {
         userService.updateUser(user);
         //update project
         Project project = projectService.findById(rEvaluation.getProject());
-        project.addEvaluations(rEvaluation.getId());
+        if(evaluation.getEvaluationMode()==EvaluationMode.TEAM)
+        project.addTeamEvaluations(rEvaluation.getId());
+        else 
+        project.addProjectEvaluations(rEvaluation.getId());
         projectService.updateProject(project);
         // update designers
         if (rEvaluation.getEvaluationMode().equals(EvaluationMode.TEAM)) {
@@ -72,10 +75,11 @@ public class EvaluationController {
         return evaluationService.updateEvaluation(evaluation);
     }
 
-    @DeleteMapping("/update")
+    @DeleteMapping("/delete")
     public boolean deleteEvaluation(@PathVariable("id") String id){
         try {
-            return projectService.deleteProject(UUID.fromString(id));
+            //da controllare
+            return evaluationService.deleteEvaluations(UUID.fromString(id));
 
         } catch (IllegalArgumentException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
@@ -91,7 +95,7 @@ public class EvaluationController {
         }
     }
     
-    @PutMapping("/getByIds/")
+    @PutMapping("/getByIds")
     public List<Evaluation> getEvaluationByIds(@RequestBody List<String> ids) {
         List<UUID> evaluationUuids = new ArrayList<>();
         for (String id : ids) 
