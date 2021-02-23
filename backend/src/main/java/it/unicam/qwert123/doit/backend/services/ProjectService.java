@@ -62,13 +62,7 @@ public class ProjectService {
             return null;
     }
 
-    public boolean deleteProject(@NonNull UUID id) throws ResponseStatusException {
-        if (existsById(id)) {
-            repository.deleteById(id);
-            return true;
-        }
-        return false;
-    }
+  
 
     public Project updateProject(@NonNull Project modifiedProject) throws ResponseStatusException {
         if (existsById(modifiedProject.getId())) { 

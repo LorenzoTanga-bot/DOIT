@@ -36,6 +36,13 @@ public class EvaluationService {
 
     public Evaluation addEvaluations(@NonNull Evaluation evaluation) {
         evaluation.setId(UUID.randomUUID());
+        List<Evaluation> evaluations = evaluationRepository.findByProject(evaluation.getProject());
+        for (Evaluation existingInvite : evaluations) {
+            if (existingInvite.getSender().equals(evaluation.getSender()))
+                if (existingInvite.getEvaluationMode().equals(evaluation.getEvaluationMode()))
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                            "Invalid evaluation: evaluation already sent");
+        }
         if (checkEvaluation(evaluation))
             return evaluationRepository.insert(evaluation);
         return null;

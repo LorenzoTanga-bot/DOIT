@@ -114,7 +114,7 @@ class _Login extends State<Login> {
               .contains(UserRole.NOT_COMPLETED)) {
             Provider.of<ViewProvider>(context, listen: false)
                 .setProfileDefault(CreateModifyProfile(
-              mail: mail,
+            
               isNewUser: true,
             ));
           } else

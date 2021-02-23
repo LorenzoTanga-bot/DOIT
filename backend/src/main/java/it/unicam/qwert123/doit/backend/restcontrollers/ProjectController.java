@@ -54,18 +54,7 @@ public class ProjectController {
         return projectService.updateProject(modifiedProject);
     }
 
-    @DeleteMapping("/delete/{id}")
-    public boolean deleteProject(@PathVariable("id") String id) {
-        try {
-            // aggiungere che cancella il progetto dalla lista dei progetti del
-            // projectProposer
-            return projectService.deleteProject(UUID.fromString(id));
-
-        } catch (IllegalArgumentException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
-        }
-
-    }
+   
 
     @GetMapping("/getPage/{index}/{size}")
     public Page<Project> getProjectsPage(@PathVariable("index") int index, @PathVariable("size") int size) {

@@ -23,8 +23,11 @@ class InviteOverview extends StatefulWidget {
   final Invite invite;
   final BuildContext context;
 
-  const InviteOverview({Key key, @required this.invite, @required this.context})
-      : super(key: key);
+  const InviteOverview({
+    Key key,
+    @required this.invite,
+    @required this.context,
+  }) : super(key: key);
 
   @override
   _InviteOverview createState() => _InviteOverview();
@@ -173,7 +176,8 @@ class _InviteOverview extends State<InviteOverview> {
                           ..onTap = () {
                             Navigator.pop(context);
                             List<String> users = [project.getProjectProposer()];
-                            List<String> evaluations = project.getTeamEvaluations();
+                            List<String> evaluations =
+                                project.getTeamEvaluations();
                             evaluations.addAll(project.getProjectEvaluations());
                             users.addAll(project.getDesigners());
                             context.read<ViewProvider>().pushWidget(FutureBuild(
@@ -184,8 +188,9 @@ class _InviteOverview extends State<InviteOverview> {
                                   Provider.of<TagProvider>(context,
                                           listen: false)
                                       .updateListTag(project.getTag()),
-                                      Provider.of<EvaluationProvider>(context,
-                                          listen: false).updateListEvaluation(evaluations)
+                                  Provider.of<EvaluationProvider>(context,
+                                          listen: false)
+                                      .updateListEvaluation(evaluations)
                                 ]),
                                 newView: ProjectOverView(
                                   project: project,

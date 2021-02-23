@@ -13,7 +13,7 @@ class ListProjects extends StatelessWidget {
         shrinkWrap: true,
         itemCount: projects.length,
         itemBuilder: (context, index) {
-          return CardListProject(project: projects[index]);
+          return CardListProject(id: projects[index].getId());
         });
   }
 }

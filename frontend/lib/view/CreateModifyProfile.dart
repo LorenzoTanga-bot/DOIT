@@ -14,11 +14,11 @@ import 'package:provider/provider.dart';
 import 'package:smart_select/smart_select.dart';
 
 class CreateModifyProfile extends StatefulWidget {
-  final String mail;
+
   final bool isNewUser;
 
   const CreateModifyProfile(
-      {Key key, @required this.mail, @required this.isNewUser})
+      {Key key,  @required this.isNewUser})
       : super(key: key);
   @override
   _CreateModifyProfile createState() => _CreateModifyProfile();

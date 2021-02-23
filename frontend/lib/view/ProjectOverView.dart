@@ -388,7 +388,17 @@ class _ProjectOverView extends State<ProjectOverView> {
       User user =
           Provider.of<AuthCredentialProvider>(context, listen: false).getUser();
       if (user == null) return false;
-      if (isSuitable(user)) {
+      List<Evaluation> alreadySended = Provider.of<EvaluationProvider>(context)
+          .findByIds(context
+              .watch<AuthCredentialProvider>()
+              .getUser()
+              .getEvaluationsSend());
+
+      if (alreadySended
+              .where(
+                  (element) => (element.getProject() == widget.project.getId()))
+              .length !=
+          2) if (isSuitable(user)) {
         return (user.getRoles().contains(UserRole.EXPERT));
       }
     }
@@ -460,6 +470,17 @@ class _ProjectOverView extends State<ProjectOverView> {
                           );
                         },
                       ),
+                      setState(() => {
+                            _projectEvaluations =
+                                Provider.of<EvaluationProvider>(context,
+                                        listen: false)
+                                    .findByIds(
+                                        widget.project.getProjectEvaluations()),
+                            _teamEvaluations = Provider.of<EvaluationProvider>(
+                                    context,
+                                    listen: false)
+                                .findByIds(widget.project.getTeamEvaluations()),
+                          }),
                     },
                     child: Text("Valuta"),
                   ))),
@@ -491,7 +512,7 @@ class _ProjectOverView extends State<ProjectOverView> {
                         borderRadius: BorderRadius.circular(10)),
                     onPressed: () => {
                       Provider.of<ViewProvider>(context, listen: false)
-                          .pushWidget(SendInvite(id: widget.project.getId()))
+                          .pushWidget(SendInvite(id: widget.project.getId())),
                     },
                     child: Text("Invita"),
                   ))),

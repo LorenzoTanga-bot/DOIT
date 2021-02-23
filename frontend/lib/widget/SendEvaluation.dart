@@ -48,6 +48,7 @@ class _SendEvaluation extends State<SendEvaluation> {
         .reloadProject(_project.getId());
     await Provider.of<UserProvider>(context, listen: false)
         .reloadUser(context.read<AuthCredentialProvider>().getUser().getMail());
+    Navigator.pop(context);
   }
 
   @override
@@ -64,30 +65,34 @@ class _SendEvaluation extends State<SendEvaluation> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                  "Team",
-                  style: TextStyle(fontSize: 17),
-                ),
-                Radio(
-                    value: 0,
+                if (checkAlreadySended(EvaluationMode.TEAM))
+                  Text(
+                    "Team",
+                    style: TextStyle(fontSize: 17),
+                  ),
+                if (checkAlreadySended(EvaluationMode.TEAM))
+                  Radio(
+                      value: 0,
+                      groupValue: group,
+                      onChanged: (value) {
+                        setState(() {
+                          evaluatedTeam = true;
+                          group = value;
+                        });
+                      }),
+                if (checkAlreadySended(EvaluationMode.PROJECT))
+                  Text("Project", style: TextStyle(fontSize: 17)),
+                if (checkAlreadySended(EvaluationMode.PROJECT))
+                  Radio(
+                    value: 1,
                     groupValue: group,
                     onChanged: (value) {
                       setState(() {
-                        evaluatedTeam = true;
+                        evaluatedTeam = false;
                         group = value;
                       });
-                    }),
-                Text("Project", style: TextStyle(fontSize: 17)),
-                Radio(
-                  value: 1,
-                  groupValue: group,
-                  onChanged: (value) {
-                    setState(() {
-                      evaluatedTeam = false;
-                      group = value;
-                    });
-                  },
-                ),
+                    },
+                  ),
               ],
             ),
             if (!evaluatedTeam)
@@ -137,12 +142,30 @@ class _SendEvaluation extends State<SendEvaluation> {
               RaisedButton(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10)),
-                onPressed: () =>
-                    {createEvaluation(context), Navigator.pop(context)},
+                onPressed: () => {
+                  createEvaluation(context),
+                },
                 child: Text("Evaluate"),
               )
             ])
           ],
         ));
+  }
+
+  bool checkAlreadySended(EvaluationMode evaluationMode) {
+    List<Evaluation> alreadySended =
+        Provider.of<EvaluationProvider>(context, listen: false).findByIds(
+            context
+                .read<AuthCredentialProvider>()
+                .getUser()
+                .getEvaluationsSend());
+
+    if (alreadySended
+        .where((element) => ((element.getProject() == _project.getId()) &&
+            (element.getEvaluationMode() == evaluationMode)))
+        .isEmpty)
+      return true;
+    else
+      return false;
   }
 }

@@ -61,7 +61,7 @@ class _ProfileOverView extends State<ProfileOverView> {
                               .updateListTag(widget.user.getTags())
                         ]),
                         newView: CreateModifyProfile(
-                          mail: widget.user.getMail(),
+                          
                           isNewUser: false,
                         )))
                   },

@@ -74,7 +74,7 @@ class _ListAllProjects extends State<ListAllProjects> {
         pagingController: _pagingController,
         builderDelegate: PagedChildBuilderDelegate<Project>(
           itemBuilder: (context, item, index) => CardListProject(
-            project: item,
+            id: item.getId(),
           ),
         ),
       );
