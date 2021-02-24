@@ -17,6 +17,7 @@ import 'package:doit/view/ListOfCandidacies.dart';
 import 'package:doit/view/ListOfEvaluations.dart';
 import 'package:doit/view/ListOfInvites.dart';
 import 'package:doit/view/ListOfProjects.dart';
+import 'package:doit/view/Login.dart';
 import 'package:doit/view/ProfileOverView.dart';
 import 'package:doit/view/projectproposer/CreateModifyProject.dart';
 import 'package:doit/widget/CardList.dart';
@@ -77,6 +78,26 @@ class _ThirdView extends State<ThirdView> {
                         .updateListTag(_user.getTags())
                   ]),
                   newView: ProfileOverView(user: _user)))),
+      GestureDetector(
+          child: Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15.0),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                ListTile(
+                  title: Text("Logout"),
+                ),
+              ],
+            ),
+          ),
+          onTap: () {
+            Provider.of<ViewProvider>(context, listen: false)
+                .setProfileDefault(Login());
+            Provider.of<AuthCredentialProvider>(context, listen: false)
+                .logout();
+          })
     ]);
   }
 

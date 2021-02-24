@@ -26,7 +26,7 @@ class _CardListEvaulation extends State<CardListEvaulation> {
     String state = evaluation.getEvaluationMode().toString();
     state = state.substring(state.indexOf(".") + 1);
     Project project =
-        context.read<ProjectProvider>().findById(evaluation.getProject());
+        context.watch<ProjectProvider>().findById(evaluation.getProject());
     return GestureDetector(
       child: Card(
         shape: RoundedRectangleBorder(

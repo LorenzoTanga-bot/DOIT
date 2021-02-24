@@ -389,10 +389,7 @@ class _ProjectOverView extends State<ProjectOverView> {
           Provider.of<AuthCredentialProvider>(context, listen: false).getUser();
       if (user == null) return false;
       List<Evaluation> alreadySended = Provider.of<EvaluationProvider>(context)
-          .findByIds(context
-              .watch<AuthCredentialProvider>()
-              .getUser()
-              .getEvaluationsSend());
+          .findByIds(user.getEvaluationsSend());
 
       if (alreadySended
               .where(
