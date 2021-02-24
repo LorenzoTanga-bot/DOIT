@@ -76,12 +76,6 @@ public class InviteService {
         return null;
     }
 
-    public boolean deleteInvite(@NonNull UUID id) throws ResponseStatusException {
-        if (!existsById(id))
-            return false;
-        repository.deleteById(id);
-        return true;
-    }
 
     public Invite updateInvite(@NonNull UUID id, @NonNull boolean isTheProjectProposer, @NonNull StateInvite state){
         Invite returnInvite = findById(id);
@@ -93,11 +87,6 @@ public class InviteService {
         return  repository.save(returnInvite);
     }
 
-    public Invite updateInvite(@NonNull Invite invite) throws ResponseStatusException {
-        if (existsById(invite.getId()) && checkInvite(invite))
-            return repository.save(invite);
-        return null;
-    }
 
     public Invite findById(@NonNull UUID id) throws ResponseStatusException {
         return repository.findById(id)
