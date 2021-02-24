@@ -96,7 +96,7 @@ public class EvaluationController {
     }
     
     @PutMapping("/getByIds")
-    public List<Evaluation> getEvaluationByIds(@RequestBody List<String> ids) {
+    public List<Evaluation> getEvaluationsByIds(@RequestBody List<String> ids) {
         List<UUID> evaluationUuids = new ArrayList<>();
         for (String id : ids) 
             try {
@@ -108,12 +108,12 @@ public class EvaluationController {
     }
 
     @GetMapping("/getBySender/{id}")
-    public List<Evaluation> findBySender(@PathVariable("id") String idSender) {
+    public List<Evaluation> getEvaluationsBySender(@PathVariable("id") String idSender) {
         return evaluationService.findBySender(idSender);
     }
 
     @GetMapping("/getByProject/{id}")
-    public List<Evaluation> findByProject(@PathVariable("id") String idProject) {
+    public List<Evaluation> getEvaluationsByProject(@PathVariable("id") String idProject) {
         try {
         return evaluationService.findByProject(UUID.fromString(idProject));
     } catch (IllegalArgumentException e) {
