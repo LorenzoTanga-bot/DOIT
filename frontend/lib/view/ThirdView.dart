@@ -181,6 +181,19 @@ class _ThirdView extends State<ThirdView> {
       ),
       GestureDetector(
           child: CardList(
+              name: "Project",
+              sDescription: "view all collaborations on projects"),
+          onTap: () => {
+                context.read<ViewProvider>().pushWidget(FutureBuild(
+                    future: Provider.of<ProjectProvider>(context, listen: false)
+                        .updateListProject(_user.getPartecipateInProjects()),
+                    newView: ListOfProjects(
+                        projects:
+                            Provider.of<ProjectProvider>(context, listen: false)
+                                .findByIds(_user.getPartecipateInProjects()))))
+              }),
+      GestureDetector(
+          child: CardList(
               name: "Candidacies", sDescription: "View all candidacy sent"),
           onTap: () => getListCandidacy("DESIGNER")),
       GestureDetector(
