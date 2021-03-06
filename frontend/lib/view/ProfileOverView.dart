@@ -1,3 +1,4 @@
+
 import 'package:doit/model/Project.dart';
 import 'package:doit/model/Tag.dart';
 import 'package:doit/model/User.dart';
@@ -29,15 +30,16 @@ class _ProfileOverView extends State<ProfileOverView> {
   void initState() {
     super.initState();
     _proposedProjects = Provider.of<ProjectProvider>(context, listen: false)
-        .findByIds(widget.user.getProposedProjects());
+        .findByUser(widget.user.getMail(),true);
     _parteciateInProjects = Provider.of<ProjectProvider>(context, listen: false)
-        .findByIds(widget.user.getPartecipateInProjects());
+        .findByUser(widget.user.getMail(),false);
     _tags = Provider.of<TagProvider>(context, listen: false)
         .getTagsByIds(widget.user.getTags());
   }
 
   bool isTheOwner() {
-    User user = Provider.of<AuthCredentialProvider>(context, listen:  false).getUser();
+    User user =
+        Provider.of<AuthCredentialProvider>(context, listen: false).getUser();
     if (user == null) return false;
     return user.getMail() == widget.user.getMail();
   }
@@ -50,10 +52,8 @@ class _ProfileOverView extends State<ProfileOverView> {
             padding: EdgeInsets.only(right: 15, top: 10),
             child: Align(
                 alignment: Alignment.bottomRight,
-                child: RaisedButton(
-                  elevation: 4,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10)),
+                child: OutlinedButton(
+
                   onPressed: () => {
                     context.read<ViewProvider>().pushWidget(FutureBuild(
                         future: Future.wait([
@@ -61,7 +61,6 @@ class _ProfileOverView extends State<ProfileOverView> {
                               .updateListTag(widget.user.getTags())
                         ]),
                         newView: CreateModifyProfile(
-                          
                           isNewUser: false,
                         )))
                   },

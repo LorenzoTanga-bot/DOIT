@@ -20,22 +20,19 @@ import org.springframework.web.server.ResponseStatusException;
 
 import it.unicam.qwert123.doit.backend.models.Invite;
 import it.unicam.qwert123.doit.backend.models.Project;
-import it.unicam.qwert123.doit.backend.models.User;
+
 import it.unicam.qwert123.doit.backend.models.Invite.StateInvite;
 import it.unicam.qwert123.doit.backend.services.InviteService;
 import it.unicam.qwert123.doit.backend.services.ProjectService;
-import it.unicam.qwert123.doit.backend.services.UserService;
+
 import it.unicam.qwert123.doit.backend.utility.AccessCheckerComponent;
 
-@RestController 
+@RestController
 @RequestMapping("doit/api/invite")
 public class InviteController {
 
     @Autowired
     private InviteService inviteService;
-
-    @Autowired
-    private UserService userService;
 
     @Autowired
     private ProjectService projectService;
@@ -44,54 +41,37 @@ public class InviteController {
     @Autowired
     private AccessCheckerComponent accessCheckerComponent;
 
+    private void updateUserProject(Invite invite) {
+        if (invite.getStateDesigner() == StateInvite.POSITIVE
+                && invite.getStateProjectProposer() == StateInvite.POSITIVE
+                && invite.getDateOfExpire().after(new Date())) {
 
-    private void updateUserProject(Invite invite){
-        if(invite.getStateDesigner() == StateInvite.POSITIVE && invite.getStateProjectProposer() == StateInvite.POSITIVE && invite.getDateOfExpire().after(new Date())){
-            User user = userService.findById(invite.getDesigner());
-            user.addPartecipateInProject(invite.getProject());
-            userService.updateUser(user);
             Project project = projectService.findById(invite.getProject());
             project.addDesigner(invite.getDesigner());
             projectService.updateProject(project);
         }
-    } @GetMapping("/get")
-public List<Invite> get(){
-    return inviteService.findAll();
-    
-}
+    }
+
+    @GetMapping("/get")
+    public List<Invite> get() {
+        return inviteService.findAll();
+
+    }
+
     @PostMapping("/new")
     @PreAuthorize("(hasAuthority('DESIGNER_ENTITY') or hasAuthority('PROJECT_PROPOSER')) and @accessCheckerComponent.sameUser(principal, #invite.getSender())")
-    public Invite addInvite(@RequestBody @Param("invite") Invite invite) { 
-        Invite returnInvite = inviteService.addInvite(invite);
-        //update desiner
-        User user = userService.findById(returnInvite.getDesigner());
-        user.addInvite(returnInvite.getId());
-        userService.updateUser(user);
-        //update projectproposer
-        user = userService.findById(returnInvite.getProjectProposer());
-        user.addInvite(returnInvite.getId());
-        userService.updateUser(user);
-        if(returnInvite.getSender() != returnInvite.getProjectProposer()){
-            //update sender
-            user = userService.findById(returnInvite.getSender());
-            user.addInvite(returnInvite.getId());
-            userService.updateUser(user);
-        }
-        //update project
-        Project project = projectService.findById(invite.getProject());
-        project.addInvite(returnInvite.getId());
-        projectService.updateProject(project);
-        return returnInvite;
+    public Invite addInvite(@RequestBody @Param("invite") Invite invite) {
+        return inviteService.addInvite(invite);
     }
 
     @PutMapping("/updateStateDesigner")
     @PreAuthorize("(hasAuthority('DESIGNER_ENTITY') or hasAuthority('DESIGNER_PERSON')) and @accessCheckerComponent.sameUser(principal, #invite.getDesigner())")
     public Invite updateStateDesigner(@RequestBody @Param("invite") Invite invite) {
-    Invite returnInvite;
+        Invite returnInvite;
         try {
             returnInvite = inviteService.updateInvite(invite.getId(), false, invite.getStateDesigner());
             updateUserProject(returnInvite);
-            return returnInvite; 
+            return returnInvite;
         } catch (IllegalArgumentException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
@@ -100,11 +80,11 @@ public List<Invite> get(){
     @PutMapping("/updateStateProjectProposer")
     @PreAuthorize("hasAuthority('PROJECT_PROPOSER') and @accessCheckerComponent.sameUser(principal, #invite.getProjectProposer())")
     public Invite updateStateProjectProposer(@RequestBody @Param("invite") Invite invite) {
-    Invite returnInvite;
+        Invite returnInvite;
         try {
             returnInvite = inviteService.updateInvite(invite.getId(), true, invite.getStateProjectProposer());
             updateUserProject(returnInvite);
-            return returnInvite; 
+            return returnInvite;
         } catch (IllegalArgumentException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
@@ -140,6 +120,7 @@ public List<Invite> get(){
     public List<Invite> getInvitesByProjectProposer(@PathVariable("user") String user) {
         return inviteService.findByProjectProposer(user);
     }
+
     @GetMapping("/getBySender/{user}")
     public List<Invite> getInvitesBySender(@PathVariable("user") String user) {
         return inviteService.findBySender(user);

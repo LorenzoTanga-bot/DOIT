@@ -14,40 +14,18 @@ class BackendAuthCredential implements AuthCredentialService {
   User _newUser(var user) {
     List<UserRole> roles = [];
     List<String> tags = [];
-    List<String> proposedProjects = [];
-    List<String> partecipateInProjects = [];
-    List<String> evaluationsSend = [];
-    List<String> evaluationsReceived = [];
-    List<String> invites = [];
-    List<String> candidacies = [];
-
     for (String role in user["roles"])
       roles.add(UserRole.values
           .firstWhere((e) => e.toString() == 'UserRole.' + role));
     for (String tag in user["tags"]) tags.add(tag);
-    for (String project in user["proposedProjects"])
-      proposedProjects.add(project);
-    for (String project in user["partecipateInProjects"])
-      partecipateInProjects.add(project);
-    for (String evaluation in user["evaluationsSend"])
-      evaluationsSend.add(evaluation);
-    for (String evaluation in user["evaluationsReceived"])
-      evaluationsReceived.add(evaluation);
-    for (String invite in user["invites"]) invites.add(invite);
-    for (String candidacy in user["candidacies"]) candidacies.add(candidacy);
     return new User.complete(
-        user["mail"],
-        user["usernameToShow"],
-        user["name"],
-        user["surname"],
-        roles,
-        tags,
-        proposedProjects,
-        partecipateInProjects,
-        invites,
-        candidacies,
-        evaluationsSend,
-        evaluationsReceived);
+      user["mail"],
+      user["usernameToShow"],
+      user["name"],
+      user["surname"],
+      roles,
+      tags,
+    );
   }
 
   User _createUser(String controllerJson) {

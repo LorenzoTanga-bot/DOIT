@@ -1,4 +1,3 @@
-
 import 'package:doit/model/Invite.dart';
 import 'package:doit/model/Project.dart';
 import 'package:doit/model/User.dart';
@@ -8,6 +7,7 @@ import 'package:doit/providers/ProjectProvider.dart';
 
 import 'package:doit/providers/UserProvider.dart';
 import 'package:doit/providers/ViewProvider.dart';
+import 'package:doit/widget/ErrorPopUp.dart';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -59,7 +59,15 @@ class _SendInvite extends State<SendInvite> {
       newInvite.setStateDesigner(StateInvite.WAITING);
       newInvite.setStateProjectProposer(StateInvite.WAITING);
     }
-    await context.read<InviteProvider>().addInvite(newInvite);
+    try {
+      await context.read<InviteProvider>().addInvite(newInvite);
+    } catch (e) {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return ErrorPopup(message: e.toString());
+          });
+    }
   }
 
   void buildSuggestions(BuildContext context, String query) async {

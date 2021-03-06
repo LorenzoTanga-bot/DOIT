@@ -11,11 +11,9 @@ class Project {
   bool _evaluationMode; // if it's true, the project has evaluation mode.
   String _startCandidacy;
   String _endCandidacy;
-  List<String> _candidacies;
-  List<String> _invites;
+
   List<String> _designers;
-  List<String> _projectEvaluations;
-  List<String> _teamEvaluations;
+ 
 
   Project() {
     this._dateOfCreation = DateTime.now().toIso8601String();
@@ -38,11 +36,9 @@ class Project {
       this._evaluationMode,
       this._startCandidacy,
       this._endCandidacy,
-      this._candidacies,
-      this._invites,
+     
       this._designers,
-      this._projectEvaluations,
-      this._teamEvaluations);
+     );
 
   String getId() {
     return _id;
@@ -159,41 +155,7 @@ class Project {
     return true;
   }
 
-  bool setCandidacies(List<String> candidacies) {
-    _candidacies = candidacies;
-    return true;
-  }
-
-  bool addCandidacy(String idCandidacy) {
-    _candidacies.add(idCandidacy);
-    return true;
-  }
-
-  bool removeCandidacy(String idCandidacy) {
-    return _candidacies.remove(idCandidacy);
-  }
-
-  List<String> getCandidacies() {
-    return _candidacies;
-  }
-
-  bool setInvites(List<String> invites) {
-    _invites = invites;
-    return true;
-  }
-
-  bool addInvite(String idInvite) {
-    _invites.add(idInvite);
-    return true;
-  }
-
-  bool removeInvite(String idInvite) {
-    return _invites.remove(idInvite);
-  }
-
-  List<String> getInvites() {
-    return _invites;
-  }
+  
 
   bool setDesigners(List<String> designers) {
     _designers = designers;
@@ -213,39 +175,5 @@ class Project {
     return _designers;
   }
 
-  bool setProjectEvaluations(List<String> evaluations) {
-    _projectEvaluations = evaluations;
-    return true;
-  }
-
-  bool addProjectEvaluations(String idEvaluations) {
-    _projectEvaluations.add(idEvaluations);
-    return true;
-  }
-
-  bool removeProjectEvaluations(String idEvaluations) {
-    return _projectEvaluations.remove(idEvaluations);
-  }
-
-  List<String> getProjectEvaluations() {
-    return _projectEvaluations;
-  }
-
-  bool setTeamEvaluations(List<String> evaluations) {
-    _teamEvaluations = evaluations;
-    return true;
-  }
-
-  bool addTeamEvaluations(String idEvaluations) {
-    _teamEvaluations.add(idEvaluations);
-    return true;
-  }
-
-  bool removeTeamEvaluations(String idEvaluations) {
-    return _teamEvaluations.remove(idEvaluations);
-  }
-
-  List<String> getTeamEvaluations() {
-    return _teamEvaluations;
-  }
+  
 }

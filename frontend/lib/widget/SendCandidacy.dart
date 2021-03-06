@@ -3,6 +3,7 @@ import 'package:doit/model/Project.dart';
 import 'package:doit/providers/AuthCredentialProvider.dart';
 import 'package:doit/providers/CandidacyProvider.dart';
 import 'package:doit/providers/ProjectProvider.dart';
+import 'package:doit/widget/ErrorPopUp.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -39,7 +40,15 @@ class _SendCandidacy extends State<SendCandidacy> {
     newCandidacy.setState(StateCandidacy.WAITING);
     newCandidacy.setProjectProposer(_project.getProjectProposer());
     newCandidacy.setProject(_project.getId());
-    await context.read<CandidacyProvider>().addCandidacy(newCandidacy);
+    try {
+      await context.read<CandidacyProvider>().addCandidacy(newCandidacy);
+    } catch (e) {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return ErrorPopup(message: e.toString());
+          });
+    }
   }
 
   @override
@@ -80,15 +89,11 @@ class _SendCandidacy extends State<SendCandidacy> {
               endIndent: 2,
             ),
             Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-              RaisedButton(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)),
+              OutlinedButton(
                 onPressed: () => {Navigator.pop(context)},
                 child: Text("Back"),
               ),
-              RaisedButton(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)),
+              OutlinedButton(
                 onPressed: () => {createCandidacy(), Navigator.pop(context)},
                 child: Text("Candidate"),
               )

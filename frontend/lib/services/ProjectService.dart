@@ -10,6 +10,8 @@ abstract class ProjectService {
   Future<List<Project>> findByTags(List<String> tags);
   Future<ProjectsPage> getProjectsPage(int index);
   Future<Project> updateProject(Project newProject);
+  Future<List<Project>> findByProjectProposer(String projectProposer);
+   Future<List<Project>> findByDesigner(String designer);
 }
 
 class ProjectsPage {

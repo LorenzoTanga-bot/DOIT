@@ -19,19 +19,15 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import it.unicam.qwert123.doit.backend.services.ProjectService;
-import it.unicam.qwert123.doit.backend.services.UserService;
+
 import it.unicam.qwert123.doit.backend.utility.AccessCheckerComponent;
 import it.unicam.qwert123.doit.backend.models.Project;
-import it.unicam.qwert123.doit.backend.models.User;
 
 @RestController
 @RequestMapping("doit/api/project")
 public class ProjectController {
     @Autowired
     private ProjectService projectService;
-
-    @Autowired
-    private UserService userService;
 
     // NON ELIMINARE
     @Autowired
@@ -40,20 +36,15 @@ public class ProjectController {
     @PostMapping("/new")
     @PreAuthorize("hasAuthority('PROJECT_PROPOSER') and @accessCheckerComponent.sameUser(principal, #project.getProjectProposer())")
     public Project addProject(@RequestBody @Param("project") Project newProject) {
-        Project returnProject = projectService.addProject(newProject);
-        User user = userService.findById(returnProject.getProjectProposer());
-        user.addPProposedProject(returnProject.getId());
-        userService.updateUser(user);
-        return returnProject;
+        return projectService.addProject(newProject);
+
     }
 
     @PutMapping("/update")
-   @PreAuthorize("hasAuthority('PROJECT_PROPOSER') and @accessCheckerComponent.sameUser(principal, #project.getProjectProposer())")
+    @PreAuthorize("hasAuthority('PROJECT_PROPOSER') and @accessCheckerComponent.sameUser(principal, #project.getProjectProposer())")
     public Project updateProject(@RequestBody @Param("project") Project modifiedProject) {
         return projectService.updateProject(modifiedProject);
     }
-
-   
 
     @GetMapping("/getPage/{index}/{size}")
     public Page<Project> getProjectsPage(@PathVariable("index") int index, @PathVariable("size") int size) {
@@ -106,4 +97,13 @@ public class ProjectController {
         return projectService.findByTags(tagsUuid);
     }
 
+    @GetMapping("getByProjectProposer/{projectProposer}")
+    public List<Project> getProjectsByProjectProposer(@PathVariable("projectProposer") String projectProposer) {
+        return projectService.findByProjectProposer(projectProposer);
+    }
+
+    @GetMapping("getByDesigner/{designer}")
+    public List<Project> getProjectsByDesigner(@PathVariable("designer") String designer) {
+        return projectService.findByDesigner(designer);
+    }
 }

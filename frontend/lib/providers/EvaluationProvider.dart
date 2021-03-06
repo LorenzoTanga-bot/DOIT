@@ -1,4 +1,5 @@
 import 'package:doit/model/Evaluation.dart';
+import 'package:doit/model/Project.dart';
 import 'package:doit/services/EvaluationService.dart';
 import 'package:flutter/material.dart';
 
@@ -69,5 +70,47 @@ class EvaluationProvider with ChangeNotifier {
       found.add(findById(id));
     }
     return found;
+  }
+
+  List<Evaluation> findSendedEvaluation(String user) {
+    List<Evaluation> found = [];
+    for (Evaluation eval in _listEvaluations) {
+      if (eval.getSender() == user) {
+        found.add(eval);
+      }
+    }
+    return found;
+  }
+
+  List<Evaluation> findReceivedEvaluationForProject(String project) {
+    List<Evaluation> found = [];
+    for (Evaluation eval in _listEvaluations) {
+      if (eval.getProject() == project &&
+          eval.getEvaluationMode() == EvaluationMode.PROJECT) found.add(eval);
+    }
+    return found;
+  }
+
+  List<Evaluation> findReceivedEvaluationForTeamOfProject(String project) {
+    List<Evaluation> found = [];
+    for (Evaluation eval in _listEvaluations) {
+      if (eval.getProject() == project &&
+          eval.getEvaluationMode() == EvaluationMode.TEAM) found.add(eval);
+    }
+    return found;
+  }
+
+  Future<List<Evaluation>> findByDesignersProject(
+      List<Project> userProjects) async {
+    List<Evaluation> found = [];
+    List<Evaluation> toShow = [];
+    for (Project project in userProjects)
+      found.addAll(await findByProject(project.getId()));
+    for (Evaluation eval in found) {
+      if (eval.getEvaluationMode() == EvaluationMode.TEAM) {
+        toShow.add(eval);
+      }
+    }
+    return toShow;
   }
 }

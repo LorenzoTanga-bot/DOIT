@@ -14,12 +14,15 @@ public interface ProjectRepository extends MongoRepository<Project, UUID> {
 
     Optional<Project> findById(UUID id);
 
-   
-
     List<Project> findByNameContaining(String name);
 
     List<Project> findByTag(UUID tag);
 
     List<Project> findByTagContaining(List<UUID> idtag);
+
+    List<Project> findByProjectProposer(String projectProposer);
+
+    List<Project> findByDesignersContaining(String designer);
+
 
 }

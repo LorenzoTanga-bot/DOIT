@@ -19,12 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import it.unicam.qwert123.doit.backend.models.Evaluation;
-import it.unicam.qwert123.doit.backend.models.Project;
-import it.unicam.qwert123.doit.backend.models.User;
-import it.unicam.qwert123.doit.backend.models.Evaluation.EvaluationMode;
 import it.unicam.qwert123.doit.backend.services.EvaluationService;
-import it.unicam.qwert123.doit.backend.services.ProjectService;
-import it.unicam.qwert123.doit.backend.services.UserService;
+
 import it.unicam.qwert123.doit.backend.utility.AccessCheckerComponent;
 
 @RestController
@@ -35,50 +31,24 @@ public class EvaluationController {
     private EvaluationService evaluationService;
 
     @Autowired
-    private UserService userService;
-
-    @Autowired
-    private ProjectService projectService;
-
-    @Autowired
     private AccessCheckerComponent accessCheckerComponent;
 
     @PostMapping("/new")
     @PreAuthorize("hasAuthority('EXPERT') and @accessCheckerComponent.sameUser(principal, #evaluation.getSender())")
     public Evaluation addEvaluation(@RequestBody @Param("evaluation") Evaluation evaluation) {
-        Evaluation rEvaluation = evaluationService.addEvaluations(evaluation);
-        // update expert
-        User user = userService.findById(rEvaluation.getSender());
-        user.addEvaluationsSend(rEvaluation.getId());
-        userService.updateUser(user);
-        //update project
-        Project project = projectService.findById(rEvaluation.getProject());
-        if(evaluation.getEvaluationMode()==EvaluationMode.TEAM)
-        project.addTeamEvaluations(rEvaluation.getId());
-        else 
-        project.addProjectEvaluations(rEvaluation.getId());
-        projectService.updateProject(project);
-        // update designers
-        if (rEvaluation.getEvaluationMode().equals(EvaluationMode.TEAM)) {
-            List<User> desiners = userService.findByIds(project.getDesigners());
-            for (User desiner : desiners) {
-                desiner.addEvaluationsReceived(rEvaluation.getId());
-                userService.updateUser(user);
-            }
-        }
-        return rEvaluation;
+        return evaluationService.addEvaluations(evaluation);
     }
 
     @PutMapping("/update")
     @PreAuthorize("hasAuthority('EXPERT') and @accessCheckerComponent.sameUser(principal, #evaluation.getSender())")
-    public Evaluation updateEvaluation(@RequestBody @Param("evaluation") Evaluation evaluation){
+    public Evaluation updateEvaluation(@RequestBody @Param("evaluation") Evaluation evaluation) {
         return evaluationService.updateEvaluation(evaluation);
     }
 
     @DeleteMapping("/delete")
-    public boolean deleteEvaluation(@PathVariable("id") String id){
+    public boolean deleteEvaluation(@PathVariable("id") String id) {
         try {
-            //da controllare
+            // da controllare
             return evaluationService.deleteEvaluations(UUID.fromString(id));
 
         } catch (IllegalArgumentException e) {
@@ -94,11 +64,11 @@ public class EvaluationController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
     }
-    
+
     @PutMapping("/getByIds")
     public List<Evaluation> getEvaluationsByIds(@RequestBody List<String> ids) {
         List<UUID> evaluationUuids = new ArrayList<>();
-        for (String id : ids) 
+        for (String id : ids)
             try {
                 evaluationUuids.add(UUID.fromString(id));
             } catch (IllegalArgumentException e) {
@@ -115,11 +85,10 @@ public class EvaluationController {
     @GetMapping("/getByProject/{id}")
     public List<Evaluation> getEvaluationsByProject(@PathVariable("id") String idProject) {
         try {
-        return evaluationService.findByProject(UUID.fromString(idProject));
-    } catch (IllegalArgumentException e) {
-        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
-    } 
+            return evaluationService.findByProject(UUID.fromString(idProject));
+        } catch (IllegalArgumentException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
     }
 
-    
 }

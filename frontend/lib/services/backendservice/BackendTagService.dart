@@ -23,7 +23,7 @@ class BackendTagService implements TagService {
   List<Tag> _createListTag(String controllerJson) {
     if (controllerJson == "") return null;
     var listTag = json.decode(controllerJson);
-    List<Tag> tags = new List<Tag>();
+    List<Tag> tags = [];
     for (var tag in listTag) {
       tags.add(_newTag(tag));
     }
@@ -46,7 +46,7 @@ class BackendTagService implements TagService {
   }
 
   @override
-  Future<List<Tag>> findByIds(List<String> ids)async  {
+  Future<List<Tag>> findByIds(List<String> ids) async {
     return _createListTag(await _controller.getTagByIds(ids));
   }
 }

@@ -25,7 +25,7 @@ class AuthCredentialController {
     if (response.statusCode == 200)
       return response.body;
     else {
-      throw (json.decode(response.body)["message"]);
+      throw (BackendException( json.decode(response.body)["message"]));
     }
   }
 
@@ -83,12 +83,7 @@ class AuthCredentialController {
               'surname': newUser.getSurname(),
               'roles': _rolesToString(newUser.getRoles()),
               'tags': newUser.getTags(),
-              'proposedProjects': newUser.getProposedProjects(),
-              'partecipateInProjects': newUser.getPartecipateInProjects(),
-              'invites': newUser.getInvites(),
-              'evaluationsSend': newUser.getEvaluationsSend(),
-              'evaluationsReceived': newUser.getEvaluationsReceived(),
-              'candidacies': newUser.getCandidacies(),
+              
             })));
   }
 
@@ -102,12 +97,7 @@ class AuthCredentialController {
               'surname': newUser.getSurname(),
               'roles': _rolesToString(newUser.getRoles()),
               'tags': newUser.getTags(),
-              'proposedProjects': newUser.getProposedProjects(),
-              'partecipateInProjects': newUser.getPartecipateInProjects(),
-              'invites': newUser.getInvites(),
-              'evaluationsSend': newUser.getEvaluationsSend(),
-              'evaluationsReceived': newUser.getEvaluationsReceived(),
-              'candidacies': newUser.getCandidacies(),
+             
             })));
   }
 

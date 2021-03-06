@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:doit/apicontroller/BasicAuthConfig.dart';
+import 'package:doit/exception/BackendException.dart';
 import 'package:doit/model/Evaluation.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
@@ -18,7 +19,7 @@ class EvaluationApiController {
     if (response.statusCode == 200)
       return response.body;
     else {
-      throw (json.decode(response.body)["message"]);
+      throw (BackendException(json.decode(response.body)["message"]));
     }
   }
 

@@ -4,6 +4,7 @@ import 'package:doit/providers/AuthCredentialProvider.dart';
 import 'package:doit/providers/EvaluationProvider.dart';
 import 'package:doit/providers/ProjectProvider.dart';
 import 'package:doit/providers/UserProvider.dart';
+import 'package:doit/widget/ErrorPopUp.dart';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -41,14 +42,22 @@ class _SendEvaluation extends State<SendEvaluation> {
     else
       evaluation.setEvaluationMode(EvaluationMode.PROJECT);
     evaluation.setProject(_project.getId());
-    await Provider.of<EvaluationProvider>(context, listen: false)
-        .addEvaluation(evaluation);
+    try {
+      await Provider.of<EvaluationProvider>(context, listen: false)
+          .addEvaluation(evaluation);
 
-    await Provider.of<ProjectProvider>(context, listen: false)
-        .reloadProject(_project.getId());
-    await Provider.of<UserProvider>(context, listen: false)
-        .reloadUser(context.read<AuthCredentialProvider>().getUser().getMail());
-    Navigator.pop(context);
+      await Provider.of<ProjectProvider>(context, listen: false)
+          .reloadProject(_project.getId());
+      await Provider.of<UserProvider>(context, listen: false).reloadUser(
+          context.read<AuthCredentialProvider>().getUser().getMail());
+      Navigator.pop(context);
+    } catch (e) {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return ErrorPopup(message: e.toString());
+          });
+    }
   }
 
   @override
@@ -133,15 +142,11 @@ class _SendEvaluation extends State<SendEvaluation> {
               endIndent: 2,
             ),
             Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-              RaisedButton(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)),
+              OutlinedButton(
                 onPressed: () => {Navigator.pop(context)},
                 child: Text("Back"),
               ),
-              RaisedButton(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)),
+              OutlinedButton(
                 onPressed: () => {
                   createEvaluation(context),
                 },
@@ -154,10 +159,10 @@ class _SendEvaluation extends State<SendEvaluation> {
 
   bool checkAlreadySended(EvaluationMode evaluationMode) {
     List<Evaluation> alreadySended =
-        Provider.of<EvaluationProvider>(context, listen: false).findByIds(
+        Provider.of<EvaluationProvider>(context, listen: false).findSendedEvaluation(
             Provider.of<AuthCredentialProvider>(context, listen: false)
                 .getUser()
-                .getEvaluationsSend());
+                .getMail());
 
     if (alreadySended
         .where((element) => ((element.getProject() == _project.getId()) &&

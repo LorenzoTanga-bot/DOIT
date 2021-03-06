@@ -14,7 +14,7 @@ class BackendCandidacyService implements CandidacyService {
   List<Candidacy> _createListCandiacy(String controllerJson) {
     if (controllerJson == "") return null;
     var listCandidacy = json.decode(controllerJson);
-    List<Candidacy> candidacies = new List<Candidacy>();
+    List<Candidacy> candidacies = [];
     for (var candidacy in listCandidacy) {
       candidacies.add(_newCandidacy(candidacy));
     }

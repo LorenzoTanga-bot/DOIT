@@ -7,13 +7,7 @@ class User {
   String _surname; //se è una azienda qui viene salvata la Paritta iva
   List<UserRole> _roles = [];
   List<String> _tags = [];
-  List<String> _proposedProjects = [];
-  List<String> _partecipateInProjects = [];
 
-  List<String> _invites = [];
-  List<String> _candidacies = [];
-  List<String> _evaluationsSend = [];
-  List<String> _evaluationsReceived = [];
 
   User();
 
@@ -29,12 +23,7 @@ class User {
       this._surname,
       this._roles,
       this._tags,
-      this._proposedProjects,
-      this._partecipateInProjects,
-      this._invites,
-      this._candidacies,
-      this._evaluationsSend,
-      this._evaluationsReceived);
+      );
 
   bool setMail(String mail) {
     _mail = mail;
@@ -98,111 +87,5 @@ class User {
     return _tags;
   }
 
-  bool setProposedProjects(List<String> projects) {
-    _proposedProjects = projects;
-    return true;
-  }
-
-  bool addProposedProject(String idProject) {
-    _proposedProjects.add(idProject);
-    return true;
-  }
-
-  bool removeProposedProjects(String idProject) {
-    return _proposedProjects.remove(idProject);
-  }
-
-  List<String> getProposedProjects() {
-    return _proposedProjects;
-  }
-
-  bool setPartecipateInProjects(List<String> projects) {
-    _partecipateInProjects = projects;
-    return true;
-  }
-
-  bool addPartecipateInProject(String idProject) {
-    _partecipateInProjects.add(idProject);
-    return true;
-  }
-
-  bool removepPrtecipateInProject(String idProject) {
-    return _partecipateInProjects.remove(idProject);
-  }
-
-  List<String> getPartecipateInProjects() {
-    return _partecipateInProjects;
-  }
-
-  bool setEvaluationsSend(List<String> evaluation) {
-    _evaluationsSend = evaluation;
-    return true;
-  }
-
-  bool addEvaluationsSend(String idEvaluations) {
-    _evaluationsSend.add(idEvaluations);
-    return true;
-  }
-
-  bool removeEvaluationsSend(String idEvaluations) {
-    return _evaluationsSend.remove(idEvaluations);
-  }
-
-  List<String> getEvaluationsSend() {
-    return _evaluationsSend;
-  }
-
-  bool setEvaluationsReceived(List<String> evaluation) {
-    _evaluationsReceived = evaluation;
-    return true;
-  }
-
-  bool addEvaluationsReceived(String idEvaluations) {
-    _evaluationsReceived.add(idEvaluations);
-    return true;
-  }
-
-  bool removeEvaluationsReceived(String idEvaluations) {
-    return _evaluationsReceived.remove(idEvaluations);
-  }
-
-  List<String> getEvaluationsReceived() {
-    return _evaluationsReceived;
-  }
-
-  bool setCandidacies(List<String> candidacies) {
-    _candidacies = candidacies;
-    return true;
-  }
-
-  bool addCandidacy(String idCandidacy) {
-    _candidacies.add(idCandidacy);
-    return true;
-  }
-
-  bool removeCandidacy(String idCandidacy) {
-    return _candidacies.remove(idCandidacy);
-  }
-
-  List<String> getCandidacies() {
-    return _candidacies;
-  }
-
-  bool setInvites(List<String> invites) {
-    _invites = invites;
-    return true;
-  }
-
-  bool addInvite(String idInvite) {
-    _invites.add(idInvite);
-    return true;
-  }
-
-  bool removeInvite(String idInvite) {
-    return _invites.remove(idInvite);
-  }
-
-  List<String> getInvites() {
-    return _invites;
-  }
+  
 }

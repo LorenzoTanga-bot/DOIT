@@ -100,4 +100,12 @@ public class ProjectService {
 		return repository.findAll(PageRequest.of(index, size));
 	}
 
+    public List<Project> findByProjectProposer(String projectProposer) {
+        return repository.findByProjectProposer(projectProposer);
+    }
+
+    public List<Project> findByDesigner(String designer) {
+        return repository.findByDesignersContaining(designer);
+    }
+
 }

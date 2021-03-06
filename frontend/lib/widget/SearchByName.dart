@@ -167,12 +167,12 @@ class _SearchByName extends State<SearchByName> {
                                 future: Future.wait([
                                   Provider.of<ProjectProvider>(context,
                                           listen: false)
-                                      .updateListProject(usersFind[index]
-                                          .getProposedProjects()),
+                                      .findByProjectProposer(usersFind[index]
+                                          .getMail()),
                                   Provider.of<ProjectProvider>(context,
                                           listen: false)
-                                      .updateListProject(usersFind[index]
-                                          .getPartecipateInProjects()),
+                                      .findByDesigner(usersFind[index]
+                                          .getMail()),
                                   Provider.of<TagProvider>(context,
                                           listen: false)
                                       .updateListTag(usersFind[index].getTags())

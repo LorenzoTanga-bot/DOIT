@@ -132,19 +132,15 @@ class _InviteOverview extends State<InviteOverview> {
             padding: EdgeInsets.only(right: 15),
             child: Align(
                 alignment: Alignment.bottomRight,
-                child: RaisedButton(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10)),
-                  onPressed: () => {acceptInvite(context)},
+                child: OutlinedButton(
+                   onPressed: () => {acceptInvite(context)},
                   child: Text("Accetta"),
                 ))),
         Padding(
             padding: EdgeInsets.only(right: 15),
             child: Align(
                 alignment: Alignment.bottomRight,
-                child: RaisedButton(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10)),
+                child: OutlinedButton(
                   onPressed: () => {
                     declineInvite(context),
                   },
@@ -176,9 +172,6 @@ class _InviteOverview extends State<InviteOverview> {
                           ..onTap = () {
                             Navigator.pop(context);
                             List<String> users = [project.getProjectProposer()];
-                            List<String> evaluations =
-                                project.getTeamEvaluations();
-                            evaluations.addAll(project.getProjectEvaluations());
                             users.addAll(project.getDesigners());
                             context.read<ViewProvider>().pushWidget(FutureBuild(
                                 future: Future.wait([
@@ -190,7 +183,7 @@ class _InviteOverview extends State<InviteOverview> {
                                       .updateListTag(project.getTag()),
                                   Provider.of<EvaluationProvider>(context,
                                           listen: false)
-                                      .updateListEvaluation(evaluations)
+                                      .findByProject(project.getId())
                                 ]),
                                 newView: ProjectOverView(
                                   project: project,
@@ -221,12 +214,12 @@ class _InviteOverview extends State<InviteOverview> {
                                     future: Future.wait([
                                       Provider.of<ProjectProvider>(context,
                                               listen: false)
-                                          .updateListProject(
-                                              user.getProposedProjects()),
+                                          .findByProjectProposer(
+                                              user.getMail()),
                                       Provider.of<ProjectProvider>(context,
                                               listen: false)
-                                          .updateListProject(
-                                              user.getPartecipateInProjects()),
+                                          .findByDesigner(
+                                              user.getMail()),
                                       Provider.of<TagProvider>(context,
                                               listen: false)
                                           .updateListTag(user.getTags())
@@ -258,12 +251,12 @@ class _InviteOverview extends State<InviteOverview> {
                                     future: Future.wait([
                                       Provider.of<ProjectProvider>(context,
                                               listen: false)
-                                          .updateListProject(
-                                              user.getProposedProjects()),
+                                          .findByProjectProposer(
+                                              user.getMail()),
                                       Provider.of<ProjectProvider>(context,
                                               listen: false)
-                                          .updateListProject(
-                                              user.getPartecipateInProjects()),
+                                          .findByDesigner(
+                                              user.getMail()),
                                       Provider.of<TagProvider>(context,
                                               listen: false)
                                           .updateListTag(user.getTags())

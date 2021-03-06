@@ -27,9 +27,8 @@ public class Candidacy {
     private Date dateOfExpire;
     private String message;
 
-
-    public enum StateCandidacy  {
+    public enum StateCandidacy {
         WAITING, POSITIVE, NEGATIVE
-    } 
-    
+    }
+
 }

@@ -29,7 +29,7 @@ public class AuthCredentialController {
 	@Autowired
 	private AuthCredentialService authService;
 
-    //NON ELIMINARE
+	// NON ELIMINARE
 	@Autowired
 	private AccessCheckerComponent accessCheckerComponent;
 
@@ -37,7 +37,7 @@ public class AuthCredentialController {
 	@PreAuthorize("permitAll")
 	public User loginWithCredentials(@RequestBody AuthCredential credentials) {
 		return authService.loginWithCredentials(credentials) ? userService.findById(credentials.getMail()) : null;
-	} 
+	}
 
 	@PostMapping("/addCredential")
 	@PreAuthorize("permitAll")
@@ -58,7 +58,7 @@ public class AuthCredentialController {
 		authService.updateRolesCredential(authCredential);
 		return newUser;
 	}
-	
+
 	@PutMapping("/updateCredential")
 	@PreAuthorize("@accessCheckerComponent.sameUser(principal, #authCredential.getMail()) or hasAuthority('ADMIN')")
 	public boolean updateCredentials(@RequestBody @Param("authCredential") AuthCredential authCredential) {
@@ -70,6 +70,7 @@ public class AuthCredentialController {
 	public User updateUser(@RequestBody @Param("user") User user) {
 		return userService.updateUser(user);
 	}
+
 	@DeleteMapping("/deleteCredential")
 	@PreAuthorize("@accessCheckerComponent.sameUser(principal, #authCredential.getUsername()) or hasAuthority('ADMIN')")
 	public boolean removeCredentials(@RequestBody @Param("authCredential") AuthCredential authentication) {
@@ -84,7 +85,7 @@ public class AuthCredentialController {
 
 	@GetMapping("/existsById/{id}")
 	@PreAuthorize("permitAll")
-	public boolean existsByMail(@PathVariable("id") String id ) {
+	public boolean existsByMail(@PathVariable("id") String id) {
 		return authService.existsById(id);
 	}
 

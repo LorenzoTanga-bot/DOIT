@@ -56,9 +56,6 @@ class _EvaluationOverView extends State<EvaluationOverView> {
                           ..onTap = () {
                             Navigator.pop(context);
                             List<String> users = [project.getProjectProposer()];
-                            List<String> evaluations =
-                                project.getTeamEvaluations();
-                            evaluations.addAll(project.getProjectEvaluations());
                             users.addAll(project.getDesigners());
                             context.read<ViewProvider>().pushWidget(FutureBuild(
                                 future: Future.wait([
@@ -70,7 +67,7 @@ class _EvaluationOverView extends State<EvaluationOverView> {
                                       .updateListTag(project.getTag()),
                                   Provider.of<EvaluationProvider>(context,
                                           listen: false)
-                                      .updateListEvaluation(evaluations)
+                                      .findByProject(project.getId())
                                 ]),
                                 newView: ProjectOverView(
                                   project: project,

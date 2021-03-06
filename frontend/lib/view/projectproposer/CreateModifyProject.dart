@@ -4,6 +4,7 @@ import 'package:doit/providers/ProjectProvider.dart';
 import 'package:doit/providers/TagProvider.dart';
 
 import 'package:doit/providers/ViewProvider.dart';
+import 'package:doit/widget/ErrorPopUp.dart';
 import 'package:doit/widget/NewTagInsertion.dart';
 import 'package:doit/widget/SmartSelectTag.dart';
 import 'package:flutter/material.dart';
@@ -73,11 +74,19 @@ class _CreateModifyProject extends State<CreateModifyProject> {
     _project.setDescription(_lDescription.text);
     _project.setEvaluationMode(_evaluationMode);
     _project.setDateOfCreation(_dateOfCreation.toIso8601String());
-    if (widget.id.isNotEmpty) {
-      await context.read<ProjectProvider>().updateProject(_project);
-    } else
-      await context.read<ProjectProvider>().addProject(_project);
-    context.read<ViewProvider>().popWidget();
+    try {
+      if (widget.id.isNotEmpty) {
+        await context.read<ProjectProvider>().updateProject(_project);
+      } else
+        await context.read<ProjectProvider>().addProject(_project);
+      context.read<ViewProvider>().popWidget();
+    } catch (e) {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return ErrorPopup(message: e.toString());
+          });
+    }
   }
 
   void _getDate(context, String type) async {
@@ -312,17 +321,17 @@ class _CreateModifyProject extends State<CreateModifyProject> {
     return Column(
       children: [
         SmartSelectTag(title: "Tag", index: "PROJECT"),
-        RaisedButton.icon(
-            icon: Icon(Icons.add),
-            onPressed: () {
-              showDialog(
-                  context: context,
-                  builder: (context) {
-                    return NewTagInsertion(context: context, index: "PROJECT");
-                  });
-            },
-            label: Text('NEW TAG'),
-            color: Colors.blue)
+        OutlinedButton.icon(
+          icon: Icon(Icons.add),
+          onPressed: () {
+            showDialog(
+                context: context,
+                builder: (context) {
+                  return NewTagInsertion(context: context, index: "PROJECT");
+                });
+          },
+          label: Text('NEW TAG'),
+        )
       ],
     );
   }
@@ -346,13 +355,13 @@ class _CreateModifyProject extends State<CreateModifyProject> {
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              FlatButton.icon(
+              OutlinedButton.icon(
                 icon: Icon(Icons.navigate_before),
                 label: Text('BACK'),
                 onPressed: onStepCancel,
               ),
               _currentStep == 0
-                  ? RaisedButton.icon(
+                  ? OutlinedButton.icon(
                       icon: Icon(Icons.navigate_next),
                       onPressed: () => {
                         if (_checkPrincipalInfomration())
@@ -364,10 +373,9 @@ class _CreateModifyProject extends State<CreateModifyProject> {
                       },
                       //controllare
                       label: Text('CONTINUE'),
-                      color: Colors.blue,
                     )
                   : _currentStep == 1 // this is the last step
-                      ? RaisedButton.icon(
+                      ? OutlinedButton.icon(
                           icon: Icon(Icons.navigate_next),
                           onPressed: () => {
                             if (_checkDescription())
@@ -378,13 +386,11 @@ class _CreateModifyProject extends State<CreateModifyProject> {
                               })
                           },
                           label: Text('CONTINUE'),
-                          color: Colors.blue,
                         )
-                      : RaisedButton.icon(
+                      : OutlinedButton.icon(
                           icon: Icon(Icons.create),
                           onPressed: _createProject,
                           label: Text('UPLOAD'),
-                          color: Colors.blue,
                         )
             ],
           ),

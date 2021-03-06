@@ -130,7 +130,7 @@ class TagProvider with ChangeNotifier {
   }
 
   List<Map<String, String>> getListMapTag() {
-    List<Map<String, String>> _allTagsMap = new List<Map<String, String>>();
+    List<Map<String, String>> _allTagsMap = [];
     for (Tag tag in _listTag) _allTagsMap.add(tag.toMap());
     return _allTagsMap;
   }

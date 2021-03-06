@@ -56,13 +56,7 @@ class _CardListProject extends State<CardListProject> {
       ),
       onTap: () {
         List<String> users = [project.getProjectProposer()];
-        List<String> evaluations = [];
-        for (String evaluation in project.getTeamEvaluations()) {
-          evaluations.add(evaluation);
-        }
-        for (String evaluation in project.getProjectEvaluations()) {
-          evaluations.add(evaluation);
-        }
+     
 
         users.addAll(project.getDesigners());
         context.read<ViewProvider>().pushWidget(FutureBuild(
@@ -72,7 +66,7 @@ class _CardListProject extends State<CardListProject> {
               Provider.of<TagProvider>(context, listen: false)
                   .updateListTag(project.getTag()),
               Provider.of<EvaluationProvider>(context, listen: false)
-                  .updateListEvaluation(evaluations)
+                  .findByProject(project.getId())
             ]),
             newView: ProjectOverView(
               project: project,

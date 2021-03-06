@@ -1,3 +1,4 @@
+
 import 'package:doit/model/Project.dart';
 import 'package:doit/services/ProjectService.dart';
 import 'package:flutter/foundation.dart';
@@ -78,6 +79,19 @@ class ProjectProvider with ChangeNotifier {
     return updateProject;
   }
 
+  Future<List<Project>> findByProjectProposer(String projectProposer) async {
+    List<Project> projects =
+        await _service.findByProjectProposer(projectProposer);
+    updateListProjectsLocal(projects);
+    return projects;
+  }
+
+  Future<List<Project>> findByDesigner(String designer) async {
+    List<Project> projects = await _service.findByDesigner(designer);
+    updateListProjectsLocal(projects);
+    return projects;
+  }
+
   List<Project> findByName(String name) {
     List<Project> found = [];
     for (Project project in _listProjects) {
@@ -94,5 +108,19 @@ class ProjectProvider with ChangeNotifier {
         .removeWhere((element) => element.getId() == reloadedProject.getId());
     _listProjects.add(reloadedProject);
     notifyListeners();
+  }
+
+  List<Project> findByUser(String user, bool isAprojectProposer) {
+    List<Project> found = [];
+    if (isAprojectProposer) {
+      for (Project project in _listProjects) {
+        if (project.getProjectProposer() == user) found.add(project);
+      }
+    } else {
+      for (Project project in _listProjects) {
+        if (project.getDesigners().contains(user)) found.add(project);
+      }
+    }
+    return found;
   }
 }

@@ -13,7 +13,7 @@ class BackendEvaluationService implements EvaluationService {
   List<Evaluation> _createListEvaluations(String controllerJson) {
     if (controllerJson == "") return null;
     var listEvaluations = json.decode(controllerJson);
-    List<Evaluation> evaluations = new List<Evaluation>();
+    List<Evaluation> evaluations = [];
     for (var evaluation in listEvaluations) {
       evaluations.add(_newEvaluation(evaluation));
     }
@@ -47,22 +47,24 @@ class BackendEvaluationService implements EvaluationService {
   }
 
   @override
-  Future<List<Evaluation>> findByProject(String project) async{
-    return _createListEvaluations(await _controller.getEvaluationsByProject(project));
+  Future<List<Evaluation>> findByProject(String project) async {
+    return _createListEvaluations(
+        await _controller.getEvaluationsByProject(project));
   }
 
   @override
-  Future<List<Evaluation>> findBySender(String sender) async{
-   return _createListEvaluations(await _controller.getEvaluationsBySender(sender));
+  Future<List<Evaluation>> findBySender(String sender) async {
+    return _createListEvaluations(
+        await _controller.getEvaluationsBySender(sender));
   }
 
   @override
-  Future<Evaluation> findbyId(String id) async{
+  Future<Evaluation> findbyId(String id) async {
     return _createEvaluation(await _controller.getEvaluationById(id));
   }
 
   @override
-  Future<Evaluation> updateEvaluation(Evaluation evaluation)async {
- return _createEvaluation(await _controller.updateEvaluation(evaluation));
+  Future<Evaluation> updateEvaluation(Evaluation evaluation) async {
+    return _createEvaluation(await _controller.updateEvaluation(evaluation));
   }
 }

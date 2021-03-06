@@ -19,11 +19,11 @@ import org.springframework.web.server.ResponseStatusException;
 
 import it.unicam.qwert123.doit.backend.models.Candidacy;
 import it.unicam.qwert123.doit.backend.models.Project;
-import it.unicam.qwert123.doit.backend.models.User;
+
 import it.unicam.qwert123.doit.backend.models.Candidacy.StateCandidacy;
 import it.unicam.qwert123.doit.backend.services.CandidacyService;
 import it.unicam.qwert123.doit.backend.services.ProjectService;
-import it.unicam.qwert123.doit.backend.services.UserService;
+
 import it.unicam.qwert123.doit.backend.utility.AccessCheckerComponent;
 
 @RestController
@@ -32,9 +32,6 @@ public class CandidacyController {
 
     @Autowired
     private CandidacyService candidacyService;
-
-    @Autowired
-    private UserService userService;
 
     @Autowired
     private ProjectService projectService;
@@ -46,26 +43,15 @@ public class CandidacyController {
     @PostMapping("/new")
     @PreAuthorize("(hasAuthority('DESIGNER_ENTITY') or hasAuthority('DESIGNER_PERSON')) and @accessCheckerComponent.sameUser(principal, #candidacy.getProjectProposer())")
     public Candidacy addCandidacy(@RequestBody @Param("candidacy") Candidacy candidacy) {
-        Candidacy returnCandidacy = candidacyService.addCandidacy(candidacy);
-        //update designer
-        User designer = userService.findById(returnCandidacy.getDesigner());
-        designer.addCandidacy(returnCandidacy.getId());
-        userService.updateUser(designer);
-        //update project
-        Project project = projectService.findById(returnCandidacy.getProject());
-        project.addCandidacy(returnCandidacy.getId());
-        projectService.updateProject(project);
-        return returnCandidacy;
+        return candidacyService.addCandidacy(candidacy);
     }
 
     @PutMapping("/update")
     @PreAuthorize("hasAuthority('PROJECT_PROPOSER') and @accessCheckerComponent.sameUser(principal, #candidacy.getProjectProposer())")
     public Candidacy updateStateCandidacy(@RequestBody @Param("candidacy") Candidacy candidacy) {
         Candidacy returnCandidacy = candidacyService.updateCandidacy(candidacy);
-        if(returnCandidacy.getState().compareTo(StateCandidacy.POSITIVE) == 0){
-            User user = userService.findById(returnCandidacy.getDesigner());
-            user.addPartecipateInProject(returnCandidacy.getProject());
-            userService.updateUser(user);
+        if (returnCandidacy.getState().compareTo(StateCandidacy.POSITIVE) == 0) {
+
             Project project = projectService.findById(returnCandidacy.getProject());
             project.addDesigner(returnCandidacy.getDesigner());
             projectService.updateProject(project);
@@ -85,7 +71,7 @@ public class CandidacyController {
     @PutMapping("/getByIds")
     public List<Candidacy> getCandidaciesByIds(@RequestBody List<String> ids) {
         List<UUID> candidacyUuids = new ArrayList<>();
-        for (String id : ids) 
+        for (String id : ids)
             try {
                 candidacyUuids.add(UUID.fromString(id));
             } catch (IllegalArgumentException e) {
@@ -95,19 +81,20 @@ public class CandidacyController {
     }
 
     @GetMapping("/getByDesigner/{user}")
-    public List<Candidacy> getCandidaciesByDesigner(@PathVariable("user") String user){
+    public List<Candidacy> getCandidaciesByDesigner(@PathVariable("user") String user) {
         return candidacyService.findByDesigner(user);
     }
+
     @GetMapping("/getByProjectProposer/{user}")
-    public List<Candidacy> getCandidaciesByProjectProposer(@PathVariable("user") String user){
+    public List<Candidacy> getCandidaciesByProjectProposer(@PathVariable("user") String user) {
         return candidacyService.findByProjectProposer(user);
     }
 
     @GetMapping("/getByProject/{id}")
-    public List<Candidacy> getCandidaciesByProject(@PathVariable("id") String project){
+    public List<Candidacy> getCandidaciesByProject(@PathVariable("id") String project) {
         UUID projectId;
         try {
-            projectId=  UUID.fromString(project);
+            projectId = UUID.fromString(project);
         } catch (IllegalArgumentException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }

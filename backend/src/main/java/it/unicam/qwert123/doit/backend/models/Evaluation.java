@@ -20,11 +20,10 @@ import lombok.Setter;
 public class Evaluation {
     @Id
     private UUID id;
-    private String sender; 
+    private String sender;
     private UUID project;
     private String message;
     private EvaluationMode evaluationMode;
-    
 
     public enum EvaluationMode {
         PROJECT, TEAM

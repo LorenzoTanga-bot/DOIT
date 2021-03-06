@@ -9,9 +9,12 @@ import org.springframework.stereotype.Repository;
 import it.unicam.qwert123.doit.backend.models.Invite;
 
 @Repository
-public interface InviteRepository extends MongoRepository<Invite, UUID>{
+public interface InviteRepository extends MongoRepository<Invite, UUID> {
     List<Invite> findBySender(String user);
+
     List<Invite> findByDesigner(String user);
+
     List<Invite> findByProjectProposer(String user);
+
     List<Invite> findByProject(UUID project);
 }

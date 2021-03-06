@@ -6,6 +6,7 @@ import 'package:doit/providers/UserProvider.dart';
 import 'package:doit/providers/ViewProvider.dart';
 
 import 'package:doit/view/ThirdView.dart';
+import 'package:doit/widget/ErrorPopUp.dart';
 
 import 'package:doit/widget/NewTagInsertion.dart';
 import 'package:doit/widget/SmartSelectTag.dart';
@@ -14,11 +15,9 @@ import 'package:provider/provider.dart';
 import 'package:smart_select/smart_select.dart';
 
 class CreateModifyProfile extends StatefulWidget {
-
   final bool isNewUser;
 
-  const CreateModifyProfile(
-      {Key key,  @required this.isNewUser})
+  const CreateModifyProfile({Key key, @required this.isNewUser})
       : super(key: key);
   @override
   _CreateModifyProfile createState() => _CreateModifyProfile();
@@ -90,17 +89,26 @@ class _CreateModifyProfile extends State<CreateModifyProfile> {
     _user.setSurname(_surname.text);
     _user.setUsername(_username.text);
     _user.setRoles(_roles);
-    if (widget.isNewUser) {
-      _user.setTags(context.read<TagProvider>().getSelectTag("SIGNIN"));
-      await Provider.of<AuthCredentialProvider>(context, listen: false)
-          .addUser(_user);
-      context.read<ViewProvider>().setProfileDefault(ThirdView());
-    } else {
-      _user.setTags(context.read<TagProvider>().getSelectTag("USER"));
-      await Provider.of<AuthCredentialProvider>(context, listen: false)
-          .updateUser(_user);
-      Provider.of<UserProvider>(context, listen: false).reloadUser(_user.getMail());
-      context.read<ViewProvider>().popWidget();
+    try {
+      if (widget.isNewUser) {
+        _user.setTags(context.read<TagProvider>().getSelectTag("SIGNIN"));
+        await Provider.of<AuthCredentialProvider>(context, listen: false)
+            .addUser(_user);
+        context.read<ViewProvider>().setProfileDefault(ThirdView());
+      } else {
+        _user.setTags(context.read<TagProvider>().getSelectTag("USER"));
+        await Provider.of<AuthCredentialProvider>(context, listen: false)
+            .updateUser(_user);
+        Provider.of<UserProvider>(context, listen: false)
+            .reloadUser(_user.getMail());
+        context.read<ViewProvider>().popWidget();
+      }
+    } catch (e) {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return ErrorPopup(message: e.toString());
+          });
     }
   }
 
@@ -145,17 +153,17 @@ class _CreateModifyProfile extends State<CreateModifyProfile> {
             ? SmartSelectTag(title: "Tag", index: "SIGNIN")
             : SmartSelectTag(title: "Tag", index: "USER"),
         if (!widget.isNewUser)
-          RaisedButton.icon(
-              icon: Icon(Icons.add),
-              onPressed: () {
-                showDialog(
-                    context: context,
-                    builder: (context) {
-                      return NewTagInsertion(context: context, index: "USER");
-                    });
-              },
-              label: Text('NEW TAG'),
-              color: Colors.blue)
+          OutlinedButton.icon(
+            icon: Icon(Icons.add),
+            onPressed: () {
+              showDialog(
+                  context: context,
+                  builder: (context) {
+                    return NewTagInsertion(context: context, index: "USER");
+                  });
+            },
+            label: Text('NEW TAG'),
+          )
       ],
     );
   }
@@ -308,7 +316,7 @@ class _CreateModifyProfile extends State<CreateModifyProfile> {
                       style: TextStyle(color: Colors.red)),
                   visible: _visibilityLabelTags,
                 ),
-                RaisedButton.icon(
+                OutlinedButton.icon(
                   icon: Icon(Icons.create),
                   onPressed: () => {
                     if (_checkPrincipalInformation())
@@ -317,7 +325,6 @@ class _CreateModifyProfile extends State<CreateModifyProfile> {
                       setState(() {})
                   },
                   label: Text('CREATE'),
-                  color: Colors.blue,
                 )
               ]),
             )));

@@ -19,7 +19,7 @@ import lombok.Setter;
 public class Invite {
     @Id
     private UUID id;
-    private String sender; 
+    private String sender;
     private String designer;
     private String projectProposer;
     private UUID project;
@@ -29,8 +29,8 @@ public class Invite {
     private Date dateOfExpire;
     private String message;
 
-    public enum StateInvite  {
+    public enum StateInvite {
         WAITING, POSITIVE, NEGATIVE
-    } 
-    
+    }
+
 }

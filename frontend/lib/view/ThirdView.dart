@@ -2,6 +2,7 @@ import 'package:doit/model/AuthCredential.dart';
 import 'package:doit/model/Candidacy.dart';
 import 'package:doit/model/Evaluation.dart';
 import 'package:doit/model/Invite.dart';
+import 'package:doit/model/Project.dart';
 
 import 'package:doit/model/User.dart';
 import 'package:doit/providers/AuthCredentialProvider.dart';
@@ -71,9 +72,9 @@ class _ThirdView extends State<ThirdView> {
               .pushWidget(FutureBuild(
                   future: Future.wait([
                     Provider.of<ProjectProvider>(context, listen: false)
-                        .updateListProject(_user.getProposedProjects()),
+                        .findByProjectProposer(_user.getMail()),
                     Provider.of<ProjectProvider>(context, listen: false)
-                        .updateListProject(_user.getPartecipateInProjects()),
+                        .findByDesigner(_user.getMail()),
                     Provider.of<TagProvider>(context, listen: false)
                         .updateListTag(_user.getTags())
                   ]),
@@ -150,11 +151,11 @@ class _ThirdView extends State<ThirdView> {
           onTap: () => {
                 context.read<ViewProvider>().pushWidget(FutureBuild(
                     future: Provider.of<ProjectProvider>(context, listen: false)
-                        .updateListProject(_user.getProposedProjects()),
+                        .findByProjectProposer(_user.getMail()),
                     newView: ListOfProjects(
                         projects:
                             Provider.of<ProjectProvider>(context, listen: false)
-                                .findByIds(_user.getProposedProjects()))))
+                                .findByUser(_user.getMail(), true))))
               }),
     ]);
   }
@@ -186,11 +187,11 @@ class _ThirdView extends State<ThirdView> {
           onTap: () => {
                 context.read<ViewProvider>().pushWidget(FutureBuild(
                     future: Provider.of<ProjectProvider>(context, listen: false)
-                        .updateListProject(_user.getPartecipateInProjects()),
+                        .findByDesigner(_user.getMail()),
                     newView: ListOfProjects(
                         projects:
                             Provider.of<ProjectProvider>(context, listen: false)
-                                .findByIds(_user.getPartecipateInProjects()))))
+                                .findByUser(_user.getMail(), false))))
               }),
       GestureDetector(
           child: CardList(
@@ -427,29 +428,24 @@ class _ThirdView extends State<ThirdView> {
         break;
 
       case "DESIGNER":
-        List<String> idEvaluations = _user.getEvaluationsReceived();
+        List<Project> userProject =
+            await Provider.of<ProjectProvider>(context, listen: false)
+                .findByDesigner(_user.getMail());
 
-        await Provider.of<EvaluationProvider>(context, listen: false)
-            .updateListEvaluation(idEvaluations);
-        evaluations = Provider.of<EvaluationProvider>(context, listen: false)
-            .findByIds(idEvaluations);
+        List<Evaluation> evaluations =
+            await Provider.of<EvaluationProvider>(context, listen: false)
+                .findByDesignersProject(userProject);
 
         List<String> project = [];
-        List<Evaluation> toShow = [];
-        if (evaluations.isNotEmpty) {
-          for (Evaluation evaluation in evaluations) {
-            if (evaluation.getEvaluationMode() == EvaluationMode.TEAM)
-              toShow.add(evaluation);
-          }
 
-          for (Evaluation evaluation in toShow) {
-            project.add(evaluation.getProject());
-          }
+        for (Evaluation evaluation in evaluations) {
+          project.add(evaluation.getProject());
         }
+
         context.read<ViewProvider>().pushWidget(FutureBuild(
             future: Provider.of<ProjectProvider>(context, listen: false)
                 .updateListProject(project),
-            newView: ListOfEvaluations(evaluations: toShow)));
+            newView: ListOfEvaluations(evaluations: evaluations)));
         break;
     }
   }

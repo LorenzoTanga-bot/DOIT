@@ -14,7 +14,7 @@ class BackendInviteService implements InviteService {
   List<Invite> _createListInvite(String controllerJson) {
     if (controllerJson == "") return null;
     var listInvites = json.decode(controllerJson);
-    List<Invite> invites = new List<Invite>();
+    List<Invite> invites = [];
     for (var invite in listInvites) {
       invites.add(_newInvite(invite));
     }
@@ -75,8 +75,7 @@ class BackendInviteService implements InviteService {
 
   @override
   Future<List<Invite>> findBySender(String sender) async {
-    return _createListInvite(
-        await _controller.getInvitesBySender(sender));
+    return _createListInvite(await _controller.getInvitesBySender(sender));
   }
 
   @override

@@ -33,8 +33,7 @@ public class Project {
     private boolean evaluationMode; // if it's true, the project has evaluation mode.
     private Date startCandidacy;
     private Date endCandidacy;
-    private List<UUID> candidacies;
-    private List<UUID> invites;
+
     private List<String> designers;
     private List<UUID> projectEvaluations;
     private List<UUID> teamEvaluations;
@@ -45,25 +44,10 @@ public class Project {
     }
 
     boolean getEvaluationMode() {
-        if (!evaluationMode) return evaluationMode;
+        if (!evaluationMode)
+            return evaluationMode;
         else
             return !getCandidacyMode();
-    }
-
-    public boolean addCandidacy(UUID idCandidacy) {
-        return candidacies.add(idCandidacy);
-    }
-
-    public boolean removeCandidacy(UUID idCandidacy) {
-        return candidacies.remove(idCandidacy);
-    }
-
-    public boolean addInvite(UUID idInvite) {
-        return invites.add(idInvite);
-    }
-
-    public boolean removeInvite(UUID idInvite) {
-        return invites.remove(idInvite);
     }
 
     public boolean addDesigner(String idDesigner) {
@@ -74,18 +58,4 @@ public class Project {
         return designers.remove(idDesigner);
     }
 
-    public boolean addProjectEvaluations(UUID idEvaluations) {
-        return projectEvaluations.add(idEvaluations);
-    }
-
-    public boolean removeProjecEvaluations(UUID idEvaluations) {
-        return projectEvaluations.remove(idEvaluations);
-    }
-    public boolean addTeamEvaluations(UUID idEvaluations) {
-        return teamEvaluations.add(idEvaluations);
-    }
-
-    public boolean removeTeamEvaluations(UUID idEvaluations) {
-        return teamEvaluations.remove(idEvaluations);
-    }
 }

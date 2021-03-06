@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:doit/apicontroller/BasicAuthConfig.dart';
+import 'package:doit/exception/BackendException.dart';
 import 'package:doit/model/Project.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
@@ -18,7 +19,7 @@ class ProjectApiController {
     if (response.statusCode == 200)
       return response.body;
     else {
-      throw (json.decode(response.body)["message"]);
+      throw (BackendException(json.decode(response.body)["message"]));
     }
   }
 
@@ -38,11 +39,7 @@ class ProjectApiController {
           "evaluationMode": newProject.getEvaluationMode(),
           "startCandidacy": newProject.getStartCandidacy(),
           "endCandidacy": newProject.getEndCandidacy(),
-          "candidacies": newProject.getCandidacies(),
-          "invites": newProject.getInvites(),
           "designers": newProject.getDesigners(),
-          "projectEvaluations": newProject.getProjectEvaluations(),
-          "teamEvaluations": newProject.getTeamEvaluations()
         })));
   }
 
@@ -62,11 +59,7 @@ class ProjectApiController {
           "evaluationMode": modifiedProject.getEvaluationMode(),
           "startCandidacy": modifiedProject.getStartCandidacy(),
           "endCandidacy": modifiedProject.getEndCandidacy(),
-          "candidacies": modifiedProject.getCandidacies(),
-          "invites": modifiedProject.getInvites(),
           "designers": modifiedProject.getDesigners(),
-          "projectEvaluations": modifiedProject.getProjectEvaluations(),
-          "teamEvaluations": modifiedProject.getTeamEvaluations()
         })));
   }
 
@@ -109,5 +102,17 @@ class ProjectApiController {
         Uri.encodeFull("$_baseUrl/getByTags"),
         headers: BasicAuthConfig().getBaseHeader(),
         body: json.encode(tags)));
+  }
+
+  Future<String> getProjectsByDesigner(String designer) async {
+    return _getBodyResponse(await http.get(
+        Uri.encodeFull("$_baseUrl/getByDesigner/$designer"),
+        headers: BasicAuthConfig().getBaseHeader()));
+  }
+
+  Future<String> getProjectsByProjectProposer(String projectProposer) async {
+    return _getBodyResponse(await http.get(
+        Uri.encodeFull("$_baseUrl/getByProjectProposer/$projectProposer"),
+        headers: BasicAuthConfig().getBaseHeader()));
   }
 }

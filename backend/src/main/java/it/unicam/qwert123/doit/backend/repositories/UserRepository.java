@@ -12,8 +12,6 @@ import java.util.List;
 @Repository
 public interface UserRepository extends MongoRepository<User, String> {
 
-   
-
     List<User> findByUsernameContaining(String username);
 
     List<User> findByTags(UUID tag);

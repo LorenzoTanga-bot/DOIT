@@ -56,9 +56,9 @@ class _ProjectOverView extends State<ProjectOverView> {
         .findByMails(widget.project.getDesigners());
     _projectEvaluations =
         Provider.of<EvaluationProvider>(context, listen: false)
-            .findByIds(widget.project.getProjectEvaluations());
+            .findReceivedEvaluationForProject(widget.project.getId());
     _teamEvaluations = Provider.of<EvaluationProvider>(context, listen: false)
-        .findByIds(widget.project.getTeamEvaluations());
+        .findReceivedEvaluationForTeamOfProject(widget.project.getId());
     _state = (DateTime.parse(widget.project.getDateOfEnd())
                 .compareTo(DateTime.now()) ==
             -1)
@@ -97,10 +97,7 @@ class _ProjectOverView extends State<ProjectOverView> {
               padding: EdgeInsets.only(right: 15, top: 10),
               child: Align(
                   alignment: Alignment.bottomRight,
-                  child: RaisedButton(
-                    elevation: 4,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
+                  child: OutlinedButton(
                     onPressed: () => {
                       Provider.of<ViewProvider>(context, listen: false)
                           .pushWidget(CreateModifyProject(
@@ -148,14 +145,13 @@ class _ProjectOverView extends State<ProjectOverView> {
                                             Provider.of<ProjectProvider>(
                                                     context,
                                                     listen: false)
-                                                .updateListProject(
-                                                    _projectProposer
-                                                        .getProposedProjects()),
+                                                .findByProjectProposer(
+                                                    _projectProposer.getMail()),
                                             Provider.of<ProjectProvider>(
                                                     context,
                                                     listen: false)
-                                                .updateListProject(_projectProposer
-                                                    .getPartecipateInProjects()),
+                                                .findByDesigner(
+                                                    _projectProposer.getMail()),
                                             Provider.of<TagProvider>(context,
                                                     listen: false)
                                                 .updateListTag(
@@ -214,7 +210,7 @@ class _ProjectOverView extends State<ProjectOverView> {
                     Text(widget.project.getShortDescription()),
                     Align(
                         alignment: Alignment.centerRight,
-                        child: FlatButton.icon(
+                        child: OutlinedButton.icon(
                           icon: Icon(Icons.info),
                           label: Text('More Info'),
                           onPressed: () {
@@ -336,11 +332,9 @@ class _ProjectOverView extends State<ProjectOverView> {
                       .pushWidget(FutureBuild(
                           future: Future.wait([
                             Provider.of<ProjectProvider>(context, listen: false)
-                                .updateListProject(
-                                    _designers[i].getProposedProjects()),
+                                .findByProjectProposer(_designers[i].getMail()),
                             Provider.of<ProjectProvider>(context, listen: false)
-                                .updateListProject(
-                                    _designers[i].getPartecipateInProjects()),
+                                .findByDesigner(_designers[i].getMail()),
                             Provider.of<TagProvider>(context, listen: false)
                                 .updateListTag(_designers[i].getTags())
                           ]),
@@ -358,11 +352,10 @@ class _ProjectOverView extends State<ProjectOverView> {
                       .pushWidget(FutureBuild(
                           future: Future.wait([
                             Provider.of<ProjectProvider>(context, listen: false)
-                                .updateListProject(
-                                    _designers.last.getProposedProjects()),
+                                .findByProjectProposer(
+                                    _designers.last.getMail()),
                             Provider.of<ProjectProvider>(context, listen: false)
-                                .updateListProject(
-                                    _designers.last.getPartecipateInProjects()),
+                                .findByDesigner(_designers.last.getMail()),
                             Provider.of<TagProvider>(context, listen: false)
                                 .updateListTag(_designers.last.getTags())
                           ]),
@@ -389,7 +382,7 @@ class _ProjectOverView extends State<ProjectOverView> {
           Provider.of<AuthCredentialProvider>(context, listen: false).getUser();
       if (user == null) return false;
       List<Evaluation> alreadySended = Provider.of<EvaluationProvider>(context)
-          .findByIds(user.getEvaluationsSend());
+          .findSendedEvaluation(user.getMail());
 
       if (alreadySended
               .where(
@@ -454,9 +447,7 @@ class _ProjectOverView extends State<ProjectOverView> {
               padding: EdgeInsets.only(right: 15),
               child: Align(
                   alignment: Alignment.bottomRight,
-                  child: RaisedButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
+                  child: OutlinedButton(
                     onPressed: () => {
                       showDialog(
                         context: context,
@@ -467,17 +458,7 @@ class _ProjectOverView extends State<ProjectOverView> {
                           );
                         },
                       ),
-                      setState(() => {
-                            _projectEvaluations =
-                                Provider.of<EvaluationProvider>(context,
-                                        listen: false)
-                                    .findByIds(
-                                        widget.project.getProjectEvaluations()),
-                            _teamEvaluations = Provider.of<EvaluationProvider>(
-                                    context,
-                                    listen: false)
-                                .findByIds(widget.project.getTeamEvaluations()),
-                          }),
+                  
                     },
                     child: Text("Valuta"),
                   ))),
@@ -486,9 +467,7 @@ class _ProjectOverView extends State<ProjectOverView> {
               padding: EdgeInsets.only(right: 15),
               child: Align(
                   alignment: Alignment.bottomRight,
-                  child: RaisedButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
+                  child: OutlinedButton(
                     onPressed: () => {
                       showDialog(
                           context: context,
@@ -504,9 +483,7 @@ class _ProjectOverView extends State<ProjectOverView> {
               padding: EdgeInsets.only(right: 15),
               child: Align(
                   alignment: Alignment.bottomRight,
-                  child: RaisedButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
+                  child: OutlinedButton(
                     onPressed: () => {
                       Provider.of<ViewProvider>(context, listen: false)
                           .pushWidget(SendInvite(id: widget.project.getId())),
