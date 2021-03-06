@@ -30,12 +30,6 @@ public class InviteService {
     @Autowired
     private ProjectService projectService;
 
-    private boolean existsById(UUID id) throws ResponseStatusException {
-        if (!repository.existsById(id))
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "invite not found");
-        return true;
-    }
-
     private boolean checkInvite(Invite invite) {
         if(invite.getStateDesigner() == null)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid invite: StateDesigner is null");

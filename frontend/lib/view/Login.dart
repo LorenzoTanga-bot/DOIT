@@ -15,7 +15,6 @@ class Login extends StatefulWidget {
 }
 
 class _Login extends State<Login> {
- 
   String mail;
 
   LoginMessages _buildLoginMessages() {
@@ -39,21 +38,11 @@ class _Login extends State<Login> {
       await Provider.of<AuthCredentialProvider>(context, listen: false)
           .loginWithCredentials(new AuthCredential(login.name, login.password));
     } catch (e) {
-      switch (e.code) {
-        case 'ERROR_USER_NOT_FOUND':
+      switch (e.toString()) {
+        case 'Credential not found':
           return 'Email not found';
-        case 'ERROR_WRONG_PASSWORD':
+        case 'Invalid login':
           return 'Wrong password';
-        case 'ERROR_INVALID_EMAIL':
-          return 'Invalid mail';
-        case 'ERROR_USER_NOT_FOUND':
-          return 'User not found';
-        case 'ERROR_USER_DISABLED':
-          return 'User disabled';
-        case 'ERROR_TOO_MANY_REQUESTS':
-          return 'Too many request';
-        case 'ERROR_OPERATION_NOT_ALLOWED':
-          return 'Operation not allowed';
       }
     }
     return null;
@@ -114,7 +103,6 @@ class _Login extends State<Login> {
               .contains(UserRole.NOT_COMPLETED)) {
             Provider.of<ViewProvider>(context, listen: false)
                 .setProfileDefault(CreateModifyProfile(
-            
               isNewUser: true,
             ));
           } else

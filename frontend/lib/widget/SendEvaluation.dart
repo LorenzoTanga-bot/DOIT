@@ -155,8 +155,7 @@ class _SendEvaluation extends State<SendEvaluation> {
   bool checkAlreadySended(EvaluationMode evaluationMode) {
     List<Evaluation> alreadySended =
         Provider.of<EvaluationProvider>(context, listen: false).findByIds(
-            context
-                .read<AuthCredentialProvider>()
+            Provider.of<AuthCredentialProvider>(context, listen: false)
                 .getUser()
                 .getEvaluationsSend());
 

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:doit/apicontroller/BasicAuthConfig.dart';
 import 'package:doit/model/Project.dart';
 import 'package:http/http.dart' as http;
+import 'package:http/http.dart';
 
 class ProjectApiController {
   String _ip;
@@ -13,96 +14,100 @@ class ProjectApiController {
     _baseUrl = "http://$_ip:8080/doit/api/project";
   }
 
+  String _getBodyResponse(Response response) {
+    if (response.statusCode == 200)
+      return response.body;
+    else {
+      throw (json.decode(response.body)["message"]);
+    }
+  }
+
   Future<String> addProject(Project newProject) async {
-    return (await http.post(Uri.encodeFull("$_baseUrl/new"),
-            headers: BasicAuthConfig().getUserHeader(),
-            body: json.encode({
-              "id": newProject.getId(),
-              "name": newProject.getName(),
-              "projectProposer": newProject.getProjectProposer(),
-              "tag": newProject.getTag(),
-              "dateOfCreation": newProject.getDateOfCreation(),
-              "dateOfStart": newProject.getDateOfStart(),
-              "dateOfEnd": newProject.getDateOfEnd(),
-              "shortDescription": newProject.getShortDescription(),
-              "description": newProject.getDescription(),
-              "evaluationMode": newProject.getEvaluationMode(),
-              "startCandidacy": newProject.getStartCandidacy(),
-              "endCandidacy": newProject.getEndCandidacy(),
-              "candidacies": newProject.getCandidacies(),
-              "invites": newProject.getInvites(),
-              "designers": newProject.getDesigners(),
-              "projectEvaluations" : newProject.getProjectEvaluations(),
-               "teamEvaluations" : newProject.getTeamEvaluations()
-            })))
-        .body;
+    return _getBodyResponse(await http.post(Uri.encodeFull("$_baseUrl/new"),
+        headers: BasicAuthConfig().getUserHeader(),
+        body: json.encode({
+          "id": newProject.getId(),
+          "name": newProject.getName(),
+          "projectProposer": newProject.getProjectProposer(),
+          "tag": newProject.getTag(),
+          "dateOfCreation": newProject.getDateOfCreation(),
+          "dateOfStart": newProject.getDateOfStart(),
+          "dateOfEnd": newProject.getDateOfEnd(),
+          "shortDescription": newProject.getShortDescription(),
+          "description": newProject.getDescription(),
+          "evaluationMode": newProject.getEvaluationMode(),
+          "startCandidacy": newProject.getStartCandidacy(),
+          "endCandidacy": newProject.getEndCandidacy(),
+          "candidacies": newProject.getCandidacies(),
+          "invites": newProject.getInvites(),
+          "designers": newProject.getDesigners(),
+          "projectEvaluations": newProject.getProjectEvaluations(),
+          "teamEvaluations": newProject.getTeamEvaluations()
+        })));
   }
 
   Future<String> updateProject(Project modifiedProject) async {
-    return (await http.put(Uri.encodeFull("$_baseUrl/update"),
-            headers: BasicAuthConfig().getUserHeader(),
-            body: json.encode({
-               "id": modifiedProject.getId(),
-              "name": modifiedProject.getName(),
-              "projectProposer": modifiedProject.getProjectProposer(),
-              "tag": modifiedProject.getTag(),
-              "dateOfCreation": modifiedProject.getDateOfCreation(),
-              "dateOfStart": modifiedProject.getDateOfStart(),
-              "dateOfEnd": modifiedProject.getDateOfEnd(),
-              "shortDescription": modifiedProject.getShortDescription(),
-              "description": modifiedProject.getDescription(),
-              "evaluationMode": modifiedProject.getEvaluationMode(),
-              "startCandidacy": modifiedProject.getStartCandidacy(),
-              "endCandidacy": modifiedProject.getEndCandidacy(),
-              "candidacies": modifiedProject.getCandidacies(),
-              "invites": modifiedProject.getInvites(),
-              "designers": modifiedProject.getDesigners(),
-              "projectEvaluations" : modifiedProject.getProjectEvaluations(),
-               "teamEvaluations" : modifiedProject.getTeamEvaluations()
-            })))
-        .body;
+    return _getBodyResponse(await http.put(Uri.encodeFull("$_baseUrl/update"),
+        headers: BasicAuthConfig().getUserHeader(),
+        body: json.encode({
+          "id": modifiedProject.getId(),
+          "name": modifiedProject.getName(),
+          "projectProposer": modifiedProject.getProjectProposer(),
+          "tag": modifiedProject.getTag(),
+          "dateOfCreation": modifiedProject.getDateOfCreation(),
+          "dateOfStart": modifiedProject.getDateOfStart(),
+          "dateOfEnd": modifiedProject.getDateOfEnd(),
+          "shortDescription": modifiedProject.getShortDescription(),
+          "description": modifiedProject.getDescription(),
+          "evaluationMode": modifiedProject.getEvaluationMode(),
+          "startCandidacy": modifiedProject.getStartCandidacy(),
+          "endCandidacy": modifiedProject.getEndCandidacy(),
+          "candidacies": modifiedProject.getCandidacies(),
+          "invites": modifiedProject.getInvites(),
+          "designers": modifiedProject.getDesigners(),
+          "projectEvaluations": modifiedProject.getProjectEvaluations(),
+          "teamEvaluations": modifiedProject.getTeamEvaluations()
+        })));
   }
 
   Future<String> deleteProject(String id) async {
-    return (await http.delete(Uri.encodeFull("$_baseUrl/delete/$id"),
-            headers: BasicAuthConfig().getUserHeader()))
-        .body;
+    return _getBodyResponse(await http.delete(
+        Uri.encodeFull("$_baseUrl/delete/$id"),
+        headers: BasicAuthConfig().getUserHeader()));
   }
 
   Future<String> getProjectsPage(int index) async {
-    return (await http.get(Uri.encodeFull("$_baseUrl/getPage/$index/15"),
-            headers: BasicAuthConfig().getBaseHeader()))
-        .body;
+    return _getBodyResponse(await http.get(
+        Uri.encodeFull("$_baseUrl/getPage/$index/15"),
+        headers: BasicAuthConfig().getBaseHeader()));
   }
 
   Future<String> getAllProjects() async {
-    return (await http.get(Uri.encodeFull("$_baseUrl/get"),
-            headers: BasicAuthConfig().getBaseHeader()))
-        .body;
+    return _getBodyResponse(await http.get(Uri.encodeFull("$_baseUrl/get"),
+        headers: BasicAuthConfig().getBaseHeader()));
   }
 
   Future<String> getProjectById(String id) async {
-    return (await http.get(Uri.encodeFull("$_baseUrl/getById/$id"),
-            headers: BasicAuthConfig().getBaseHeader()))
-        .body;
+    return _getBodyResponse(await http.get(
+        Uri.encodeFull("$_baseUrl/getById/$id"),
+        headers: BasicAuthConfig().getBaseHeader()));
   }
 
   Future<String> getProjectsByIds(List<String> ids) async {
-    return (await http.put(Uri.encodeFull("$_baseUrl/getByIds"),
-            headers: BasicAuthConfig().getBaseHeader(), body: json.encode(ids)))
-        .body;
+    return _getBodyResponse(await http.put(Uri.encodeFull("$_baseUrl/getByIds"),
+        headers: BasicAuthConfig().getBaseHeader(), body: json.encode(ids)));
   }
 
   Future<String> getProjectsByName(String name) async {
-    return (await http.get(Uri.encodeFull("$_baseUrl/getByName/$name"),
-            headers: BasicAuthConfig().getBaseHeader()))
-        .body;
+    return _getBodyResponse(await http.get(
+        Uri.encodeFull("$_baseUrl/getByName/$name"),
+        headers: BasicAuthConfig().getBaseHeader()));
   }
 
   Future<String> getProjectsByTags(List<String> tags) async {
-    return (await http.put(Uri.encodeFull("$_baseUrl/getByTags"),
-            headers: BasicAuthConfig().getBaseHeader(),
-            body: json.encode(tags)))
-        .body;
+    return _getBodyResponse(await http.put(
+        Uri.encodeFull("$_baseUrl/getByTags"),
+        headers: BasicAuthConfig().getBaseHeader(),
+        body: json.encode(tags)));
   }
 }
