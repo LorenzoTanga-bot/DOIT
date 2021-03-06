@@ -22,21 +22,15 @@ class SendEvaluation extends StatefulWidget {
 class _SendEvaluation extends State<SendEvaluation> {
   Project _project;
   TextEditingController _message = TextEditingController();
-  bool evaluatedTeam = false;
-  int group = 1;
-
-  @override
-  void initState() {
-    super.initState();
-    _project = context.read<ProjectProvider>().findById(widget.id);
-  }
+  bool evaluatedTeam;
+  int group = 0;
 
   void createEvaluation(BuildContext context) async {
     Evaluation evaluation = new Evaluation();
     evaluation
         .setSender(context.read<AuthCredentialProvider>().getUser().getMail());
     evaluation.setMessage(_message.text);
-    //da controllare
+
     if (evaluatedTeam)
       evaluation.setEvaluationMode(EvaluationMode.TEAM);
     else
@@ -62,6 +56,11 @@ class _SendEvaluation extends State<SendEvaluation> {
 
   @override
   Widget build(BuildContext context) {
+    if (group == 0)
+      evaluatedTeam = true;
+    else
+      evaluatedTeam = false;
+    _project = context.watch<ProjectProvider>().findById(widget.id);
     context = widget.context;
     return AlertDialog(
         shape: RoundedRectangleBorder(
@@ -159,10 +158,11 @@ class _SendEvaluation extends State<SendEvaluation> {
 
   bool checkAlreadySended(EvaluationMode evaluationMode) {
     List<Evaluation> alreadySended =
-        Provider.of<EvaluationProvider>(context, listen: false).findSendedEvaluation(
-            Provider.of<AuthCredentialProvider>(context, listen: false)
-                .getUser()
-                .getMail());
+        Provider.of<EvaluationProvider>(context, listen: false)
+            .findSendedEvaluation(
+                Provider.of<AuthCredentialProvider>(context, listen: false)
+                    .getUser()
+                    .getMail());
 
     if (alreadySended
         .where((element) => ((element.getProject() == _project.getId()) &&

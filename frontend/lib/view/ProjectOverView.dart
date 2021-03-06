@@ -4,6 +4,7 @@ import 'package:doit/model/Tag.dart';
 import 'package:doit/model/User.dart';
 import 'package:doit/model/Evaluation.dart';
 import 'package:doit/providers/AuthCredentialProvider.dart';
+import 'package:doit/providers/CandidacyProvider.dart';
 import 'package:doit/providers/ProjectProvider.dart';
 
 import 'package:doit/providers/TagProvider.dart';
@@ -369,6 +370,8 @@ class _ProjectOverView extends State<ProjectOverView> {
       User user =
           Provider.of<AuthCredentialProvider>(context, listen: false).getUser();
       if (user == null) return false;
+      if (Provider.of<CandidacyProvider>(context, listen: false)
+          .alreadySended(user.getMail(), widget.project.getId())) {}
       return (user.getRoles().contains(UserRole.DESIGNER_PERSON) ||
           (user.getRoles().contains(UserRole.DESIGNER_ENTITY) &&
               !isTheProjectProposer()));
@@ -381,14 +384,16 @@ class _ProjectOverView extends State<ProjectOverView> {
       User user =
           Provider.of<AuthCredentialProvider>(context, listen: false).getUser();
       if (user == null) return false;
-      List<Evaluation> alreadySended = Provider.of<EvaluationProvider>(context)
-          .findSendedEvaluation(user.getMail());
+      if (Provider.of<EvaluationProvider>(context, listen: false).alreadySended(
+          user.getMail(), EvaluationMode.PROJECT, widget.project.getId())) {
+        if (Provider.of<EvaluationProvider>(context, listen: false)
+            .alreadySended(
+                user.getMail(), EvaluationMode.TEAM, widget.project.getId())) {
+          return false;
+        }
+      }
 
-      if (alreadySended
-              .where(
-                  (element) => (element.getProject() == widget.project.getId()))
-              .length !=
-          2) if (isSuitable(user)) {
+      if (isSuitable(user)) {
         return (user.getRoles().contains(UserRole.EXPERT));
       }
     }
@@ -458,7 +463,6 @@ class _ProjectOverView extends State<ProjectOverView> {
                           );
                         },
                       ),
-                  
                     },
                     child: Text("Valuta"),
                   ))),
@@ -473,7 +477,8 @@ class _ProjectOverView extends State<ProjectOverView> {
                           context: context,
                           builder: (context) {
                             return SendCandidacy(
-                                id: widget.project.getId(), context: context);
+                              id: widget.project.getId(),
+                            );
                           })
                     },
                     child: Text("Candidati"),

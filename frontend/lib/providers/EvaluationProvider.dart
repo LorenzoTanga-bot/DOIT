@@ -10,10 +10,20 @@ class EvaluationProvider with ChangeNotifier {
   EvaluationProvider(EvaluationService service) {
     _service = service;
   }
+  bool alreadySended(
+      String userId, EvaluationMode evaluationMode, String project) {
+    for (Evaluation existingEvaluation in _listEvaluations) {
+      if (existingEvaluation.getSender() == userId &&
+          existingEvaluation.getEvaluationMode() == evaluationMode &&
+          existingEvaluation.getProject() == project) return true;
+    }
+    return false;
+  }
 
   Future<Evaluation> addEvaluation(Evaluation evaluation) async {
     Evaluation newEvaluation = await _service.addEvaluation(evaluation);
     _listEvaluations.add(newEvaluation);
+    notifyListeners();
     return newEvaluation;
   }
 

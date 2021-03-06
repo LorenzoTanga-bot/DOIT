@@ -9,6 +9,12 @@ class CandidacyProvider with ChangeNotifier {
   CandidacyProvider(CandidacyService service) {
     _service = service;
   }
+  bool alreadySended(String user, String project) {
+    for (Candidacy candidacy in _listCandidacies)
+      if (candidacy.getProject() == project && candidacy.getDesigner() == user)
+        return true;
+    return false;
+  }
 
   Future<Candidacy> addCandidacy(Candidacy candidacy) async {
     Candidacy newCandidacy = await _service.addCandidacy(candidacy);
@@ -21,7 +27,7 @@ class CandidacyProvider with ChangeNotifier {
     _listCandidacies
         .removeWhere((element) => element.getId() == modifiedCandidacy.getId());
     _listCandidacies.add(modifiedCandidacy);
-
+    notifyListeners();
     return modifiedCandidacy;
   }
 

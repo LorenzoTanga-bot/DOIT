@@ -153,9 +153,11 @@ class _ThirdView extends State<ThirdView> {
                     future: Provider.of<ProjectProvider>(context, listen: false)
                         .findByProjectProposer(_user.getMail()),
                     newView: ListOfProjects(
-                        projects:
-                            Provider.of<ProjectProvider>(context, listen: false)
-                                .findByUser(_user.getMail(), true))))
+                      projects:
+                          Provider.of<ProjectProvider>(context, listen: false)
+                              .findByUser(_user.getMail(), true),
+                      isTheProjectProposer: true,
+                    )))
               }),
     ]);
   }
@@ -189,9 +191,11 @@ class _ThirdView extends State<ThirdView> {
                     future: Provider.of<ProjectProvider>(context, listen: false)
                         .findByDesigner(_user.getMail()),
                     newView: ListOfProjects(
-                        projects:
-                            Provider.of<ProjectProvider>(context, listen: false)
-                                .findByUser(_user.getMail(), false))))
+                      projects:
+                          Provider.of<ProjectProvider>(context, listen: false)
+                              .findByUser(_user.getMail(), false),
+                      isTheProjectProposer: false,
+                    )))
               }),
       GestureDetector(
           child: CardList(

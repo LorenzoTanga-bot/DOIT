@@ -30,11 +30,12 @@ class _SendInvite extends State<SendInvite> {
   User _designer;
   TextEditingController _message = TextEditingController();
   bool _visibilityLabelDesigner = false;
+  User _currentUser;
 
   @override
   void initState() {
     super.initState();
-
+    _currentUser = context.read<AuthCredentialProvider>().getUser();
     _project = context.read<ProjectProvider>().findById(widget.id);
   }
 
@@ -61,6 +62,7 @@ class _SendInvite extends State<SendInvite> {
     }
     try {
       await context.read<InviteProvider>().addInvite(newInvite);
+      Provider.of<ViewProvider>(context, listen: false).popWidget();
     } catch (e) {
       showDialog(
           context: context,
@@ -93,7 +95,9 @@ class _SendInvite extends State<SendInvite> {
     List<User> filterUser = [];
     usersTemp.addAll(await Provider.of<UserProvider>(context, listen: false)
         .findByUsername(query, "DESIGNER"));
-    for (User user in usersTemp) if (isSuitable(user)) filterUser.add(user);
+    for (User user in usersTemp)
+      if (isSuitable(user) && user.getMail() != _currentUser.getMail())
+        filterUser.add(user);
     _usersFind = filterUser;
   }
 
@@ -211,7 +215,6 @@ class _SendInvite extends State<SendInvite> {
       else {
         if (_currentStep == 1) {
           createInvite();
-          Provider.of<ViewProvider>(context, listen: false).popWidget();
         }
       }
     } else {

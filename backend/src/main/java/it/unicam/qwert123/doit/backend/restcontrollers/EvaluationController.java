@@ -49,7 +49,7 @@ public class EvaluationController {
     public boolean deleteEvaluation(@PathVariable("id") String id) {
         try {
             // da controllare
-            return evaluationService.deleteEvaluations(UUID.fromString(id));
+            return evaluationService.deleteEvaluation(UUID.fromString(id));
 
         } catch (IllegalArgumentException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());

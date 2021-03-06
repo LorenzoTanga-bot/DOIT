@@ -9,9 +9,9 @@ import 'package:provider/provider.dart';
 
 class SendCandidacy extends StatefulWidget {
   final String id;
-  final BuildContext context;
+ 
 
-  const SendCandidacy({Key key, @required this.id, @required this.context})
+  const SendCandidacy({Key key, @required this.id,})
       : super(key: key);
 
   @override
@@ -42,6 +42,7 @@ class _SendCandidacy extends State<SendCandidacy> {
     newCandidacy.setProject(_project.getId());
     try {
       await context.read<CandidacyProvider>().addCandidacy(newCandidacy);
+      Navigator.pop(context);
     } catch (e) {
       showDialog(
           context: context,
@@ -53,7 +54,6 @@ class _SendCandidacy extends State<SendCandidacy> {
 
   @override
   Widget build(BuildContext context) {
-    context = widget.context;
     return AlertDialog(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15.0),
@@ -94,7 +94,9 @@ class _SendCandidacy extends State<SendCandidacy> {
                 child: Text("Back"),
               ),
               OutlinedButton(
-                onPressed: () => {createCandidacy(), Navigator.pop(context)},
+                onPressed: () => {
+                  createCandidacy(),
+                },
                 child: Text("Candidate"),
               )
             ])

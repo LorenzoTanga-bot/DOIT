@@ -35,9 +35,8 @@ class _CandidacyOverView extends State<CandidacyOverView> {
   User user;
   void initState() {
     super.initState();
-    project = context
-        .watch<ProjectProvider>()
-        .findById(widget.candidacy.getProject());
+    project =
+        context.read<ProjectProvider>().findById(widget.candidacy.getProject());
     state = widget.candidacy.getState().toString();
     state = state.substring(state.indexOf(".") + 1);
     DateTime date = DateTime.parse(widget.candidacy.getDateOfCandidacy());
@@ -63,16 +62,16 @@ class _CandidacyOverView extends State<CandidacyOverView> {
     widget.candidacy.setState(StateCandidacy.POSITIVE);
     await Provider.of<CandidacyProvider>(context, listen: false)
         .updateCandidacy(widget.candidacy);
-    await Provider.of<UserProvider>(context, listen: false)
-        .reloadUser(widget.candidacy.getDesigner());
     await Provider.of<ProjectProvider>(context, listen: false)
         .reloadProject(widget.candidacy.getProject());
+    Navigator.pop(context);
   }
 
   void declineCandidacy(BuildContext context) async {
     widget.candidacy.setState(StateCandidacy.NEGATIVE);
     await Provider.of<CandidacyProvider>(context, listen: false)
         .updateCandidacy(widget.candidacy);
+    Navigator.pop(context);
   }
 
   Widget showButton() {
@@ -84,8 +83,7 @@ class _CandidacyOverView extends State<CandidacyOverView> {
             child: Align(
                 alignment: Alignment.bottomRight,
                 child: OutlinedButton(
-                  onPressed: () =>
-                      {acceptCandidacy(context), Navigator.pop(context)},
+                  onPressed: () => {acceptCandidacy(context)},
                   child: Text("Accetta"),
                 ))),
         Padding(
@@ -93,8 +91,9 @@ class _CandidacyOverView extends State<CandidacyOverView> {
             child: Align(
                 alignment: Alignment.bottomRight,
                 child: OutlinedButton(
-                  onPressed: () =>
-                      {declineCandidacy(context), Navigator.pop(context)},
+                  onPressed: () => {
+                    declineCandidacy(context),
+                  },
                   child: Text("Rifiuta"),
                 ))),
       ],
@@ -148,7 +147,7 @@ class _CandidacyOverView extends State<CandidacyOverView> {
                 endIndent: 2,
               ),
               Row(children: [
-                Text("Sender: "),
+                Text("Receiver: "),
                 RichText(
                     text: TextSpan(
                         text: (widget.candidacy.getProjectProposer()),
@@ -169,8 +168,7 @@ class _CandidacyOverView extends State<CandidacyOverView> {
                                               user.getMail()),
                                       Provider.of<ProjectProvider>(context,
                                               listen: false)
-                                          .findByDesigner(
-                                              user.getMail()),
+                                          .findByDesigner(user.getMail()),
                                       Provider.of<TagProvider>(context,
                                               listen: false)
                                           .updateListTag(user.getTags())
@@ -186,7 +184,7 @@ class _CandidacyOverView extends State<CandidacyOverView> {
                 endIndent: 2,
               ),
               Row(children: [
-                Text("Receiver: "),
+                Text("Sender: "),
                 RichText(
                     text: TextSpan(
                         text: (widget.candidacy.getDesigner()),
@@ -206,8 +204,7 @@ class _CandidacyOverView extends State<CandidacyOverView> {
                                               user.getMail()),
                                       Provider.of<ProjectProvider>(context,
                                               listen: false)
-                                          .findByDesigner(
-                                              user.getMail()),
+                                          .findByDesigner(user.getMail()),
                                       Provider.of<TagProvider>(context,
                                               listen: false)
                                           .updateListTag(user.getTags())

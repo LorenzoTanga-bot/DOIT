@@ -21,12 +21,10 @@ import 'package:provider/provider.dart';
 
 class InviteOverview extends StatefulWidget {
   final Invite invite;
-  final BuildContext context;
 
   const InviteOverview({
     Key key,
     @required this.invite,
-    @required this.context,
   }) : super(key: key);
 
   @override
@@ -42,8 +40,7 @@ class _InviteOverview extends State<InviteOverview> {
 
   void initState() {
     super.initState();
-    project = Provider.of<ProjectProvider>(context)
-        .findById(widget.invite.getProject());
+
     state = widget.invite.getState().toString();
     state = state.substring(state.indexOf(".") + 1);
     DateTime date = DateTime.parse(widget.invite.getDateOfInvite());
@@ -92,16 +89,13 @@ class _InviteOverview extends State<InviteOverview> {
       widget.invite.setStateProjectProposer(StateInvite.POSITIVE);
       await Provider.of<InviteProvider>(context, listen: false)
           .updateStateProjectProposer(widget.invite);
-      await Provider.of<UserProvider>(context, listen: false)
-          .reloadUser(widget.invite.getDesigner());
       await Provider.of<ProjectProvider>(context, listen: false)
           .reloadProject(widget.invite.getProject());
     } else {
       widget.invite.setStateDesigner(StateInvite.POSITIVE);
       await Provider.of<InviteProvider>(context, listen: false)
           .updateStateDesigner(widget.invite);
-      await Provider.of<UserProvider>(context, listen: false)
-          .reloadUser(widget.invite.getDesigner());
+
       await Provider.of<ProjectProvider>(context, listen: false)
           .reloadProject(widget.invite.getProject());
     }
@@ -133,7 +127,7 @@ class _InviteOverview extends State<InviteOverview> {
             child: Align(
                 alignment: Alignment.bottomRight,
                 child: OutlinedButton(
-                   onPressed: () => {acceptInvite(context)},
+                  onPressed: () => {acceptInvite(context)},
                   child: Text("Accetta"),
                 ))),
         Padding(
@@ -152,7 +146,8 @@ class _InviteOverview extends State<InviteOverview> {
 
   @override
   Widget build(BuildContext context) {
-    context = widget.context;
+    project = Provider.of<ProjectProvider>(context)
+        .findById(widget.invite.getProject());
     return AlertDialog(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15.0),
@@ -218,8 +213,7 @@ class _InviteOverview extends State<InviteOverview> {
                                               user.getMail()),
                                       Provider.of<ProjectProvider>(context,
                                               listen: false)
-                                          .findByDesigner(
-                                              user.getMail()),
+                                          .findByDesigner(user.getMail()),
                                       Provider.of<TagProvider>(context,
                                               listen: false)
                                           .updateListTag(user.getTags())
@@ -255,8 +249,7 @@ class _InviteOverview extends State<InviteOverview> {
                                               user.getMail()),
                                       Provider.of<ProjectProvider>(context,
                                               listen: false)
-                                          .findByDesigner(
-                                              user.getMail()),
+                                          .findByDesigner(user.getMail()),
                                       Provider.of<TagProvider>(context,
                                               listen: false)
                                           .updateListTag(user.getTags())
@@ -318,7 +311,9 @@ class _InviteOverview extends State<InviteOverview> {
               )
             ],
           ),
-          if (isTheInviteSentByDesigner() || isTheDesigner()) showButton(),
+          if ((isTheInviteSentByDesigner() || isTheDesigner()) &&
+              widget.invite.getState() == StateInvite.WAITING)
+            showButton(),
           Divider(
             color: Colors.white,
             height: 8,

@@ -41,7 +41,7 @@ public class CandidacyController {
     private AccessCheckerComponent accessCheckerComponent;
 
     @PostMapping("/new")
-    @PreAuthorize("(hasAuthority('DESIGNER_ENTITY') or hasAuthority('DESIGNER_PERSON')) and @accessCheckerComponent.sameUser(principal, #candidacy.getProjectProposer())")
+    @PreAuthorize("(hasAuthority('DESIGNER_ENTITY') or hasAuthority('DESIGNER_PERSON')) and @accessCheckerComponent.sameUser(principal, #candidacy.getDesigner())")
     public Candidacy addCandidacy(@RequestBody @Param("candidacy") Candidacy candidacy) {
         return candidacyService.addCandidacy(candidacy);
     }
@@ -51,7 +51,6 @@ public class CandidacyController {
     public Candidacy updateStateCandidacy(@RequestBody @Param("candidacy") Candidacy candidacy) {
         Candidacy returnCandidacy = candidacyService.updateCandidacy(candidacy);
         if (returnCandidacy.getState().compareTo(StateCandidacy.POSITIVE) == 0) {
-
             Project project = projectService.findById(returnCandidacy.getProject());
             project.addDesigner(returnCandidacy.getDesigner());
             projectService.updateProject(project);

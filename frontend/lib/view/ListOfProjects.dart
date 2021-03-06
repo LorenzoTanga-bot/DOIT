@@ -4,8 +4,11 @@ import 'package:flutter/material.dart';
 
 class ListOfProjects extends StatefulWidget {
   final List<Project> projects;
+  final bool isTheProjectProposer;
 
-  const ListOfProjects({Key key, @required this.projects}) : super(key: key);
+  const ListOfProjects(
+      {Key key, @required this.projects, @required this.isTheProjectProposer})
+      : super(key: key);
   @override
   _ListOfProjects createState() => _ListOfProjects();
 }
@@ -17,13 +20,22 @@ class _ListOfProjects extends State<ListOfProjects> {
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
         child: Column(children: [
-          Padding(
-            padding: EdgeInsets.all(10),
-            child: Text(
-              "Proposed Project",
-              style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+          if (widget.isTheProjectProposer)
+            Padding(
+              padding: EdgeInsets.all(10),
+              child: Text(
+                "Proposed Project",
+                style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+              ),
+            )
+          else
+            Padding(
+              padding: EdgeInsets.all(10),
+              child: Text(
+                "Partecipated in project",
+                style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+              ),
             ),
-          ),
           Divider(
             color: Colors.white,
             height: 5,
@@ -32,15 +44,26 @@ class _ListOfProjects extends State<ListOfProjects> {
             endIndent: 2,
           ),
           if (widget.projects.isEmpty)
-            Padding(
-              padding: EdgeInsets.all(10),
-              child: Text(
-                "You have no proposed project at the moment",
-                style: TextStyle(
-                  fontSize: 20,
+            if (widget.isTheProjectProposer)
+              Padding(
+                padding: EdgeInsets.all(10),
+                child: Text(
+                  "You have no proposed project at the moment",
+                  style: TextStyle(
+                    fontSize: 20,
+                  ),
+                ),
+              )
+            else
+              Padding(
+                padding: EdgeInsets.all(10),
+                child: Text(
+                  "You have no partecipate in project at the moment",
+                  style: TextStyle(
+                    fontSize: 20,
+                  ),
                 ),
               ),
-            ),
           ListProjects(projects: widget.projects)
         ]));
   }
