@@ -179,7 +179,7 @@ class _SearchByTag extends State<SearchByTag> {
                                                   usersFind[index].getTags())
                                         ]),
                                         newView: ProfileOverView(
-                                            user: usersFind[index])));
+                                            user: usersFind[index].getMail())));
                               });
                         }))
               ],

@@ -76,7 +76,8 @@ class _CreateModifyProject extends State<CreateModifyProject> {
     _project.setDateOfCreation(_dateOfCreation.toIso8601String());
     try {
       if (widget.id.isNotEmpty) {
-        await context.read<ProjectProvider>().updateProject(_project);
+        await Provider.of<ProjectProvider>(context, listen: false)
+            .updateProject(_project);
       } else
         await context.read<ProjectProvider>().addProject(_project);
       context.read<ViewProvider>().popWidget();

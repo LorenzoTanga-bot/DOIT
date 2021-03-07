@@ -1,10 +1,10 @@
-
 import 'package:doit/model/Project.dart';
 import 'package:doit/model/Tag.dart';
 import 'package:doit/model/User.dart';
 import 'package:doit/providers/AuthCredentialProvider.dart';
 import 'package:doit/providers/ProjectProvider.dart';
 import 'package:doit/providers/TagProvider.dart';
+import 'package:doit/providers/UserProvider.dart';
 import 'package:doit/providers/ViewProvider.dart';
 import 'package:doit/view/CreateModifyProfile.dart';
 import 'package:doit/widget/FutureBuilder.dart';
@@ -14,7 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class ProfileOverView extends StatefulWidget {
-  final User user;
+  final String user;
 
   const ProfileOverView({Key key, @required this.user}) : super(key: key);
 
@@ -26,26 +26,29 @@ class _ProfileOverView extends State<ProfileOverView> {
   List<Project> _proposedProjects = [];
   List<Project> _parteciateInProjects = [];
   List<Tag> _tags;
+  User _user;
 
-  void initState() {
-    super.initState();
-    _proposedProjects = Provider.of<ProjectProvider>(context, listen: false)
-        .findByUser(widget.user.getMail(),true);
-    _parteciateInProjects = Provider.of<ProjectProvider>(context, listen: false)
-        .findByUser(widget.user.getMail(),false);
-    _tags = Provider.of<TagProvider>(context, listen: false)
-        .getTagsByIds(widget.user.getTags());
+  void init() {
+    _user = context.watch<UserProvider>().findByMail(widget.user);
+    _proposedProjects = context
+        .watch<ProjectProvider>()
+        .findByUser(_user.getMail(), true);
+    _parteciateInProjects = context
+        .watch<ProjectProvider>()
+        .findByUser(_user.getMail(), false);
+    _tags = context.watch<TagProvider>().getTagsByIds(_user.getTags());
   }
 
   bool isTheOwner() {
     User user =
         Provider.of<AuthCredentialProvider>(context, listen: false).getUser();
     if (user == null) return false;
-    return user.getMail() == widget.user.getMail();
+    return user.getMail() == _user.getMail();
   }
 
   @override
   Widget build(BuildContext context) {
+    init();
     return ListView(children: [
       if (isTheOwner())
         Padding(
@@ -53,12 +56,11 @@ class _ProfileOverView extends State<ProfileOverView> {
             child: Align(
                 alignment: Alignment.bottomRight,
                 child: OutlinedButton(
-
                   onPressed: () => {
                     context.read<ViewProvider>().pushWidget(FutureBuild(
                         future: Future.wait([
                           Provider.of<TagProvider>(context, listen: false)
-                              .updateListTag(widget.user.getTags())
+                              .updateListTag(_user.getTags())
                         ]),
                         newView: CreateModifyProfile(
                           isNewUser: false,
@@ -66,7 +68,7 @@ class _ProfileOverView extends State<ProfileOverView> {
                   },
                   child: Text("Modifica"),
                 ))),
-      PrincipalInformationUser(user: widget.user, tags: _tags),
+      PrincipalInformationUser(user: _user, tags: _tags),
       if (_proposedProjects.isNotEmpty)
         Padding(
             padding: EdgeInsets.all(15),

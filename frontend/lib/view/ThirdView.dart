@@ -78,7 +78,7 @@ class _ThirdView extends State<ThirdView> {
                     Provider.of<TagProvider>(context, listen: false)
                         .updateListTag(_user.getTags())
                   ]),
-                  newView: ProfileOverView(user: _user)))),
+                  newView: ProfileOverView(user: _user.getMail())))),
       GestureDetector(
           child: Card(
             shape: RoundedRectangleBorder(
@@ -254,25 +254,6 @@ class _ThirdView extends State<ThirdView> {
     ]);
   }
 
-  @override
-  void initState() {
-    super.initState();
-    _user = context.read<AuthCredentialProvider>().getUser();
-    _default();
-    if (_user.getRoles().contains(UserRole.PROJECT_PROPOSER))
-      _projectProposer();
-    if (_user.getRoles().contains(UserRole.DESIGNER_PERSON) ||
-        _user.getRoles().contains(UserRole.DESIGNER_ENTITY)) _designer();
-    if (_user.getRoles().contains(UserRole.EXPERT)) _expert();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView(
-      children: _listView,
-    );
-  }
-
   getListCandidacy(String role) async {
     switch (role) {
       case "DESIGNER":
@@ -305,8 +286,7 @@ class _ThirdView extends State<ThirdView> {
           }
 
           context.read<ViewProvider>().pushWidget(FutureBuild(
-              future: Provider.of<UserProvider>(context, listen: false)
-                  .updateListUsers(users),
+              future: context.read<UserProvider>().updateListUsers(users),
               newView: ListOfCandidacy(candidacies: candidacies)));
           break;
         }
@@ -445,12 +425,30 @@ class _ThirdView extends State<ThirdView> {
         for (Evaluation evaluation in evaluations) {
           project.add(evaluation.getProject());
         }
-
         context.read<ViewProvider>().pushWidget(FutureBuild(
             future: Provider.of<ProjectProvider>(context, listen: false)
                 .updateListProject(project),
             newView: ListOfEvaluations(evaluations: evaluations)));
         break;
     }
+  }
+
+  void init() {
+    _user = context.watch<AuthCredentialProvider>().getUser();
+
+    _default();
+    if (_user.getRoles().contains(UserRole.PROJECT_PROPOSER))
+      _projectProposer();
+    if (_user.getRoles().contains(UserRole.DESIGNER_PERSON) ||
+        _user.getRoles().contains(UserRole.DESIGNER_ENTITY)) _designer();
+    if (_user.getRoles().contains(UserRole.EXPERT)) _expert();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    init();
+    return ListView(
+      children: _listView,
+    );
   }
 }

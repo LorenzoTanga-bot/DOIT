@@ -3,10 +3,10 @@ import 'package:doit/model/Project.dart';
 import 'package:doit/model/Tag.dart';
 import 'package:doit/model/User.dart';
 import 'package:doit/model/Evaluation.dart';
+
 import 'package:doit/providers/AuthCredentialProvider.dart';
 import 'package:doit/providers/CandidacyProvider.dart';
 import 'package:doit/providers/ProjectProvider.dart';
-
 import 'package:doit/providers/TagProvider.dart';
 import 'package:doit/providers/UserProvider.dart';
 import 'package:doit/providers/ViewProvider.dart';
@@ -14,19 +14,20 @@ import 'package:doit/providers/EvaluationProvider.dart';
 
 import 'package:doit/view/ProfileOverView.dart';
 import 'package:doit/view/projectproposer/CreateModifyProject.dart';
+
 import 'package:doit/widget/FutureBuilder.dart';
 import 'package:doit/widget/ListEvaluations.dart';
-
 import 'package:doit/widget/ListTags.dart';
 import 'package:doit/widget/SendCandidacy.dart';
 import 'package:doit/widget/SendEvaluation.dart';
 import 'package:doit/widget/SendInvite.dart';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class ProjectOverView extends StatefulWidget {
-  final Project project;
+  final String project;
 
   const ProjectOverView({
     Key key,
@@ -39,53 +40,52 @@ class ProjectOverView extends StatefulWidget {
 
 class _ProjectOverView extends State<ProjectOverView> {
   User _projectProposer;
-
+  Project _project;
   List<Tag> _listTags;
   String _state;
   List<User> _designers;
   List<Evaluation> _projectEvaluations;
   List<Evaluation> _teamEvaluations;
 
-  initState() {
-    super.initState();
-
-    _projectProposer = Provider.of<UserProvider>(context, listen: false)
-        .findByMail(widget.project.getProjectProposer());
-    _listTags = Provider.of<TagProvider>(context, listen: false)
-        .getTagsByIds(widget.project.getTag());
-    _designers = Provider.of<UserProvider>(context, listen: false)
-        .findByMails(widget.project.getDesigners());
-    _projectEvaluations =
-        Provider.of<EvaluationProvider>(context, listen: false)
-            .findReceivedEvaluationForProject(widget.project.getId());
-    _teamEvaluations = Provider.of<EvaluationProvider>(context, listen: false)
-        .findReceivedEvaluationForTeamOfProject(widget.project.getId());
-    _state = (DateTime.parse(widget.project.getDateOfEnd())
-                .compareTo(DateTime.now()) ==
-            -1)
-        ? "Completed"
-        : (widget.project.getCandidacyMode()
-            ? "Candidacy Mode"
-            : (DateTime.parse(widget.project.getStartCandidacy())
-                    .isAfter(DateTime.now())
-                ? "In attesa di apertura candidature"
-                : "In corso"));
+  void init() {
+    _project = context.watch<ProjectProvider>().findById(widget.project);
+    _projectProposer =
+        context.watch<UserProvider>().findByMail(_project.getProjectProposer());
+    _listTags = context.watch<TagProvider>().getTagsByIds(_project.getTag());
+    _designers =
+        context.watch<UserProvider>().findByMails(_project.getDesigners());
+    _projectEvaluations = context
+        .watch<EvaluationProvider>()
+        .findReceivedEvaluationForProject(_project.getId());
+    _teamEvaluations = context
+        .watch<EvaluationProvider>()
+        .findReceivedEvaluationForTeamOfProject(_project.getId());
+    _state =
+        (DateTime.parse(_project.getDateOfEnd()).compareTo(DateTime.now()) ==
+                -1)
+            ? "Completed"
+            : (_project.getCandidacyMode()
+                ? "Candidacy Mode"
+                : (DateTime.parse(_project.getStartCandidacy())
+                        .isAfter(DateTime.now())
+                    ? "In attesa di apertura candidature"
+                    : "In corso"));
   }
 
   String _getDate(String type) {
     DateTime date;
     switch (type) {
       case "dStart":
-        date = DateTime.parse(widget.project.getDateOfStart());
+        date = DateTime.parse(_project.getDateOfStart());
         break;
       case "dEnd":
-        date = DateTime.parse(widget.project.getDateOfEnd());
+        date = DateTime.parse(_project.getDateOfEnd());
         break;
       case "cStart":
-        date = DateTime.parse(widget.project.getStartCandidacy());
+        date = DateTime.parse(_project.getStartCandidacy());
         break;
       case "cEnd":
-        date = DateTime.parse(widget.project.getEndCandidacy());
+        date = DateTime.parse(_project.getEndCandidacy());
     }
     return "${date.day} / ${date.month} / ${date.year}";
   }
@@ -102,7 +102,7 @@ class _ProjectOverView extends State<ProjectOverView> {
                     onPressed: () => {
                       Provider.of<ViewProvider>(context, listen: false)
                           .pushWidget(CreateModifyProject(
-                        id: widget.project.getId(),
+                        id: widget.project,
                       ))
                     },
                     child: Text("Modifica"),
@@ -120,7 +120,7 @@ class _ProjectOverView extends State<ProjectOverView> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      widget.project.getName(),
+                      _project.getName(),
                       style:
                           TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                     ),
@@ -159,7 +159,8 @@ class _ProjectOverView extends State<ProjectOverView> {
                                                     _projectProposer.getTags())
                                           ]),
                                           newView: ProfileOverView(
-                                              user: _projectProposer)));
+                                              user:
+                                                  _projectProposer.getMail())));
                                 }))
                     ]),
                     Divider(
@@ -208,7 +209,7 @@ class _ProjectOverView extends State<ProjectOverView> {
                       indent: 2,
                       endIndent: 2,
                     ),
-                    Text(widget.project.getShortDescription()),
+                    Text(_project.getShortDescription()),
                     Align(
                         alignment: Alignment.centerRight,
                         child: OutlinedButton.icon(
@@ -225,8 +226,7 @@ class _ProjectOverView extends State<ProjectOverView> {
                                           style: TextStyle(
                                               fontSize: 24,
                                               fontStyle: FontStyle.italic)),
-                                      content: Text(
-                                          widget.project.getDescription()));
+                                      content: Text(_project.getDescription()));
                                 });
                           },
                         ))
@@ -329,8 +329,8 @@ class _ProjectOverView extends State<ProjectOverView> {
               style: TextStyle(color: Colors.black),
               recognizer: TapGestureRecognizer()
                 ..onTap = () {
-                  Provider.of<ViewProvider>(context, listen: false)
-                      .pushWidget(FutureBuild(
+                  Provider.of<ViewProvider>(context, listen: false).pushWidget(
+                      FutureBuild(
                           future: Future.wait([
                             Provider.of<ProjectProvider>(context, listen: false)
                                 .findByProjectProposer(_designers[i].getMail()),
@@ -339,7 +339,8 @@ class _ProjectOverView extends State<ProjectOverView> {
                             Provider.of<TagProvider>(context, listen: false)
                                 .updateListTag(_designers[i].getTags())
                           ]),
-                          newView: ProfileOverView(user: _designers[i])));
+                          newView:
+                              ProfileOverView(user: _designers[i].getMail())));
                 })));
     }
     if (_designers.length > 0)
@@ -349,8 +350,8 @@ class _ProjectOverView extends State<ProjectOverView> {
               style: TextStyle(color: Colors.black),
               recognizer: TapGestureRecognizer()
                 ..onTap = () {
-                  Provider.of<ViewProvider>(context, listen: false)
-                      .pushWidget(FutureBuild(
+                  Provider.of<ViewProvider>(context, listen: false).pushWidget(
+                      FutureBuild(
                           future: Future.wait([
                             Provider.of<ProjectProvider>(context, listen: false)
                                 .findByProjectProposer(
@@ -360,18 +361,23 @@ class _ProjectOverView extends State<ProjectOverView> {
                             Provider.of<TagProvider>(context, listen: false)
                                 .updateListTag(_designers.last.getTags())
                           ]),
-                          newView: ProfileOverView(user: _designers.last)));
+                          newView: ProfileOverView(
+                              user: _designers.last.getMail())));
                 })));
     return _listDesigners;
   }
 
-  bool isADesigner() {
-    if (widget.project.getCandidacyMode().toString() == "true") {
+  bool isADesigner(bool isForCandidacy) {
+    if (_project.getCandidacyMode().toString() == "true") {
       User user =
           Provider.of<AuthCredentialProvider>(context, listen: false).getUser();
       if (user == null) return false;
-      if (Provider.of<CandidacyProvider>(context, listen: false)
-          .alreadySended(user.getMail(), widget.project.getId())) {}
+      if (_project.getDesigners().contains(user.getMail())) return false;
+      if (isForCandidacy) if (Provider.of<CandidacyProvider>(context,
+              listen: false)
+          .alreadySended(user.getMail(), _project.getId())) {
+        return false;
+      }
       return (user.getRoles().contains(UserRole.DESIGNER_PERSON) ||
           (user.getRoles().contains(UserRole.DESIGNER_ENTITY) &&
               !isTheProjectProposer()));
@@ -380,15 +386,16 @@ class _ProjectOverView extends State<ProjectOverView> {
   }
 
   bool isAnExpert() {
-    if (widget.project.getEvaluationMode()) {
+    if (_project.getEvaluationMode()) {
       User user =
           Provider.of<AuthCredentialProvider>(context, listen: false).getUser();
       if (user == null) return false;
       if (Provider.of<EvaluationProvider>(context, listen: false).alreadySended(
-          user.getMail(), EvaluationMode.PROJECT, widget.project.getId())) {
+          user.getMail(), EvaluationMode.PROJECT, _project.getId())) {
         if (Provider.of<EvaluationProvider>(context, listen: false)
-            .alreadySended(
-                user.getMail(), EvaluationMode.TEAM, widget.project.getId())) {
+                .alreadySended(
+                    user.getMail(), EvaluationMode.TEAM, _project.getId()) ||
+            _project.getDesigners().isEmpty) {
           return false;
         }
       }
@@ -401,14 +408,14 @@ class _ProjectOverView extends State<ProjectOverView> {
   }
 
   bool isTheProjectProposerOrCompanyDesigner() {
-    if (widget.project.getCandidacyMode().toString() == "true") {
+    if (_project.getCandidacyMode().toString() == "true") {
       User user =
           Provider.of<AuthCredentialProvider>(context, listen: false).getUser();
       if (user == null)
         return false;
       else {
-        if (isADesigner()) {
-          if (isADesignerOfTeam()) return (!user.getIsAPerson());
+        if (isADesignerOfTeam()) {
+          return true;
         } else {
           return (isTheProjectProposer());
         }
@@ -418,14 +425,14 @@ class _ProjectOverView extends State<ProjectOverView> {
   }
 
   bool isADesignerOfTeam() {
-    if (widget.project.getCandidacyMode().toString() == "true") {
+    if (_project.getCandidacyMode().toString() == "true") {
       User user =
           Provider.of<AuthCredentialProvider>(context, listen: false).getUser();
       if (user == null) {
         return false;
-      } else if (isADesigner()) {
-        if (widget.project.getDesigners().contains(user.getMail())) return true;
-      }
+      } else if (user.getRoles().contains(UserRole.DESIGNER_ENTITY) &&
+          !isTheProjectProposer())
+        return _project.getDesigners().contains(user.getMail());
     }
     return false;
   }
@@ -434,11 +441,11 @@ class _ProjectOverView extends State<ProjectOverView> {
     User user =
         Provider.of<AuthCredentialProvider>(context, listen: false).getUser();
     if (user == null) return false;
-    return widget.project.getProjectProposer() == user.getMail();
+    return _project.getProjectProposer() == user.getMail();
   }
 
   bool isSuitable(User user) {
-    for (String tag in widget.project.getTag())
+    for (String tag in _project.getTag())
       if (user.getTags().contains(tag)) return true;
     return false;
   }
@@ -458,7 +465,7 @@ class _ProjectOverView extends State<ProjectOverView> {
                         context: context,
                         builder: (context) {
                           return SendEvaluation(
-                            id: widget.project.getId(),
+                            id: widget.project,
                             context: context,
                           );
                         },
@@ -466,7 +473,7 @@ class _ProjectOverView extends State<ProjectOverView> {
                     },
                     child: Text("Valuta"),
                   ))),
-        if (isADesigner())
+        if (isADesigner(true))
           Padding(
               padding: EdgeInsets.only(right: 15),
               child: Align(
@@ -477,7 +484,7 @@ class _ProjectOverView extends State<ProjectOverView> {
                           context: context,
                           builder: (context) {
                             return SendCandidacy(
-                              id: widget.project.getId(),
+                              id: widget.project,
                             );
                           })
                     },
@@ -491,7 +498,7 @@ class _ProjectOverView extends State<ProjectOverView> {
                   child: OutlinedButton(
                     onPressed: () => {
                       Provider.of<ViewProvider>(context, listen: false)
-                          .pushWidget(SendInvite(id: widget.project.getId())),
+                          .pushWidget(SendInvite(id: widget.project)),
                     },
                     child: Text("Invita"),
                   ))),
@@ -501,6 +508,7 @@ class _ProjectOverView extends State<ProjectOverView> {
 
   @override
   Widget build(BuildContext context) {
+    init();
     return ListView(
       children: [
         _firstCard(),

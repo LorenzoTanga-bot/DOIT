@@ -9,10 +9,11 @@ import 'package:provider/provider.dart';
 
 class SendCandidacy extends StatefulWidget {
   final String id;
- 
 
-  const SendCandidacy({Key key, @required this.id,})
-      : super(key: key);
+  const SendCandidacy({
+    Key key,
+    @required this.id,
+  }) : super(key: key);
 
   @override
   _SendCandidacy createState() => _SendCandidacy();
@@ -42,6 +43,7 @@ class _SendCandidacy extends State<SendCandidacy> {
     newCandidacy.setProject(_project.getId());
     try {
       await context.read<CandidacyProvider>().addCandidacy(newCandidacy);
+      await context.read<ProjectProvider>().reloadProject(_project.getId());
       Navigator.pop(context);
     } catch (e) {
       showDialog(

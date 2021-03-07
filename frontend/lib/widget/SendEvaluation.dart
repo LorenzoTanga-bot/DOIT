@@ -23,7 +23,7 @@ class _SendEvaluation extends State<SendEvaluation> {
   Project _project;
   TextEditingController _message = TextEditingController();
   bool evaluatedTeam;
-  int group = 0;
+  int group = 1;
 
   void createEvaluation(BuildContext context) async {
     Evaluation evaluation = new Evaluation();
@@ -73,12 +73,14 @@ class _SendEvaluation extends State<SendEvaluation> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                if (checkAlreadySended(EvaluationMode.TEAM))
+                if (checkAlreadySended(EvaluationMode.TEAM) &&
+                    _project.getDesigners().isNotEmpty)
                   Text(
                     "Team",
                     style: TextStyle(fontSize: 17),
                   ),
-                if (checkAlreadySended(EvaluationMode.TEAM))
+                if (checkAlreadySended(EvaluationMode.TEAM) &&
+                    _project.getDesigners().isNotEmpty)
                   Radio(
                       value: 0,
                       groupValue: group,

@@ -1,7 +1,9 @@
 import 'package:doit/model/Evaluation.dart';
 import 'package:doit/model/Project.dart';
 import 'package:doit/model/User.dart';
+import 'package:doit/providers/CandidacyProvider.dart';
 import 'package:doit/providers/EvaluationProvider.dart';
+import 'package:doit/providers/InviteProvider.dart';
 import 'package:doit/providers/ProjectProvider.dart';
 import 'package:doit/providers/TagProvider.dart';
 import 'package:doit/providers/UserProvider.dart';
@@ -67,10 +69,16 @@ class _EvaluationOverView extends State<EvaluationOverView> {
                                       .updateListTag(project.getTag()),
                                   Provider.of<EvaluationProvider>(context,
                                           listen: false)
+                                      .findByProject(project.getId()),
+                       Provider.of<CandidacyProvider>(context,
+                                          listen: false)
+                                      .findByProject(project.getId()),
+                                       Provider.of<InviteProvider>(context,
+                                          listen: false)
                                       .findByProject(project.getId())
                                 ]),
                                 newView: ProjectOverView(
-                                  project: project,
+                                  project: project.getId(),
                                 )));
                           }))
               ]),

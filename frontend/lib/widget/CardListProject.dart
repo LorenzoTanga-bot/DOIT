@@ -1,5 +1,7 @@
 import 'package:doit/model/Project.dart';
+import 'package:doit/providers/CandidacyProvider.dart';
 import 'package:doit/providers/EvaluationProvider.dart';
+import 'package:doit/providers/InviteProvider.dart';
 import 'package:doit/providers/ProjectProvider.dart';
 import 'package:doit/providers/TagProvider.dart';
 import 'package:doit/providers/UserProvider.dart';
@@ -56,21 +58,27 @@ class _CardListProject extends State<CardListProject> {
       ),
       onTap: () {
         List<String> users = [project.getProjectProposer()];
-     
 
         users.addAll(project.getDesigners());
-        context.read<ViewProvider>().pushWidget(FutureBuild(
-            future: Future.wait([
-              Provider.of<UserProvider>(context, listen: false)
-                  .updateListUsers(users),
-              Provider.of<TagProvider>(context, listen: false)
-                  .updateListTag(project.getTag()),
-              Provider.of<EvaluationProvider>(context, listen: false)
-                  .findByProject(project.getId())
-            ]),
-            newView: ProjectOverView(
-              project: project,
-            )));
+        Provider.of<ViewProvider>(context, listen: false)
+            .pushWidget(FutureBuild(
+                future: Future.wait([
+                  Provider.of<UserProvider>(context, listen: false)
+                      .updateListUsers(users),
+                  Provider.of<TagProvider>(context, listen: false)
+                      .updateListTag(project.getTag()),
+                  Provider.of<EvaluationProvider>(context, listen: false)
+                      .findByProject(project.getId()),
+                       Provider.of<CandidacyProvider>(context,
+                                          listen: false)
+                                      .findByProject(project.getId()),
+                                       Provider.of<InviteProvider>(context,
+                                          listen: false)
+                                      .findByProject(project.getId())
+                ]),
+                newView: ProjectOverView(
+                  project: project.getId(),
+                )));
       },
     );
   }

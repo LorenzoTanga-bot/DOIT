@@ -96,8 +96,12 @@ class _SendInvite extends State<SendInvite> {
     usersTemp.addAll(await Provider.of<UserProvider>(context, listen: false)
         .findByUsername(query, "DESIGNER"));
     for (User user in usersTemp)
-      if (isSuitable(user) && user.getMail() != _currentUser.getMail())
+      if (isSuitable(user) &&
+          user.getMail() != _currentUser.getMail() &&
+          user.getMail() != _project.getProjectProposer() &&
+          !_project.getDesigners().contains(user.getMail()))
         filterUser.add(user);
+
     _usersFind = filterUser;
   }
 

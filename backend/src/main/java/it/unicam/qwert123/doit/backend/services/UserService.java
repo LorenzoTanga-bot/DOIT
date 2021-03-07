@@ -58,8 +58,10 @@ public class UserService {
     }
 
     public User updateUser(User modifiedUser) throws ResponseStatusException {
+        modifiedUser.setUsername(modifiedUser.getUsernameToShow().toUpperCase().trim());
+        User oldUser=repository.findById(modifiedUser.getMail()).get();
         if (existById(modifiedUser.getMail())) {
-            if (repository.findById(modifiedUser.getMail()).get().getUsername().equals(modifiedUser.getUsername())) {
+            if (oldUser.getUsername().equals(modifiedUser.getUsername())) {
                 if (checkUser(modifiedUser)) {
                     return repository.save(modifiedUser);
                 }

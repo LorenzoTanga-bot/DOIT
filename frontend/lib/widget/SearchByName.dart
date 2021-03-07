@@ -178,7 +178,7 @@ class _SearchByName extends State<SearchByName> {
                                       .updateListTag(usersFind[index].getTags())
                                 ]),
                                 newView:
-                                    ProfileOverView(user: usersFind[index])));
+                                    ProfileOverView(user: usersFind[index].getMail())));
                       });
                 },
               ))

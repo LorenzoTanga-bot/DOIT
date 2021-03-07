@@ -3,6 +3,7 @@ import 'package:doit/model/Invite.dart';
 import 'package:doit/model/Project.dart';
 import 'package:doit/model/User.dart';
 import 'package:doit/providers/AuthCredentialProvider.dart';
+import 'package:doit/providers/CandidacyProvider.dart';
 import 'package:doit/providers/EvaluationProvider.dart';
 import 'package:doit/providers/InviteProvider.dart';
 
@@ -178,10 +179,16 @@ class _InviteOverview extends State<InviteOverview> {
                                       .updateListTag(project.getTag()),
                                   Provider.of<EvaluationProvider>(context,
                                           listen: false)
+                                      .findByProject(project.getId()),
+                       Provider.of<CandidacyProvider>(context,
+                                          listen: false)
+                                      .findByProject(project.getId()),
+                                       Provider.of<InviteProvider>(context,
+                                          listen: false)
                                       .findByProject(project.getId())
                                 ]),
                                 newView: ProjectOverView(
-                                  project: project,
+                                  project: project.getId(),
                                 )));
                           }))
               ]),
@@ -218,7 +225,8 @@ class _InviteOverview extends State<InviteOverview> {
                                               listen: false)
                                           .updateListTag(user.getTags())
                                     ]),
-                                    newView: ProfileOverView(user: user)));
+                                    newView:
+                                        ProfileOverView(user: user.getMail())));
                           }))
               ]),
               Divider(
@@ -254,7 +262,8 @@ class _InviteOverview extends State<InviteOverview> {
                                               listen: false)
                                           .updateListTag(user.getTags())
                                     ]),
-                                    newView: ProfileOverView(user: user)));
+                                    newView:
+                                        ProfileOverView(user: user.getMail())));
                           }))
               ]),
               Divider(
