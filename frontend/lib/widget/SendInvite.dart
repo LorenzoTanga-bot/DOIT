@@ -1,3 +1,4 @@
+import 'package:doit/model/AuthCredential.dart';
 import 'package:doit/model/Invite.dart';
 import 'package:doit/model/Project.dart';
 import 'package:doit/model/User.dart';
@@ -96,12 +97,16 @@ class _SendInvite extends State<SendInvite> {
     usersTemp.addAll(await Provider.of<UserProvider>(context, listen: false)
         .findByUsername(query, "DESIGNER"));
     for (User user in usersTemp)
-      if (isSuitable(user) &&
+if (isSuitable(user) &&
           user.getMail() != _currentUser.getMail() &&
           user.getMail() != _project.getProjectProposer() &&
-          !_project.getDesigners().contains(user.getMail()))
-        filterUser.add(user);
-
+          !_project.getDesigners().contains(user.getMail())) {
+        if (_currentUser.getMail() != _project.getProjectProposer()) {
+          if (user.getRoles().contains(UserRole.DESIGNER_PERSON))
+            filterUser.add(user);
+        } else
+          filterUser.add(user);
+      }
     _usersFind = filterUser;
   }
 
