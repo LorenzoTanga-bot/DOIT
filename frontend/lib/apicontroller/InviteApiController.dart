@@ -85,36 +85,36 @@ class InviteApiController {
 
   Future<String> getInviteById(String id) async {
     return _getBodyResponse(await http.get(
-        Uri.encodeFull("$_baseUrl/getById/$id"),
+        Uri.encodeFull("$_baseUrl/public/getById/$id"),
         headers: BasicAuthConfig().getBaseHeader()));
   }
 
   Future<String> getInvitesByIds(List<String> ids) async {
-    return _getBodyResponse(await http.put(Uri.encodeFull("$_baseUrl/getByIds"),
+    return _getBodyResponse(await http.put(Uri.encodeFull("$_baseUrl/public/getByIds"),
         headers: BasicAuthConfig().getBaseHeader(), body: json.encode(ids)));
   }
 
   Future<String> getInvitesByDesigner(String user) async {
     return _getBodyResponse(await http.get(
-        Uri.encodeFull("$_baseUrl/getByDesigner/$user"),
+        Uri.encodeFull("$_baseUrl/public/getByDesigner/$user"),
         headers: BasicAuthConfig().getBaseHeader()));
   }
 
   Future<String> getInvitesByProjectProposer(String user) async {
     return _getBodyResponse(await http.get(
-        Uri.encodeFull("$_baseUrl/getByProjectProposer/$user"),
+        Uri.encodeFull("$_baseUrl/public/getByProjectProposer/$user"),
         headers: BasicAuthConfig().getBaseHeader()));
   }
 
   Future<String> getInvitesByProject(String id) async {
     return _getBodyResponse(await http.get(
-        Uri.encodeFull("$_baseUrl/getByProject/$id"),
+        Uri.encodeFull("$_baseUrl/public/getByProject/$id"),
         headers: BasicAuthConfig().getBaseHeader()));
   }
 
   Future<String> getInvitesBySender(String id) async {
     return _getBodyResponse(await http.get(
-        Uri.encodeFull("$_baseUrl/getBySender/$id"),
+        Uri.encodeFull("$_baseUrl/public/getBySender/$id"),
         headers: BasicAuthConfig().getBaseHeader()));
   }
 }

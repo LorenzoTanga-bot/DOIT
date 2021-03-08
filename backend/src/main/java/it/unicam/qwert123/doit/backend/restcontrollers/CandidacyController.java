@@ -58,7 +58,7 @@ public class CandidacyController {
         return returnCandidacy;
     }
 
-    @GetMapping("/getById/{id}")
+    @GetMapping("/public/getById/{id}")
     public Candidacy getCandidacyById(@PathVariable("id") String id) {
         try {
             return candidacyService.findById(UUID.fromString(id));
@@ -67,7 +67,7 @@ public class CandidacyController {
         }
     }
 
-    @PutMapping("/getByIds")
+    @PutMapping("/public/getByIds")
     public List<Candidacy> getCandidaciesByIds(@RequestBody List<String> ids) {
         List<UUID> candidacyUuids = new ArrayList<>();
         for (String id : ids)
@@ -79,17 +79,17 @@ public class CandidacyController {
         return candidacyService.findByIds(candidacyUuids);
     }
 
-    @GetMapping("/getByDesigner/{user}")
+    @GetMapping("/public/getByDesigner/{user}")
     public List<Candidacy> getCandidaciesByDesigner(@PathVariable("user") String user) {
         return candidacyService.findByDesigner(user);
     }
 
-    @GetMapping("/getByProjectProposer/{user}")
+    @GetMapping("/public/getByProjectProposer/{user}")
     public List<Candidacy> getCandidaciesByProjectProposer(@PathVariable("user") String user) {
         return candidacyService.findByProjectProposer(user);
     }
 
-    @GetMapping("/getByProject/{id}")
+    @GetMapping("/public/getByProject/{id}")
     public List<Candidacy> getCandidaciesByProject(@PathVariable("id") String project) {
         UUID projectId;
         try {

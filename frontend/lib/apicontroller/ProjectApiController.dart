@@ -71,48 +71,48 @@ class ProjectApiController {
 
   Future<String> getProjectsPage(int index) async {
     return _getBodyResponse(await http.get(
-        Uri.encodeFull("$_baseUrl/getPage/$index/15"),
+        Uri.encodeFull("$_baseUrl/public/getPage/$index/15"),
         headers: BasicAuthConfig().getBaseHeader()));
   }
 
   Future<String> getAllProjects() async {
-    return _getBodyResponse(await http.get(Uri.encodeFull("$_baseUrl/get"),
+    return _getBodyResponse(await http.get(Uri.encodeFull("$_baseUrl/public/get"),
         headers: BasicAuthConfig().getBaseHeader()));
   }
 
   Future<String> getProjectById(String id) async {
     return _getBodyResponse(await http.get(
-        Uri.encodeFull("$_baseUrl/getById/$id"),
+        Uri.encodeFull("$_baseUrl/public/getById/$id"),
         headers: BasicAuthConfig().getBaseHeader()));
   }
 
   Future<String> getProjectsByIds(List<String> ids) async {
-    return _getBodyResponse(await http.put(Uri.encodeFull("$_baseUrl/getByIds"),
+    return _getBodyResponse(await http.put(Uri.encodeFull("$_baseUrl/public/getByIds"),
         headers: BasicAuthConfig().getBaseHeader(), body: json.encode(ids)));
   }
 
   Future<String> getProjectsByName(String name) async {
     return _getBodyResponse(await http.get(
-        Uri.encodeFull("$_baseUrl/getByName/$name"),
+        Uri.encodeFull("$_baseUrl/public/getByName/$name"),
         headers: BasicAuthConfig().getBaseHeader()));
   }
 
   Future<String> getProjectsByTags(List<String> tags) async {
     return _getBodyResponse(await http.put(
-        Uri.encodeFull("$_baseUrl/getByTags"),
+        Uri.encodeFull("$_baseUrl/public/getByTags"),
         headers: BasicAuthConfig().getBaseHeader(),
         body: json.encode(tags)));
   }
 
   Future<String> getProjectsByDesigner(String designer) async {
     return _getBodyResponse(await http.get(
-        Uri.encodeFull("$_baseUrl/getByDesigner/$designer"),
+        Uri.encodeFull("$_baseUrl/public/getByDesigner/$designer"),
         headers: BasicAuthConfig().getBaseHeader()));
   }
 
   Future<String> getProjectsByProjectProposer(String projectProposer) async {
     return _getBodyResponse(await http.get(
-        Uri.encodeFull("$_baseUrl/getByProjectProposer/$projectProposer"),
+        Uri.encodeFull("$_baseUrl//publicgetByProjectProposer/$projectProposer"),
         headers: BasicAuthConfig().getBaseHeader()));
   }
 }

@@ -24,7 +24,7 @@ public class TagController {
     @Autowired
     private TagService service;
 
-    @GetMapping("/get")
+    @GetMapping("/public/get")
     public List<Tag> getAllTags() {
         return service.findAll();
     }
@@ -34,7 +34,7 @@ public class TagController {
         return service.addTag(newTag);
     }
 
-    @GetMapping("/getById/{id}")
+    @GetMapping("/public/getById/{id}")
     public Tag getTagById(@PathVariable("id") String id) {
         try {
             return service.findById(UUID.fromString(id));
@@ -43,7 +43,7 @@ public class TagController {
         }
     }
 
-    @PutMapping("/getByIds")
+    @PutMapping("/public/getByIds")
     public List<Tag> getTagsByIds(@RequestBody List<String> ids) {
         List<UUID> uuidTag = new ArrayList<UUID>();
         for (String id : ids) {

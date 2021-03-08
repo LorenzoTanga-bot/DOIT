@@ -24,7 +24,7 @@ class TagApiController {
   }
 
   Future<String> getAllTag() async {
-    return _getBodyResponse(await http.get("$_baseUrl/get",
+    return _getBodyResponse(await http.get("$_baseUrl/public/get",
         headers: BasicAuthConfig().getBaseHeader()));
   }
 
@@ -35,12 +35,12 @@ class TagApiController {
   }
 
   Future<String> getTagById(String id) async {
-    return _getBodyResponse(await http.get("$_baseUrl/getById/$id",
+    return _getBodyResponse(await http.get("$_baseUrl/public/getById/$id",
         headers: BasicAuthConfig().getBaseHeader()));
   }
 
   Future<String> getTagByIds(List<String> ids) async {
-    return _getBodyResponse(await http.put("$_baseUrl/getByIds",
+    return _getBodyResponse(await http.put("$_baseUrl/public/getByIds",
         headers: BasicAuthConfig().getBaseHeader(), body: json.encode(ids)));
   }
 }

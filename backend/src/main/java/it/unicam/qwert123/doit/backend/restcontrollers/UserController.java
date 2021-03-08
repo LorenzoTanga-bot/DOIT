@@ -25,17 +25,17 @@ public class UserController {
     @Autowired
     private UserService service;
 
-    @GetMapping("/getById/{id}")
+    @GetMapping("/public/getById/{id}")
     public User getUserById(@PathVariable("id") String id) {
             return service.findById(id);
     }
 
-    @PutMapping("/getByIds")
+    @PutMapping("/public/getByIds")
     public List<User> getUsersByIds(@RequestBody List<String> ids) {
         return service.findByIds(ids);
     }
 
-    @GetMapping("/getByUsername/{role}/{username}")
+    @GetMapping("/public/getByUsername/{role}/{username}")
     public List<User> getUsersByUsername(@PathVariable("username") String username, @PathVariable("role") String role) {
         switch (role) {
             case "DESIGNER":
@@ -51,7 +51,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("/getByTag/{tag}")
+    @GetMapping("/public/getByTag/{tag}")
     public List<User> getUsersByTag(@PathVariable("tag") String tag) {
         try {
             return service.findByTag(UUID.fromString(tag));
@@ -60,7 +60,7 @@ public class UserController {
         }
     }
 
-    @PutMapping("/getByTags/{role}")
+    @PutMapping("/public/getByTags/{role}")
     public List<User> getUsersByTags(@RequestBody List<String> tags, @PathVariable("role") String role) {
         List<UUID> idTag = new ArrayList<UUID>();
         for (String tag : tags) {
@@ -84,7 +84,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("/get")
+    @GetMapping("/public/get")
     public List<User> getAllUsers() {
         return service.findAll();
     }

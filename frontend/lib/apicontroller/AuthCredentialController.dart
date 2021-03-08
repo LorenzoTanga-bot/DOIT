@@ -39,7 +39,7 @@ class AuthCredentialController {
   }
 
   Future<String> loginWithCredentials(AuthCredential authCredential) async {
-    return _getBodyResponse(await http.post(Uri.encodeFull("$_baseUrl/login"),
+    return _getBodyResponse(await http.post(Uri.encodeFull("$_baseUrl/public/login"),
         headers: BasicAuthConfig().getBaseHeader(),
         body: json.encode({
           "mail": authCredential.getMail(),
@@ -49,7 +49,7 @@ class AuthCredentialController {
 
   Future<String> addCredential(AuthCredential authCredential) async {
     return _getBodyResponse(await http.post(
-        Uri.encodeFull("$_baseUrl/addCredential"),
+        Uri.encodeFull("$_baseUrl/public/addCredential"),
         headers: BasicAuthConfig().getBaseHeader(),
         body: json.encode({
           "mail": authCredential.getMail(),
@@ -58,7 +58,7 @@ class AuthCredentialController {
   }
 
   Future<String> existByMail(String id) async {
-    return _getBodyResponse(await http.get(Uri.encodeFull("$_baseUrl/existsById/{id}"),
+    return _getBodyResponse(await http.get(Uri.encodeFull("$_baseUrl/public/existsById/{id}"),
             headers: BasicAuthConfig().getBaseHeader()));
   }
 

@@ -19,13 +19,11 @@ class AuthCredentialProvider with ChangeNotifier {
 
   Future loginWithCredentials(AuthCredential authCredential) async {
     _user = await _service.loginWithCredentials(authCredential);
-    BasicAuthConfig().setAuthCredential(authCredential);
     notifyListeners();
   }
 
   Future newMailPassword(AuthCredential authCredential) async {
     _user = await _service.addCredentials(authCredential);
-    BasicAuthConfig().setAuthCredential(authCredential);
     notifyListeners();
   }
 

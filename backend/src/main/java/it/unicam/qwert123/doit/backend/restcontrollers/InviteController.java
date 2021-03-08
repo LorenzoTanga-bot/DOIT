@@ -90,7 +90,7 @@ public class InviteController {
         }
     }
 
-    @GetMapping("/getById/{id}")
+    @GetMapping("/public/getById/{id}")
     public Invite getInviteyById(@PathVariable("id") String id) {
         try {
             return inviteService.findById(UUID.fromString(id));
@@ -99,7 +99,7 @@ public class InviteController {
         }
     }
 
-    @PutMapping("/getByIds")
+    @PutMapping("/public/getByIds")
     public List<Invite> getInvitesByIds(@RequestBody List<String> ids) {
         List<UUID> inviteUuids = new ArrayList<>();
         for (String id : ids)
@@ -111,22 +111,22 @@ public class InviteController {
         return inviteService.findByIds(inviteUuids);
     }
 
-    @GetMapping("/getByDesigner/{user}")
+    @GetMapping("/public/getByDesigner/{user}")
     public List<Invite> getInvitesByDesigner(@PathVariable("user") String user) {
         return inviteService.findByDesigner(user);
     }
 
-    @GetMapping("/getByProjectProposer/{user}")
+    @GetMapping("/public/getByProjectProposer/{user}")
     public List<Invite> getInvitesByProjectProposer(@PathVariable("user") String user) {
         return inviteService.findByProjectProposer(user);
     }
 
-    @GetMapping("/getBySender/{user}")
+    @GetMapping("/public/getBySender/{user}")
     public List<Invite> getInvitesBySender(@PathVariable("user") String user) {
         return inviteService.findBySender(user);
     }
 
-    @GetMapping("/getByProject/{id}")
+    @GetMapping("/public/getByProject/{id}")
     public List<Invite> getInvitesByProject(@PathVariable("id") String project) {
         UUID projectId;
         try {

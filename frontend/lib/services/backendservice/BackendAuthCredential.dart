@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:doit/apicontroller/AuthCredentialController.dart';
+import 'package:doit/apicontroller/BasicAuthConfig.dart';
 import 'package:doit/model/User.dart';
 import 'package:doit/model/AuthCredential.dart';
 import 'package:doit/services/AuthCredentialService.dart';
@@ -18,30 +19,32 @@ class BackendAuthCredential implements AuthCredentialService {
       roles.add(UserRole.values
           .firstWhere((e) => e.toString() == 'UserRole.' + role));
     for (String tag in user["tags"]) tags.add(tag);
-    return new User.complete(
-      user["mail"],
-      user["usernameToShow"],
-      user["name"],
-      user["surname"],
-      roles,
-      tags,
-      user["biography"]
-    );
+    return new User.complete(user["mail"], user["usernameToShow"], user["name"],
+        user["surname"], roles, tags, user["biography"]);
   }
 
-  User _createUser(String controllerJson) {
-    if (controllerJson == "") return null;
-    return _newUser(json.decode(controllerJson));
+  User _createUser(String body) {
+    if (body == "") return null;
+    return _newUser(json.decode(body));
+  }
+
+  void _extractToken(String body) {
+    var jsonBody = json.decode(body);
+    BasicAuthConfig().setAuthCredential(jsonBody["token"]);
   }
 
   @override
   Future<User> loginWithCredentials(AuthCredential authCredential) async {
-    return _createUser(await _controller.loginWithCredentials(authCredential));
+    String body = await _controller.loginWithCredentials(authCredential);
+    _extractToken(body);
+    return _createUser(json.encode((json.decode(body))["user"]));
   }
 
   @override
   Future<User> addCredentials(AuthCredential authCredential) async {
-    return _createUser(await _controller.addCredential(authCredential));
+     String body = await _controller.addCredential(authCredential);
+    _extractToken(body);
+    return _createUser(json.encode((json.decode(body))["user"]));
   }
 
   @override

@@ -17,8 +17,22 @@ import org.springframework.web.bind.annotation.RestController;
 import it.unicam.qwert123.doit.backend.services.AuthCredentialService;
 import it.unicam.qwert123.doit.backend.services.UserService;
 import it.unicam.qwert123.doit.backend.utility.AccessCheckerComponent;
+import it.unicam.qwert123.doit.backend.utility.JwtUtil;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import it.unicam.qwert123.doit.backend.models.AuthCredential;
 import it.unicam.qwert123.doit.backend.models.User;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+class TokenUser {
+	private String token;
+	private User user;
+}
 
 @RestController
 @RequestMapping("doit/api/authCredential")
@@ -29,24 +43,32 @@ public class AuthCredentialController {
 	@Autowired
 	private AuthCredentialService authService;
 
+	@Autowired
+	private JwtUtil jwtUtil;
+
 	// NON ELIMINARE
 	@Autowired
 	private AccessCheckerComponent accessCheckerComponent;
 
-	@PostMapping("/login")
+	@PostMapping("/public/login")
 	@PreAuthorize("permitAll")
-	public User loginWithCredentials(@RequestBody AuthCredential credentials) {
-		return authService.loginWithCredentials(credentials) ? userService.findById(credentials.getMail()) : null;
+	public TokenUser loginWithCredentials(@RequestBody AuthCredential credentials) {
+		return authService.loginWithCredentials(credentials)
+				? new TokenUser(jwtUtil.generateToken(authService.loadUserByUsername(credentials.getMail())),
+						userService.findById(credentials.getMail()))
+				: null;
+
 	}
 
-	@PostMapping("/addCredential")
+	@PostMapping("/public/addCredential")
 	@PreAuthorize("permitAll")
-	public User addCredential(@RequestBody AuthCredential credentials) {
+	public TokenUser addCredential(@RequestBody AuthCredential credentials) {
 		authService.addCredentials(credentials);
 		User newUser = new User();
 		newUser.setMail(credentials.getMail());
 		newUser.setRoles(credentials.getRoles());
-		return userService.addUser(newUser);
+		return new TokenUser(jwtUtil.generateToken(authService.loadUserByUsername(credentials.getMail())),
+				userService.addUser(newUser));
 	}
 
 	@PostMapping("/addUser")
@@ -83,7 +105,7 @@ public class AuthCredentialController {
 		return authService.getAuthCredentials();
 	}
 
-	@GetMapping("/existsById/{id}")
+	@GetMapping("/public/existsById/{id}")
 	@PreAuthorize("permitAll")
 	public boolean existsByMail(@PathVariable("id") String id) {
 		return authService.existsById(id);

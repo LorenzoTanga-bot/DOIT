@@ -56,7 +56,7 @@ public class EvaluationController {
         }
     }
 
-    @GetMapping("/getById/{id}")
+    @GetMapping("/public/getById/{id}")
     public Evaluation getEvaluationById(@PathVariable("id") String id) throws ResponseStatusException {
         try {
             return evaluationService.findById(UUID.fromString(id));
@@ -65,7 +65,7 @@ public class EvaluationController {
         }
     }
 
-    @PutMapping("/getByIds")
+    @PutMapping("/public/getByIds")
     public List<Evaluation> getEvaluationsByIds(@RequestBody List<String> ids) {
         List<UUID> evaluationUuids = new ArrayList<>();
         for (String id : ids)
@@ -77,12 +77,12 @@ public class EvaluationController {
         return evaluationService.findByIds(evaluationUuids);
     }
 
-    @GetMapping("/getBySender/{id}")
+    @GetMapping("/public/getBySender/{id}")
     public List<Evaluation> getEvaluationsBySender(@PathVariable("id") String idSender) {
         return evaluationService.findBySender(idSender);
     }
 
-    @GetMapping("/getByProject/{id}")
+    @GetMapping("/public/getByProject/{id}")
     public List<Evaluation> getEvaluationsByProject(@PathVariable("id") String idProject) {
         try {
             return evaluationService.findByProject(UUID.fromString(idProject));

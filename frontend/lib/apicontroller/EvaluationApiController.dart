@@ -53,24 +53,24 @@ class EvaluationApiController {
 
   Future<String> getEvaluationById(String id) async {
     return _getBodyResponse(await http.get(
-        Uri.encodeFull("$_baseUrl/getById/$id"),
+        Uri.encodeFull("$_baseUrl/public/getById/$id"),
         headers: BasicAuthConfig().getBaseHeader()));
   }
 
   Future<String> getEvaluationsByIds(List<String> ids) async {
-    return _getBodyResponse(await http.put(Uri.encodeFull("$_baseUrl/getByIds"),
+    return _getBodyResponse(await http.put(Uri.encodeFull("$_baseUrl/public/getByIds"),
         headers: BasicAuthConfig().getBaseHeader(), body: json.encode(ids)));
   }
 
   Future<String> getEvaluationsBySender(String user) async {
     return _getBodyResponse(await http.get(
-        Uri.encodeFull("$_baseUrl/getBySender/$user"),
+        Uri.encodeFull("$_baseUrl/public/getBySender/$user"),
         headers: BasicAuthConfig().getBaseHeader()));
   }
 
   Future<String> getEvaluationsByProject(String id) async {
     return _getBodyResponse(await http.get(
-        Uri.encodeFull("$_baseUrl/getByProject/$id"),
+        Uri.encodeFull("$_baseUrl/public/getByProject/$id"),
         headers: BasicAuthConfig().getBaseHeader()));
   }
 }

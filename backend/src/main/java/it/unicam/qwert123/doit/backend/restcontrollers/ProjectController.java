@@ -46,17 +46,17 @@ public class ProjectController {
         return projectService.updateProject(modifiedProject);
     }
 
-    @GetMapping("/getPage/{index}/{size}")
+    @GetMapping("/public/getPage/{index}/{size}")
     public Page<Project> getProjectsPage(@PathVariable("index") int index, @PathVariable("size") int size) {
         return projectService.getProjectsPage(index, size);
     }
 
-    @GetMapping("/get")
+    @GetMapping("/public/get")
     public List<Project> getAllProjects() {
         return projectService.findAll();
     }
 
-    @GetMapping("/getById/{id}")
+    @GetMapping("/public/getById/{id}")
     public Project getProjectById(@PathVariable("id") String id) {
         try {
             return projectService.findById(UUID.fromString(id));
@@ -66,7 +66,7 @@ public class ProjectController {
 
     }
 
-    @PutMapping("/getByIds")
+    @PutMapping("/public/getByIds")
     public List<Project> getProjectsByIds(@RequestBody List<String> ids) {
         List<UUID> projectsUuid = new ArrayList<>();
         for (String id : ids) {
@@ -79,12 +79,12 @@ public class ProjectController {
         return projectService.findByIds(projectsUuid);
     }
 
-    @GetMapping("/getByName/{name}")
+    @GetMapping("/public/getByName/{name}")
     public List<Project> getProjectsByName(@PathVariable("name") String name) {
         return projectService.findByName(name);
     }
 
-    @PutMapping("/getByTags")
+    @PutMapping("/public/getByTags")
     public List<Project> getProjectsByTags(@RequestBody List<String> tagsId) {
         List<UUID> tagsUuid = new ArrayList<>();
         for (String tagId : tagsId) {
@@ -97,12 +97,12 @@ public class ProjectController {
         return projectService.findByTags(tagsUuid);
     }
 
-    @GetMapping("getByProjectProposer/{projectProposer}")
+    @GetMapping("/public/getByProjectProposer/{projectProposer}")
     public List<Project> getProjectsByProjectProposer(@PathVariable("projectProposer") String projectProposer) {
         return projectService.findByProjectProposer(projectProposer);
     }
 
-    @GetMapping("getByDesigner/{designer}")
+    @GetMapping("/public/getByDesigner/{designer}")
     public List<Project> getProjectsByDesigner(@PathVariable("designer") String designer) {
         return projectService.findByDesigner(designer);
     }

@@ -7,7 +7,7 @@ const aPsw = "Doit";
 
 class BasicAuthConfig {
   static final BasicAuthConfig _singleton = BasicAuthConfig._internal();
-  AuthCredential _authCredential;
+  String _token;
 
   factory BasicAuthConfig() {
     return _singleton;
@@ -15,17 +15,17 @@ class BasicAuthConfig {
 
   BasicAuthConfig._internal();
 
-  bool setAuthCredential(AuthCredential authCredential) {
-    _authCredential = authCredential;
+  bool setAuthCredential(String token) {
+    _token = token;
     return true;
   }
 
-  AuthCredential getAuthCredential() {
-    return _authCredential;
+  String getAuthCredential() {
+    return _token;
   }
 
   bool deleteAuthCredential() {
-    _authCredential = null;
+    _token = null;
     return true;
   }
 
@@ -34,12 +34,10 @@ class BasicAuthConfig {
   }
 
   Map<String, String> getUserHeader() {
-    var credentials = base64.encode(utf8.encode(
-        "${_authCredential.getMail()}:${_authCredential.getPassword()}"));
     return {
       "content-type": "application/json",
       "accept": "application/json",
-      "authorization": "Basic $credentials"
+      "authorization": "Bearer $_token"
     };
   }
 
