@@ -29,6 +29,7 @@ class _CardListEvaulation extends State<CardListEvaulation> {
         context.watch<ProjectProvider>().findById(evaluation.getProject());
     return GestureDetector(
       child: Card(
+         elevation: 4,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15.0),
         ),

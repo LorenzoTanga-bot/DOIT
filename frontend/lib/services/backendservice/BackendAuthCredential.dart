@@ -25,6 +25,7 @@ class BackendAuthCredential implements AuthCredentialService {
       user["surname"],
       roles,
       tags,
+      user["biography"]
     );
   }
 

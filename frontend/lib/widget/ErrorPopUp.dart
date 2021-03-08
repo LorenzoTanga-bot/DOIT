@@ -8,7 +8,7 @@ class ErrorPopup extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text("Ops, something went wrong!"),
+      title: Text("Ops, something went wrong!",style: TextStyle(fontSize: 23,color: Colors.blue)),
       content: Text(message),
     );
   }

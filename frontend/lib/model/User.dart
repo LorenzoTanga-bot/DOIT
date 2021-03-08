@@ -7,7 +7,7 @@ class User {
   String _surname; //se è una azienda qui viene salvata la Paritta iva
   List<UserRole> _roles = [];
   List<String> _tags = [];
-
+  String _biography;
 
   User();
 
@@ -16,14 +16,8 @@ class User {
     _roles.add(UserRole.NOT_COMPLETED);
   }
 
-  User.complete(
-      this._mail,
-      this._username,
-      this._name,
-      this._surname,
-      this._roles,
-      this._tags,
-      );
+  User.complete(this._mail, this._username, this._name, this._surname,
+      this._roles, this._tags, this._biography);
 
   bool setMail(String mail) {
     _mail = mail;
@@ -87,5 +81,12 @@ class User {
     return _tags;
   }
 
-  
+  String getBiography() {
+    return this._biography;
+  }
+
+  bool setBiography(String biography) {
+    this._biography = biography;
+    return true;
+  }
 }

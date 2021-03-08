@@ -30,12 +30,10 @@ class _ProfileOverView extends State<ProfileOverView> {
 
   void init() {
     _user = context.watch<UserProvider>().findByMail(widget.user);
-    _proposedProjects = context
-        .watch<ProjectProvider>()
-        .findByUser(_user.getMail(), true);
-    _parteciateInProjects = context
-        .watch<ProjectProvider>()
-        .findByUser(_user.getMail(), false);
+    _proposedProjects =
+        context.watch<ProjectProvider>().findByUser(_user.getMail(), true);
+    _parteciateInProjects =
+        context.watch<ProjectProvider>().findByUser(_user.getMail(), false);
     _tags = context.watch<TagProvider>().getTagsByIds(_user.getTags());
   }
 
@@ -56,6 +54,11 @@ class _ProfileOverView extends State<ProfileOverView> {
             child: Align(
                 alignment: Alignment.bottomRight,
                 child: OutlinedButton(
+                  style: OutlinedButton.styleFrom(
+                      side: BorderSide(color: Colors.blue),
+                      backgroundColor: Colors.blue,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10)))),
                   onPressed: () => {
                     context.read<ViewProvider>().pushWidget(FutureBuild(
                         future: Future.wait([
@@ -66,7 +69,10 @@ class _ProfileOverView extends State<ProfileOverView> {
                           isNewUser: false,
                         )))
                   },
-                  child: Text("Modifica"),
+                  child: Text(
+                    "Modifica",
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ))),
       PrincipalInformationUser(user: _user, tags: _tags),
       if (_proposedProjects.isNotEmpty)
@@ -77,11 +83,11 @@ class _ProfileOverView extends State<ProfileOverView> {
               Text(
                 ("Proposed projects"),
                 textAlign: TextAlign.start,
-                style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
               ),
               Divider(
-                color: Colors.white,
-                height: 5,
+                color: Colors.grey,
+                height: 20,
                 thickness: 1,
                 indent: 2,
                 endIndent: 2,
@@ -96,7 +102,14 @@ class _ProfileOverView extends State<ProfileOverView> {
               Text(
                 "Projects in which he participated ",
                 textAlign: TextAlign.start,
-                style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+              ),
+              Divider(
+                color: Colors.grey,
+                height: 20,
+                thickness: 1,
+                indent: 2,
+                endIndent: 2,
               ),
               ListProjects(projects: _parteciateInProjects)
             ])),

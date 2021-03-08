@@ -27,6 +27,7 @@ class _CreateModifyProfile extends State<CreateModifyProfile> {
   TextEditingController _name = TextEditingController();
   TextEditingController _surname = TextEditingController();
   TextEditingController _username = TextEditingController();
+  TextEditingController _biography = TextEditingController();
   User _user;
   List<UserRole> _roles;
   int group = 1;
@@ -47,6 +48,7 @@ class _CreateModifyProfile extends State<CreateModifyProfile> {
       _roles = _user.getRoles();
       isAPerson = _user.getIsAPerson();
       context.read<TagProvider>().setSelectTag(_user.getTags(), "USER");
+      _biography.text = _user.getBiography();
     }
   }
 
@@ -89,6 +91,7 @@ class _CreateModifyProfile extends State<CreateModifyProfile> {
     _user.setSurname(_surname.text);
     _user.setUsername(_username.text);
     _user.setRoles(_roles);
+    _user.setBiography(_biography.text);
     try {
       if (widget.isNewUser) {
         _user.setTags(context.read<TagProvider>().getSelectTag("SIGNIN"));
@@ -296,6 +299,11 @@ class _CreateModifyProfile extends State<CreateModifyProfile> {
                             indent: 2,
                             endIndent: 2,
                           ),
+                          TextField(
+                              controller: _biography,
+                              decoration: InputDecoration(
+                                labelText: 'Biography',
+                              )),
                         ],
                       )),
                 if (widget.isNewUser)
@@ -303,6 +311,14 @@ class _CreateModifyProfile extends State<CreateModifyProfile> {
                     child: Text("The username cannot be empty",
                         style: TextStyle(color: Colors.red)),
                     visible: _visibilityLabelUsername,
+                  ),
+                if (widget.isNewUser)
+                  Divider(
+                    color: Colors.grey,
+                    height: 5,
+                    thickness: 1,
+                    indent: 2,
+                    endIndent: 2,
                   ),
                 _selectUserRole(),
                 Visibility(

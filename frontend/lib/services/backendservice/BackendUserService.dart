@@ -38,6 +38,7 @@ class BackendUserService implements UserService {
         user["surname"],
         roles,
         tags,
+        user["biography"]
        );
   }
 

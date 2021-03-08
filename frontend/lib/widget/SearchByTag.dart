@@ -28,10 +28,10 @@ class _SearchByTag extends State<SearchByTag> {
   List<Project> projectsFind = [];
   final List<User> users = [];
   List<User> usersFind = [];
+  bool searchProject = true;
   bool searchUser = true;
   bool searchDesigner = true;
   bool searchProjectProposer = true;
-  bool searchProject = true;
   void buildSuggestions(BuildContext context) async {
     List<String> tags =
         Provider.of<TagProvider>(context, listen: false).getSelectTag("SEARCH");
@@ -43,29 +43,23 @@ class _SearchByTag extends State<SearchByTag> {
   }
 
   Future searchProjects(List<String> tags) async {
-    if (Provider.of<SearchProvider>(context, listen: false)
-        .getSearchProject()) {
-      List<Project> projectsTemp = [];
+    List<Project> projectsTemp = [];
+    if (searchProject) {
       projectsTemp.addAll(
           await Provider.of<ProjectProvider>(context, listen: false)
               .findByTags(tags));
-      projectsFind = projectsTemp;
-    } else
-      projectsFind = [];
+    }
+    projectsFind = projectsTemp;
   }
 
   Future searchUsers(List<String> tags, BuildContext context) async {
-    if (Provider.of<SearchProvider>(context, listen: false).getSearchUser()) {
-      Set<User> usersTemp = new HashSet();
-      if (Provider.of<SearchProvider>(context, listen: false)
-              .getSearchDesigner() &&
-          Provider.of<SearchProvider>(context, listen: false)
-              .getSearchProjectProposer()) {
+    Set<User> usersTemp = new HashSet();
+    if (searchUser) {
+      if (searchDesigner && searchProjectProposer) {
         usersTemp.addAll(await Provider.of<UserProvider>(context, listen: false)
             .findByTags(tags, "null"));
         usersFind = usersTemp.toList();
-      } else if (Provider.of<SearchProvider>(context, listen: false)
-          .getSearchDesigner()) {
+      } else if (searchDesigner) {
         usersTemp.addAll(await Provider.of<UserProvider>(context, listen: false)
             .findByTags(tags, "DESIGNER"));
         usersFind = usersTemp.toList();
@@ -78,14 +72,35 @@ class _SearchByTag extends State<SearchByTag> {
       usersFind = [];
   }
 
+  void checkFilter() {
+    bool tempSearchProjetc = context.watch<SearchProvider>().getSearchProject();
+    bool tempSearchUser = context.watch<SearchProvider>().getSearchUser();
+    bool tempSearchDesigner =
+        context.watch<SearchProvider>().getSearchDesigner();
+    bool tempSearchProjectProposer =
+        context.watch<SearchProvider>().getSearchProjectProposer();
+    if (searchProject != tempSearchProjetc ||
+        searchUser != tempSearchUser ||
+        searchDesigner != tempSearchDesigner ||
+        searchProjectProposer != tempSearchProjectProposer) {
+      searchProject = tempSearchProjetc;
+      searchUser = tempSearchUser;
+      searchDesigner = tempSearchDesigner;
+      searchProjectProposer = tempSearchProjectProposer;
+      buildSuggestions(context);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    checkFilter();
     return Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
         child: Padding(
             padding: const EdgeInsets.all(10.0),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Row(
                   children: [
@@ -122,65 +137,105 @@ class _SearchByTag extends State<SearchByTag> {
                   Text(
                     "Projects",
                     textAlign: TextAlign.start,
-                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
                   ),
+                if (projectsFind.isNotEmpty)
+                  Divider(
+                    color: Colors.grey,
+                    height: 20,
+                    thickness: 1,
+                    indent: 2,
+                    endIndent: 2,
+                  ),
+                (Container(
+                    constraints: BoxConstraints(maxHeight: 250),
+                    child: ListProjects(projects: projectsFind))),
                 Divider(
-                  color: Colors.white,
-                  height: 5,
+                  color: Colors.white70,
+                  height: 20,
                   thickness: 1,
                   indent: 2,
                   endIndent: 2,
                 ),
-                (Container(
-                    constraints: BoxConstraints(maxHeight: 250),
-                    child: ListProjects(projects: projectsFind))),
                 if (usersFind.isNotEmpty)
                   Text(
                     "Users",
                     textAlign: TextAlign.start,
-                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
                   ),
-                Divider(
-                  color: Colors.white,
-                  height: 5,
-                  thickness: 1,
-                  indent: 2,
-                  endIndent: 2,
-                ),
+                if (usersFind.isNotEmpty)
+                  Divider(
+                    color: Colors.grey,
+                    height: 20,
+                    thickness: 1,
+                    indent: 2,
+                    endIndent: 2,
+                  ),
                 Expanded(
                     child: ListView.builder(
                         shrinkWrap: true,
                         itemCount: usersFind.length,
                         itemBuilder: (context, index) {
-                          return GestureDetector(
-                              child: CardList(
-                                  name: usersFind[index].getUsername(),
-                                  sDescription: usersFind[index].getName() +
-                                      " " +
-                                      usersFind[index].getSurname()),
-                              onTap: () {
-                                Provider.of<ViewProvider>(context,
-                                        listen: false)
-                                    .pushWidget(FutureBuild(
-                                        future: Future.wait([
-                                          Provider.of<ProjectProvider>(context,
-                                                  listen: false)
-                                              .findByProjectProposer(
-                                                  usersFind[index]
-                                                      .getMail()),
-                                          Provider.of<ProjectProvider>(context,
-                                                  listen: false)
-                                              .findByDesigner(usersFind[
-                                                      index]
-                                                  .getMail()),
-                                          Provider.of<TagProvider>(context,
-                                                  listen: false)
-                                              .updateListTag(
-                                                  usersFind[index].getTags())
-                                        ]),
-                                        newView: ProfileOverView(
-                                            user: usersFind[index].getMail())));
-                              });
+                          if (usersFind[index].getIsAPerson())
+                            return GestureDetector(
+                                child: CardList(
+                                    name: usersFind[index].getUsername(),
+                                    sDescription: usersFind[index].getName() +
+                                        " " +
+                                        usersFind[index].getSurname()),
+                                onTap: () {
+                                  Provider.of<ViewProvider>(context,
+                                          listen: false)
+                                      .pushWidget(FutureBuild(
+                                          future: Future.wait([
+                                            Provider.of<ProjectProvider>(
+                                                    context,
+                                                    listen: false)
+                                                .findByProjectProposer(
+                                                    usersFind[index].getMail()),
+                                            Provider.of<ProjectProvider>(
+                                                    context,
+                                                    listen: false)
+                                                .findByDesigner(
+                                                    usersFind[index].getMail()),
+                                            Provider.of<TagProvider>(context,
+                                                    listen: false)
+                                                .updateListTag(
+                                                    usersFind[index].getTags())
+                                          ]),
+                                          newView: ProfileOverView(
+                                              user:
+                                                  usersFind[index].getMail())));
+                                });
+                          else
+                            return GestureDetector(
+                                child: CardList(
+                                    name: usersFind[index].getUsername(),
+                                    sDescription: usersFind[index].getName()),
+                                onTap: () {
+                                  Provider.of<ViewProvider>(context,
+                                          listen: false)
+                                      .pushWidget(FutureBuild(
+                                          future: Future.wait([
+                                            Provider.of<ProjectProvider>(
+                                                    context,
+                                                    listen: false)
+                                                .findByProjectProposer(
+                                                    usersFind[index].getMail()),
+                                            Provider.of<ProjectProvider>(
+                                                    context,
+                                                    listen: false)
+                                                .findByDesigner(
+                                                    usersFind[index].getMail()),
+                                            Provider.of<TagProvider>(context,
+                                                    listen: false)
+                                                .updateListTag(
+                                                    usersFind[index].getTags())
+                                          ]),
+                                          newView: ProfileOverView(
+                                              user:
+                                                  usersFind[index].getMail())));
+                                });
                         }))
               ],
             )));

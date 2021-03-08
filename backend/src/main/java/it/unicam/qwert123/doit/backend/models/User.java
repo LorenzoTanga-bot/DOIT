@@ -29,5 +29,6 @@ public class User {
     private String surname; // se è un azienda, qui viene memorizzata la partita iva
     private List<Role> roles;
     private List<UUID> tags = new ArrayList<>();
+    private String biography;
 
 }

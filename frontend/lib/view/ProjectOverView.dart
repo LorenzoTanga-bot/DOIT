@@ -213,6 +213,8 @@ class _ProjectOverView extends State<ProjectOverView> {
                     Align(
                         alignment: Alignment.centerRight,
                         child: OutlinedButton.icon(
+                          style: OutlinedButton.styleFrom(
+                              side: BorderSide(color: Colors.white)),
                           icon: Icon(Icons.info),
                           label: Text('More Info'),
                           onPressed: () {
@@ -237,28 +239,14 @@ class _ProjectOverView extends State<ProjectOverView> {
   }
 
   Widget _secondCard() {
-    return Card(
-        margin: EdgeInsets.all(15),
-        elevation: 4,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15.0),
-        ),
+    return Padding(
+        padding: EdgeInsets.all(10),
         child: Column(children: <Widget>[
-          Divider(
-            color: Colors.white,
-            height: 5,
-            thickness: 1,
-            indent: 2,
-            endIndent: 2,
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Text("Designer",
+                style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
           ),
-          Padding(
-              padding: EdgeInsets.all(10),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text("Designer",
-                    style:
-                        TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
-              )),
           Divider(
             color: Colors.grey,
             height: 20,
@@ -266,13 +254,18 @@ class _ProjectOverView extends State<ProjectOverView> {
             indent: 2,
             endIndent: 2,
           ),
-          Container(
-              height: 25,
-              child: ListView(
-                padding: EdgeInsets.only(left: 10, right: 10),
-                children: getListDesigners(),
-                scrollDirection: Axis.horizontal,
-              ))
+          Card(
+              elevation: 4,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12.0),
+              ),
+              child: Container(
+                  height: 35,
+                  child: ListView(
+                    padding: EdgeInsets.all(10),
+                    children: getListDesigners(),
+                    scrollDirection: Axis.horizontal,
+                  )))
         ]));
   }
 

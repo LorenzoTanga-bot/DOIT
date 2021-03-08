@@ -26,9 +26,12 @@ class _SearchByName extends State<SearchByName> {
   final List<Project> projects = [];
   List<Project> projectsFind = [];
   final List<User> users = [];
-
+  String query = "";
   List<User> usersFind = [];
-
+  bool searchProject = true;
+  bool searchUser = true;
+  bool searchDesigner = true;
+  bool searchProjectProposer = true;
   void buildSuggestions(BuildContext context, String query) async {
     if (query.isEmpty) {
       setState(() {
@@ -43,28 +46,22 @@ class _SearchByName extends State<SearchByName> {
   }
 
   void searchProjects(String query) {
-    if (Provider.of<SearchProvider>(context, listen: false)
-        .getSearchProject()) {
-      List<Project> projectsTemp = [];
+    List<Project> projectsTemp = [];
+    if (searchProject) {
       projectsTemp = (Provider.of<ProjectProvider>(context, listen: false)
           .findByName(query));
-      projectsFind = projectsTemp;
-    } else
-      projectsFind = [];
+    }
+    projectsFind = projectsTemp;
   }
 
   Future searchUsers(String query, BuildContext context) async {
-    if (Provider.of<SearchProvider>(context, listen: false).getSearchUser()) {
+    if (searchUser) {
       Set<User> usersTemp = new HashSet();
-      if (Provider.of<SearchProvider>(context, listen: false)
-              .getSearchDesigner() &&
-          Provider.of<SearchProvider>(context, listen: false)
-              .getSearchProjectProposer()) {
+      if (searchDesigner && searchProjectProposer) {
         usersTemp.addAll(await Provider.of<UserProvider>(context, listen: false)
             .findByUsername(query, "null"));
         usersFind = usersTemp.toList();
-      } else if (Provider.of<SearchProvider>(context, listen: false)
-          .getSearchDesigner()) {
+      } else if (searchDesigner) {
         usersTemp.addAll(await Provider.of<UserProvider>(context, listen: false)
             .findByUsername(query, "DESIGNER"));
         usersFind = usersTemp.toList();
@@ -77,111 +74,170 @@ class _SearchByName extends State<SearchByName> {
       usersFind = [];
   }
 
+  void checkFilter() {
+    bool tempSearchProjetc = context.watch<SearchProvider>().getSearchProject();
+    bool tempSearchUser = context.watch<SearchProvider>().getSearchUser();
+    bool tempSearchDesigner =
+        context.watch<SearchProvider>().getSearchDesigner();
+    bool tempSearchProjectProposer =
+        context.watch<SearchProvider>().getSearchProjectProposer();
+    if (searchProject != tempSearchProjetc ||
+        searchUser != tempSearchUser ||
+        searchDesigner != tempSearchDesigner ||
+        searchProjectProposer != tempSearchProjectProposer) {
+      searchProject = tempSearchProjetc;
+      searchUser = tempSearchUser;
+      searchDesigner = tempSearchDesigner;
+      searchProjectProposer = tempSearchProjectProposer;
+      buildSuggestions(context, query);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    checkFilter();
     return Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
         child: Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Column(children: <Widget>[
-              TextField(
-                onChanged: (val) {
-                  buildSuggestions(context, val);
-                },
-                decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.search),
-                    contentPadding: EdgeInsets.only(left: 25.0),
-                    hintText: 'Search by name',
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(15.0))),
-              ),
-              Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-                RichText(
-                  text: TextSpan(
-                      text: ("Filtra"),
-                      style: TextStyle(color: Colors.blue),
-                      recognizer: TapGestureRecognizer()
-                        ..onTap = () {
-                          showDialog(
-                              context: context,
-                              builder: (context) {
-                                return SearchFilter();
-                              });
-                        }),
-                ),
-                Icon(
-                  Icons.filter_alt,
-                  color: Colors.blue,
-                )
-              ]),
-              if (projectsFind.isNotEmpty)
-                Text(
-                  "Projects",
-                  textAlign: TextAlign.start,
-                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-                ),
-              Divider(
-                color: Colors.white,
-                height: 5,
-                thickness: 1,
-                indent: 2,
-                endIndent: 2,
-              ),
-              (Container(
-                  constraints: BoxConstraints(maxHeight: 250),
-                  child: ListProjects(projects: projectsFind))),
-              Divider(
-                color: Colors.white70,
-                height: 20,
-                thickness: 1,
-                indent: 2,
-                endIndent: 2,
-              ),
-              if (usersFind.isNotEmpty)
-                Text(
-                  "Users",
-                  textAlign: TextAlign.start,
-                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-                ),
-              Divider(
-                color: Colors.white70,
-                height: 20,
-                thickness: 1,
-                indent: 2,
-                endIndent: 2,
-              ),
-              Expanded(
-                  child: ListView.builder(
-                shrinkWrap: true,
-                itemCount: usersFind.length,
-                itemBuilder: (context, index) {
-                  return GestureDetector(
-                      child: CardList(
-                          name: usersFind[index].getUsername(),
-                          sDescription: usersFind[index].getName() +
-                              usersFind[index].getSurname()),
-                      onTap: () {
-                        Provider.of<ViewProvider>(context, listen: false)
-                            .pushWidget(FutureBuild(
-                                future: Future.wait([
-                                  Provider.of<ProjectProvider>(context,
-                                          listen: false)
-                                      .findByProjectProposer(usersFind[index]
-                                          .getMail()),
-                                  Provider.of<ProjectProvider>(context,
-                                          listen: false)
-                                      .findByDesigner(usersFind[index]
-                                          .getMail()),
-                                  Provider.of<TagProvider>(context,
-                                          listen: false)
-                                      .updateListTag(usersFind[index].getTags())
-                                ]),
-                                newView:
-                                    ProfileOverView(user: usersFind[index].getMail())));
-                      });
-                },
-              ))
-            ])));
+            padding: const EdgeInsets.all(12.0),
+            child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  TextField(
+                    onChanged: (val) {
+                      query = val;
+                      buildSuggestions(context, val);
+                    },
+                    decoration: InputDecoration(
+                        prefixIcon: Icon(Icons.search),
+                        contentPadding: EdgeInsets.only(left: 25.0),
+                        hintText: 'Search by name',
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(15.0))),
+                  ),
+                  Padding(
+                      padding: EdgeInsets.only(top: 5),
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            RichText(
+                              text: TextSpan(
+                                  text: ("Filtra"),
+                                  style: TextStyle(color: Colors.blue),
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () {
+                                      showDialog(
+                                          context: context,
+                                          builder: (context) {
+                                            return SearchFilter();
+                                          });
+                                    }),
+                            ),
+                            Icon(
+                              Icons.filter_alt,
+                              color: Colors.blue,
+                            )
+                          ])),
+                  if (projectsFind.isNotEmpty)
+                    Text(
+                      "Projects",
+                      textAlign: TextAlign.start,
+                      style:
+                          TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                    ),
+                  if (projectsFind.isNotEmpty)
+                    Divider(
+                      color: Colors.grey,
+                      height: 20,
+                      thickness: 1,
+                      indent: 2,
+                      endIndent: 2,
+                    ),
+                  (Container(
+                      constraints: BoxConstraints(maxHeight: 250),
+                      child: ListProjects(projects: projectsFind))),
+                  Divider(
+                    color: Colors.white70,
+                    height: 20,
+                    thickness: 1,
+                    indent: 2,
+                    endIndent: 2,
+                  ),
+                  if (usersFind.isNotEmpty)
+                    Text(
+                      "Users",
+                      textAlign: TextAlign.start,
+                      style:
+                          TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                    ),
+                  if (usersFind.isNotEmpty)
+                    Divider(
+                      color: Colors.grey,
+                      height: 20,
+                      thickness: 1,
+                      indent: 2,
+                      endIndent: 2,
+                    ),
+                  Expanded(
+                      child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: usersFind.length,
+                    itemBuilder: (context, index) {
+                      if (usersFind[index].getIsAPerson())
+                        return GestureDetector(
+                            child: CardList(
+                                name: usersFind[index].getUsername(),
+                                sDescription: usersFind[index].getName() +
+                                    " " +
+                                    usersFind[index].getSurname()),
+                            onTap: () {
+                              Provider.of<ViewProvider>(context, listen: false)
+                                  .pushWidget(FutureBuild(
+                                      future: Future.wait([
+                                        Provider.of<ProjectProvider>(context,
+                                                listen: false)
+                                            .findByProjectProposer(
+                                                usersFind[index].getMail()),
+                                        Provider.of<ProjectProvider>(context,
+                                                listen: false)
+                                            .findByDesigner(
+                                                usersFind[index].getMail()),
+                                        Provider.of<TagProvider>(context,
+                                                listen: false)
+                                            .updateListTag(
+                                                usersFind[index].getTags())
+                                      ]),
+                                      newView: ProfileOverView(
+                                          user: usersFind[index].getMail())));
+                            });
+                      else
+                        return GestureDetector(
+                            child: CardList(
+                                name: usersFind[index].getUsername(),
+                                sDescription: usersFind[index].getName()),
+                            onTap: () {
+                              Provider.of<ViewProvider>(context, listen: false)
+                                  .pushWidget(FutureBuild(
+                                      future: Future.wait([
+                                        Provider.of<ProjectProvider>(context,
+                                                listen: false)
+                                            .findByProjectProposer(
+                                                usersFind[index].getMail()),
+                                        Provider.of<ProjectProvider>(context,
+                                                listen: false)
+                                            .findByDesigner(
+                                                usersFind[index].getMail()),
+                                        Provider.of<TagProvider>(context,
+                                                listen: false)
+                                            .updateListTag(
+                                                usersFind[index].getTags())
+                                      ]),
+                                      newView: ProfileOverView(
+                                          user: usersFind[index].getMail())));
+                            });
+                    },
+                  ))
+                ])));
   }
 }

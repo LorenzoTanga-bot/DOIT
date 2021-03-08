@@ -1,8 +1,10 @@
 import 'package:doit/model/AuthCredential.dart';
 import 'package:doit/model/Tag.dart';
 import 'package:doit/model/User.dart';
+import 'package:doit/providers/AuthCredentialProvider.dart';
 import 'package:doit/widget/ListTags.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class PrincipalInformationUser extends StatelessWidget {
   final User user;
@@ -11,12 +13,24 @@ class PrincipalInformationUser extends StatelessWidget {
   const PrincipalInformationUser(
       {Key key, @required this.user, @required this.tags})
       : super(key: key);
-  Widget getRoles() {
+  Widget getRoles(BuildContext context) {
+    User userAuthenticated = context.read<AuthCredentialProvider>().getUser();
+    if (userAuthenticated == null ||
+        user.getMail() != userAuthenticated.getMail()) {
+      if (user.getRoles().contains(UserRole.EXPERT)) {
+        List<UserRole> role = user.getRoles();
+        role.remove(UserRole.EXPERT);
+        return Row(children: [
+          Text("Role : "),
+          Text(getStringRole(role.first)),
+        ]);
+      }
+    }
     return Row(children: [
-      if (user.getRoles().length == 1) Text("Role : ") else Text("Roles :"),
+      if (user.getRoles().length == 1) Text("Role : ") else Text("Roles : "),
       Text(getStringRole(user.getRoles().first)),
       if (user.getRoles().length == 2)
-        Text("," + getStringRole(user.getRoles().last))
+        Text(", " + getStringRole(user.getRoles().last))
     ]);
   }
 
@@ -31,12 +45,10 @@ class PrincipalInformationUser extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(children: [
-      Padding(
-          padding: EdgeInsets.only(top: 15, left: 10),
-          child: Text(
-            (user.getUsername()),
-            style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-          )),
+      Text(
+        (user.getUsername()),
+        style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+      ),
       Card(
           margin: EdgeInsets.all(15),
           elevation: 4,
@@ -56,7 +68,7 @@ class PrincipalInformationUser extends StatelessWidget {
                       indent: 2,
                       endIndent: 2,
                     ),
-                    getRoles(),
+                    getRoles(context),
                     Divider(
                       color: Colors.white,
                       height: 5,
@@ -85,6 +97,21 @@ class PrincipalInformationUser extends StatelessWidget {
                         Text(user.getSurname())
                       ],
                     ),
+                    Divider(
+                      color: Colors.white,
+                      height: 5,
+                      thickness: 1,
+                      indent: 2,
+                      endIndent: 2,
+                    ),
+                    if (user.getBiography().isNotEmpty)
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("Biography : "),
+                          Flexible(child: Text(user.getBiography()))
+                        ],
+                      ),
                     Divider(
                       color: Colors.white,
                       height: 5,

@@ -14,6 +14,7 @@ class CardList extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15.0),
       ),
+      elevation: 4,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[

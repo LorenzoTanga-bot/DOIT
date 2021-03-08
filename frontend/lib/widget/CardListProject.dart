@@ -33,8 +33,8 @@ class _CardListProject extends State<CardListProject> {
             ? "Candidacy Mode"
             : (DateTime.parse(project.getStartCandidacy())
                     .isAfter(DateTime.now())
-                ? "Attesa apertura candidature"
-                : "In corso"));
+                ? "Waiting for opening\nof candidacy"
+                : "In progress"));
   }
 
   @override
@@ -42,6 +42,7 @@ class _CardListProject extends State<CardListProject> {
     project = context.watch<ProjectProvider>().findById(widget.id);
     return GestureDetector(
       child: Card(
+        elevation: 4,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15.0),
         ),
@@ -69,12 +70,10 @@ class _CardListProject extends State<CardListProject> {
                       .updateListTag(project.getTag()),
                   Provider.of<EvaluationProvider>(context, listen: false)
                       .findByProject(project.getId()),
-                       Provider.of<CandidacyProvider>(context,
-                                          listen: false)
-                                      .findByProject(project.getId()),
-                                       Provider.of<InviteProvider>(context,
-                                          listen: false)
-                                      .findByProject(project.getId())
+                  Provider.of<CandidacyProvider>(context, listen: false)
+                      .findByProject(project.getId()),
+                  Provider.of<InviteProvider>(context, listen: false)
+                      .findByProject(project.getId())
                 ]),
                 newView: ProjectOverView(
                   project: project.getId(),

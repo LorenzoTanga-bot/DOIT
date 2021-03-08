@@ -32,6 +32,7 @@ class _CardListInvite extends State<CardListInvite> {
         context.read<ProjectProvider>().findById(invite.getProject());
     return GestureDetector(
       child: Card(
+         elevation: 4,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15.0),
         ),

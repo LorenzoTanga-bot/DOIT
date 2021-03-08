@@ -81,18 +81,20 @@ class _ThirdView extends State<ThirdView> {
                   newView: ProfileOverView(user: _user.getMail())))),
       GestureDetector(
           child: Card(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(15.0),
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                ListTile(
-                  title: Text("Logout"),
-                ),
-              ],
-            ),
-          ),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              elevation: 4,
+              child: Container(
+                  alignment: Alignment.centerLeft,
+                  height: 50,
+                  child: Padding(
+                    child: Text(
+                      "Logout",
+                      style: TextStyle(fontSize: 16),
+                    ),
+                    padding: EdgeInsets.all(10),
+                  ))),
           onTap: () {
             Provider.of<ViewProvider>(context, listen: false)
                 .setProfileDefault(Login());

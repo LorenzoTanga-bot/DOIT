@@ -83,6 +83,7 @@ class AuthCredentialController {
               'surname': newUser.getSurname(),
               'roles': _rolesToString(newUser.getRoles()),
               'tags': newUser.getTags(),
+              'biography': newUser.getBiography()
               
             })));
   }
@@ -97,6 +98,7 @@ class AuthCredentialController {
               'surname': newUser.getSurname(),
               'roles': _rolesToString(newUser.getRoles()),
               'tags': newUser.getTags(),
+              'biography': newUser.getBiography()
              
             })));
   }
