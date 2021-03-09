@@ -80,7 +80,7 @@ Nelle successive iterazioni è prevista l'aggiunta delle notifiche per gli utent
 Potranno essere inviate delle  notifiche quando si riceve una nuova candidatura ad un progetto, un nuovo invito a collaborare, o una valutazione. <br>
 L'aggiunta di questo nuovo meccanismo permetterà una più facile interazione con l'app in quanto si verrà avvisati in tempo reale delle novità più rilevanti del proprio profilo (o del propio progetto). <br> <br>
 Si prevede anche l'introduzione dell'avatar per l'utente: chi è registrato all'applicaione potrà aggiungere alle proprie informazioni una foto. <br> <br>
-Altro punto focale della prossima iterazione sarà di rivedere il codice e adattarlo a girare su un sistema operativo android. <br> <br>
+Altro punto focale della prossima iterazione sarà di rivedere il codice e adattarlo per un corretto funzionamento sul sistema operativo Android. <br> <br>
 In ultimo è pianificato l'inserimento per la parte riguardante le statistiche. <br> Ogni utente registrato potra vedere sia statistiche globali (quali sono ad esempio gli ambiti di applicazione -tag- in cui ci sono più progetti) che statistiche singole, proprie ( ad esempio vedere quanti e in quali progetti ha collaborato nell'ultimo anno).
 <br><br>
 
