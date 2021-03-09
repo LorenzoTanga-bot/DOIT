@@ -36,7 +36,7 @@ Per separare lo stato dell’applicazione dall’interfaccia utente e per gestir
 Il lato <b>Backend</b> del sistema è stato sviluppato in <b>Java</b> con il supporto del framework <b>Spring-Boot</b> a cui è stato affidato il compito di scrivere e gestire le <b>API Rest</b>, anche per quanto riguarda la sicurezza.<br> <br>
 Per la persistenza dei dati ci si affida al database non relazionale <b>MongoDB Atlas</b>.<br> <br>
 Per rendere più agevole la scrittura del codice è stata implementata la libreria java <b>Lombok</b>, così da poter scrivere specifici metodi attraverso annotazioni.<br> <br>
-Per fornire credenziali di accesso tra client e server è stato utilizzato inizialmente il metodo “Basic access authentication”, il quale sfrutta l’header delle richieste HTTP per trasmettere ID e password codificati in Base64.<br> In una successiva iterazione si è deciso di rendere più sicura la nostra applicazione e di sfruttare lo standard dei <b>JWT</b> (JSON Web Token). <br> <br>
+Per fornire credenziali di accesso tra client e server è stato utilizzato inizialmente il metodo “Basic access authentication”, il quale sfrutta l’header delle richieste HTTP per trasmettere ID e password codificati in Base64.<br> In una successiva iterazione si è deciso di rendere più sicura la nostra applicazione e di implementare lo standard dei <b>JWT</b> (JSON Web Token). <br> <br>
 La modellazione del sistema è stata fatta secondo il processo iterativo ed incrementale Unified Process. <br>
 Nella cartella [DOCUMENTAZIONE](/Documentazione) si possono osservare i modelli sviluppati e come si è proceduto durante le varie iterazioni del processo.
 <br><br>
