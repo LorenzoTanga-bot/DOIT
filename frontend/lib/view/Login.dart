@@ -105,14 +105,15 @@ class _Login extends State<Login> {
                 .setProfileDefault(CreateModifyProfile(
               isNewUser: true,
             ));
-          } else
+          } else {
             Provider.of<UserProvider>(context, listen: false).updateListUsers([
               Provider.of<AuthCredentialProvider>(context, listen: false)
                   .getUser()
                   .getMail()
             ]);
-          Provider.of<ViewProvider>(context, listen: false)
-              .setProfileDefault(ThirdView());
+            Provider.of<ViewProvider>(context, listen: false)
+                .setProfileDefault(ThirdView());
+          }
         });
   }
 }
