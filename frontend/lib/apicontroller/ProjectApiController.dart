@@ -115,7 +115,8 @@ class ProjectApiController {
 
   Future<String> getProjectsByProjectProposer(String projectProposer) async {
     return _getBodyResponse(await http.get(
-        Uri.encodeFull("$_baseUrl/publicgetByProjectProposer/$projectProposer"),
+        Uri.encodeFull(
+            "$_baseUrl/public/getByProjectProposer/$projectProposer"),
         headers: BasicAuthConfig().getBaseHeader()));
   }
 }

@@ -53,12 +53,10 @@ class _ProfileOverView extends State<ProfileOverView> {
             padding: EdgeInsets.only(right: 15, top: 10),
             child: Align(
                 alignment: Alignment.bottomRight,
-                child: OutlinedButton(
-                  style: OutlinedButton.styleFrom(
-                      side: BorderSide(color: Colors.blue),
-                      backgroundColor: Colors.blue,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(10)))),
+                child: IconButton(
+                  iconSize: 30,
+                  color: Colors.blue,
+                  icon: Icon(Icons.border_color),
                   onPressed: () => {
                     context.read<ViewProvider>().pushWidget(FutureBuild(
                         future: Future.wait([
@@ -69,10 +67,6 @@ class _ProfileOverView extends State<ProfileOverView> {
                           isNewUser: false,
                         )))
                   },
-                  child: Text(
-                    "Modifica",
-                    style: TextStyle(color: Colors.white),
-                  ),
                 ))),
       PrincipalInformationUser(user: _user, tags: _tags),
       if (_proposedProjects.isNotEmpty)

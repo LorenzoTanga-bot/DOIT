@@ -19,7 +19,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: DoitAppBar(),
+      appBar:DoitAppBar(),
       body: Center(
         child: SwipeDetector(
           child: context.watch<ViewProvider>().getViewPosition().elementAt(
@@ -45,19 +45,28 @@ class _HomePageState extends State<HomePage> {
               icon: GestureDetector(
                   onDoubleTap: () =>
                       context.read<ViewProvider>().dropFirstWidget(),
-                  child: (Icon(Icons.home))),
+                  child: (Icon(
+                    Icons.home,
+                    size: 35,
+                  ))),
               label: 'home'),
           BottomNavigationBarItem(
               icon: GestureDetector(
                   onDoubleTap: () =>
                       context.read<ViewProvider>().dropSecondWidget(),
-                  child: (Icon(Icons.search))),
+                  child: (Icon(
+                    Icons.search,
+                    size: 35,
+                  ))),
               label: 'search'),
           BottomNavigationBarItem(
               icon: GestureDetector(
                   onDoubleTap: () =>
                       context.read<ViewProvider>().dropThirdWidget(),
-                  child: (Icon(Icons.person))),
+                  child: (Icon(
+                    Icons.person,
+                    size: 35,
+                  ))),
               label: 'profile'),
         ],
         selectedLabelStyle: const TextStyle(fontSize: 14),

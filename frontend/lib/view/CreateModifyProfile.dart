@@ -300,6 +300,8 @@ class _CreateModifyProfile extends State<CreateModifyProfile> {
                             endIndent: 2,
                           ),
                           TextField(
+                              minLines: 1,
+                              maxLines: 4,
                               controller: _biography,
                               decoration: InputDecoration(
                                 labelText: 'Biography',
@@ -340,7 +342,7 @@ class _CreateModifyProfile extends State<CreateModifyProfile> {
                     else
                       setState(() {})
                   },
-                  label: Text('CREATE'),
+                  label: Text('UPLOAD'),
                 )
               ]),
             )));

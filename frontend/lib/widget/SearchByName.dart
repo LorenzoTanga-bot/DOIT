@@ -104,47 +104,51 @@ class _SearchByName extends State<SearchByName> {
             child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  TextField(
-                    onChanged: (val) {
-                      query = val;
-                      buildSuggestions(context, val);
-                    },
-                    decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.search),
-                        contentPadding: EdgeInsets.only(left: 25.0),
-                        hintText: 'Search by name',
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15.0))),
+                  Row(
+                    children: [
+                      Expanded(
+                          child: TextField(
+                        onChanged: (val) {
+                          query = val;
+                          buildSuggestions(context, val);
+                        },
+                        decoration: InputDecoration(
+                            prefixIcon: Icon(Icons.search),
+                            contentPadding: EdgeInsets.only(left: 25.0),
+                            hintText: 'Search by name',
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(15.0))),
+                      )),
+                      Padding(
+                          padding: EdgeInsets.only(left: 3),
+                          child: Icon(
+                            Icons.filter_alt,
+                            color: Colors.blue,
+                          )),
+                      RichText(
+                        text: TextSpan(
+                            text: ("Filtra"),
+                            style: TextStyle(color: Colors.blue),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return SearchFilter();
+                                    });
+                              }),
+                      ),
+                    ],
                   ),
-                  Padding(
-                      padding: EdgeInsets.only(top: 5),
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            RichText(
-                              text: TextSpan(
-                                  text: ("Filtra"),
-                                  style: TextStyle(color: Colors.blue),
-                                  recognizer: TapGestureRecognizer()
-                                    ..onTap = () {
-                                      showDialog(
-                                          context: context,
-                                          builder: (context) {
-                                            return SearchFilter();
-                                          });
-                                    }),
-                            ),
-                            Icon(
-                              Icons.filter_alt,
-                              color: Colors.blue,
-                            )
-                          ])),
                   if (projectsFind.isNotEmpty)
-                    Text(
-                      "Projects",
-                      textAlign: TextAlign.start,
-                      style:
-                          TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 15),
+                      child: Text(
+                        "Projects",
+                        textAlign: TextAlign.start,
+                        style: TextStyle(
+                            fontSize: 25, fontWeight: FontWeight.bold),
+                      ),
                     ),
                   if (projectsFind.isNotEmpty)
                     Divider(

@@ -98,14 +98,16 @@ class _ProjectOverView extends State<ProjectOverView> {
               padding: EdgeInsets.only(right: 15, top: 10),
               child: Align(
                   alignment: Alignment.bottomRight,
-                  child: OutlinedButton(
+                  child: IconButton(
+                    iconSize: 30,
+                    color: Colors.blue,
+                    icon: Icon(Icons.border_color),
                     onPressed: () => {
                       Provider.of<ViewProvider>(context, listen: false)
                           .pushWidget(CreateModifyProject(
                         id: widget.project,
                       ))
                     },
-                    child: Text("Modifica"),
                   ))),
         Card(
             margin: EdgeInsets.all(15),

@@ -354,7 +354,7 @@ class _CreateModifyProject extends State<CreateModifyProject> {
           padding: const EdgeInsets.only(top: 16.0),
           child: Row(
             mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               OutlinedButton.icon(
                 icon: Icon(Icons.navigate_before),
