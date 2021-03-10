@@ -82,7 +82,7 @@ class ViewProvider with ChangeNotifier {
     _listViewPosition.removeAt(_selectedItemPosition);
     switch (_selectedItemPosition) {
       case 0:
-        _listFirstPosition.removeLast();
+        if (_listFirstPosition.isNotEmpty) _listFirstPosition.removeLast();
         if (_listFirstPosition.isNotEmpty &&
             _listFirstPosition.last is FutureBuild)
           _listFirstPosition.removeLast();
@@ -93,7 +93,7 @@ class ViewProvider with ChangeNotifier {
                 : _listFirstPosition.last);
         break;
       case 1:
-        _listSecondPosition.removeLast();
+        if (_listSecondPosition.isNotEmpty) _listSecondPosition.removeLast();
         if (_listSecondPosition.isNotEmpty &&
             _listSecondPosition.last is FutureBuild)
           _listSecondPosition.removeLast();
@@ -104,7 +104,7 @@ class ViewProvider with ChangeNotifier {
                 : _listSecondPosition.last);
         break;
       case 2:
-        _listThirdPosition.removeLast();
+        if (_listThirdPosition.isNotEmpty) _listThirdPosition.removeLast();
         if (_listThirdPosition.isNotEmpty &&
             _listThirdPosition.last is FutureBuild)
           _listThirdPosition.removeLast();
